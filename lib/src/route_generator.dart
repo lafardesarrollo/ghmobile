@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ghmobile/src/pages/boleta_pago_page.dart';
 import 'package:ghmobile/src/pages/login_page.dart';
 import 'package:ghmobile/src/pages/main_page.dart';
+import 'package:ghmobile/src/pages/permiso_page.dart';
 import 'package:ghmobile/src/pages/splash_page.dart';
 
 class RouteGenerator {
@@ -15,6 +16,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => MainPage());
       case '/Boletas':
         return MaterialPageRoute(builder: (_) => BoletaPagoPage());
+      case '/Permiso':
+        return MaterialPageRoute(builder: (_) => PermisoPage());
       // case '/AtencionSinRes':
       //   return MaterialPageRoute(builder: (_) => AtencionsinresPage());
       // case '/MisAtenciones':

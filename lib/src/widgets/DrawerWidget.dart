@@ -85,7 +85,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('/Boletas');
+              Navigator.of(context).pushNamed('/Permiso');
             },
             leading: Icon(
               Icons.paste_rounded,
@@ -98,7 +98,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('/Boletas');
+              Navigator.of(context).pushNamed('/Vacacion');
             },
             leading: Icon(
               Icons.text_rotate_vertical_sharp,

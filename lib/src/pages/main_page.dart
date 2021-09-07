@@ -104,7 +104,10 @@ class _MainPageState extends StateMVC<MainPage>
               ],
               backgroundColor: Colors.transparent,
               elevation: 0,
-              title: Text('Lafarnet')),
+              title: Text(
+                'Lafarnet',
+                style: Theme.of(context).textTheme.bodyText1,
+              )),
           drawer: DrawerWidget(),
           // drawer: Theme(
           //   data: Theme.of(context)
