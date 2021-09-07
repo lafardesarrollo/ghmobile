@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ghmobile/src/pages/boleta_pago_page.dart';
 import 'package:ghmobile/src/pages/login_page.dart';
 import 'package:ghmobile/src/pages/main_page.dart';
 import 'package:ghmobile/src/pages/splash_page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    final args = settings.arguments;
     switch (settings.name) {
       case '/Splash':
         return MaterialPageRoute(builder: (_) => SplashPage());
@@ -13,6 +13,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => LoginPage());
       case '/Main':
         return MaterialPageRoute(builder: (_) => MainPage());
+      case '/Boletas':
+        return MaterialPageRoute(builder: (_) => BoletaPagoPage());
       // case '/AtencionSinRes':
       //   return MaterialPageRoute(builder: (_) => AtencionsinresPage());
       // case '/MisAtenciones':

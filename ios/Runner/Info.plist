@@ -41,5 +41,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Lafarnet necesita acceder a tu Localización</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Lafarnet necesita acceder a tu Localización</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Lafarnet necesita acceder a tu Localización</string>
 </dict>
 </plist>

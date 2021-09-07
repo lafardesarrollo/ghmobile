@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'GHMobile',
       initialRoute: '/Splash',
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
@@ -48,19 +48,19 @@ class _MyAppState extends State<MyApp> {
           backgroundColor: Colors.black.withOpacity(0.8),
         ),
         primarySwatch: Colors.blue,
-        // brightness: brightness,
-        scaffoldBackgroundColor: Colors.transparent.withOpacity(1),
+        brightness: Brightness.light,
+        // scaffoldBackgroundColor: Colors.transparent.withOpacity(1),
         textTheme: TextTheme(
-            // bodyText1: TextStyle(fontSize: 14.0, color: Color(0xFF2e3092)),
-            // bodyText2: TextStyle(fontSize: 14.0, color: Color(0xFF409cd0)),
-            // button: TextStyle(fontSize: 14.0, color: Color(0xFF409cd0)),
-            // subtitle1: TextStyle(fontSize: 16.0, color: Color(0xFF409cd0)),
-            // subtitle2: TextStyle(fontSize: 16.0, color: Color(0xFF409cd0)),
-            // caption: TextStyle(
-            //     fontSize: 12.0,
-            //     fontWeight: FontWeight.w300,
-            //     color: Color(0xFF83bae5)),
-            ),
+          bodyText1: TextStyle(fontSize: 20.0, color: Color(0xFF009de0)),
+          bodyText2: TextStyle(fontSize: 20.0, color: Color(0xFF009de0)),
+          button: TextStyle(fontSize: 14.0, color: Color(0xFF009de0)),
+          subtitle1: TextStyle(fontSize: 16.0, color: Color(0xFF009de0)),
+          subtitle2: TextStyle(fontSize: 16.0, color: Color(0xFF009de0)),
+          caption: TextStyle(
+              fontSize: 12.0,
+              fontWeight: FontWeight.w300,
+              color: Color(0xFF009de0)),
+        ),
       ),
     );
   }
