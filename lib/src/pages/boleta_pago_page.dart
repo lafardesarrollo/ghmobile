@@ -23,7 +23,7 @@ class BoletaPagoPageState extends StateMVC<BoletaPagoPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _con.requestBoleta.empId = 638;
+    _con.requestBoleta.empId = int.parse(currentUser.value.idSap!);
     // _con.requestBoleta.empId = currentUser.value.!
     _con.requestBoleta.periodo = "202108";
     _con.obtenerBoletaPago();

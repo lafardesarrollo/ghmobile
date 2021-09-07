@@ -28,6 +28,7 @@ class Usuario {
     this.nombreEstado,
     this.idSuperior,
     this.ubicacion,
+    this.idSap,
     this.auth,
   });
 
@@ -49,6 +50,7 @@ class Usuario {
   String? nombreEstado;
   String? idSuperior;
   String? ubicacion;
+  String? idSap;
   bool? auth;
 
   factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(
@@ -70,6 +72,7 @@ class Usuario {
         nombreEstado: json["nombre_estado"],
         idSuperior: json["id_superior"],
         ubicacion: json["ubicacion"],
+        idSap: json["idSap"],
         auth: json["auth"],
       );
 
@@ -92,6 +95,7 @@ class Usuario {
         "nombre_estado": nombreEstado,
         "id_superior": idSuperior,
         "ubicacion": ubicacion,
+        "idSap": idSap,
         "auth": auth,
       };
 }

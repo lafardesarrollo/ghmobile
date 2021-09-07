@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ghmobile/src/models/boleta_pago.dart';
 import 'package:ghmobile/src/models/request_boleta_pago.dart';
 import 'package:ghmobile/src/repository/boleta_pago_repository.dart';
-import 'package:ghmobile/src/repository/settings_repository.dart';
-import 'package:location/location.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 class BoletaPagoController extends ControllerMVC {

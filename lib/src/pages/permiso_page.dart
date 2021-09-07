@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ghmobile/src/controllers/permiso_controller.dart';
+import 'package:ghmobile/src/repository/user_repository.dart';
 import 'package:ghmobile/src/widgets/DrawerWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -22,6 +23,7 @@ class PermisoPageState extends StateMVC<PermisoPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _con.listarBoletas(int.parse(currentUser.value.idSap!));
     // _con.requestBoleta.empId = 638;
     // _con.requestBoleta.empId = currentUser.value.!
     // _con.requestBoleta.periodo = "202108";

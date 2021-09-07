@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:ghmobile/src/models/boleta_permiso.dart';
 import 'package:ghmobile/src/pages/nuevo_permiso_page.dart';
+import 'package:ghmobile/src/repository/permiso_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 class PermisoController extends ControllerMVC {
-  String dropdownValue = 'Agosto';
+  List<BoletaPermiso> boletas = [];
+  BoletaPermiso boleta = new BoletaPermiso();
 
   late OverlayEntry loader;
 
@@ -37,20 +42,21 @@ class PermisoController extends ControllerMVC {
   //   });
   // }
 
-  // void listenSeguimientoUsuarioFecha(String fecha) async {
-  //   final Stream<List<Seguimiento>> stream =
-  //       await getSeguimientoPorUsuarioFecha(fecha);
-  //   stream.listen((List<Seguimiento> _lseguimiento) {
-  //     setState(() {
-  //       lseguimiento = _lseguimiento;
-  //     });
-  //   }, onError: (a) {
-  //     print(a);
-  //     scaffoldKey?.currentState?.showSnackBar(SnackBar(
-  //       content: Text('Ocurrio un error al obtener la información'),
-  //     ));
-  //   }, onDone: () {});
-  // }
+  void listarBoletas(int idEmpleado) async {
+    final Stream<List<BoletaPermiso>> stream =
+        await obtenerPermisosPorEmpleado(idEmpleado);
+    stream.listen((List<BoletaPermiso> _lpermisos) {
+      setState(() {
+        boletas = _lpermisos;
+        print(boletas);
+      });
+    }, onError: (a) {
+      print(a);
+      scaffoldKey.currentState?.showSnackBar(SnackBar(
+        content: Text('Ocurrio un error al obtener la información'),
+      ));
+    }, onDone: () {});
+  }
 
   Future<void> abrirNuevoSolicitudPermiso(BuildContext context) async {
     final resultado = await Navigator.push(

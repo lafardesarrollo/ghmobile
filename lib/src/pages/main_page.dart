@@ -27,7 +27,7 @@ class _MainPageState extends StateMVC<MainPage>
   @override
   void initState() {
     _con.getLocalization();
-    _con.obtenerSaldoVacaciones(638); // (currentUser.value.userid)
+    _con.obtenerSaldoVacaciones(int.parse(currentUser.value.idSap!));
     animationController =
         AnimationController(duration: Duration(milliseconds: 200), vsync: this);
     CurvedAnimation curve =
