@@ -98,58 +98,53 @@ class PermisoPageState extends StateMVC<PermisoPage> {
             },
             label: Text('Solicitar Permiso')),
         drawer: DrawerWidget(),
-        body: ListView(
-          children: [
-            ListTile(
-              leading: CircleAvatar(
-                child: Text('P'),
-              ),
-              title: Text(
-                  'Asistire al Evento GDG DEVFEST La Paz que son en fecha 8 y 9 de Noviembre en la Universidad Catolica'),
-              subtitle: Text('Fecha de Salida: 21-NOV-19',
-                  style: TextStyle(color: Theme.of(context).hintColor)),
-              trailing: IconButton(
-                  onPressed: () {}, icon: Icon(Icons.remove_red_eye_outlined)),
-            ),
-            Divider(),
-            ListTile(
-              leading: CircleAvatar(
-                child: Text('A'),
-                backgroundColor: Theme.of(context).accentColor,
-              ),
-              title: Text('Reunión con Gestión de Calidad en Oficina Nacional'),
-              subtitle: Text('Fecha de Salida: 21-NOV-19',
-                  style: TextStyle(color: Theme.of(context).hintColor)),
-              trailing: Icon(Icons.remove_red_eye_outlined),
-            ),
-            Divider(),
-            ListTile(
-              leading: CircleAvatar(
-                child: Text('A'),
-                backgroundColor: Theme.of(context).accentColor,
-              ),
-              title: Text('cita medica programada en CNS'),
-              subtitle: Text(
-                'Fecha de Salida: 21-NOV-19',
-                style: TextStyle(color: Theme.of(context).hintColor),
-              ),
-              trailing: Icon(Icons.remove_red_eye_outlined),
-            ),
-            Divider(),
-            ListTile(
-              leading: CircleAvatar(
-                child: Text('R'),
-                backgroundColor: Colors.red,
-              ),
-              title: Text(
-                'Asistire al Evento GDG DEVFEST La Paz que son en fecha 8 y 9 de Noviembre en la Universidad Catolica',
-              ),
-              subtitle: Text('Fecha de Salida: 21-NOV-19',
-                  style: TextStyle(color: Theme.of(context).hintColor)),
-              trailing: Icon(Icons.remove_red_eye_outlined),
-            )
-          ],
-        ),
+        body: ListView.separated(
+            separatorBuilder: (context, index) => Divider(),
+            itemCount: _con.boletas.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                onTap: () {
+                  _con.boleta = _con.boletas.elementAt(index);
+                  _con.abrirDetallePermiso(context);
+                },
+                leading: CircleAvatar(
+                  backgroundColor:
+                      _con.boletas.elementAt(index).estadoPermiso.toString() ==
+                              '2'
+                          ? Colors.red
+                          : _con.boletas
+                                      .elementAt(index)
+                                      .estadoPermiso
+                                      .toString() ==
+                                  '1'
+                              ? Theme.of(context).accentColor
+                              : Theme.of(context).hintColor,
+                  child: Text(
+                      _con.boletas.elementAt(index).estadoPermiso.toString() ==
+                              '1'
+                          ? 'A'
+                          : _con.boletas
+                                      .elementAt(index)
+                                      .estadoPermiso
+                                      .toString() ==
+                                  '2'
+                              ? 'R'
+                              : 'P'),
+                ),
+                title: Text(_con.boletas.elementAt(index).motivos!),
+                subtitle: Text(
+                    'Salida: ' +
+                        _con.boletas.elementAt(index).fechaSalida.toString(),
+                    style: TextStyle(
+                        fontSize: 16, color: Theme.of(context).hintColor)),
+                trailing: IconButton(
+                    onPressed: () {
+                      // _con.boleta = _con.boletas.elementAt(index);
+                      // _con.abrirDetallePermiso(context);
+                    },
+                    icon: Icon(Icons.remove_red_eye_outlined)),
+              );
+            }),
       ),
     );
   }

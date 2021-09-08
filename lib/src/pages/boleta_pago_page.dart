@@ -102,15 +102,15 @@ class BoletaPagoPageState extends StateMVC<BoletaPagoPage> {
                   children: [
                     Text(
                       'Nombre: ' + _con.boleta.nombre.toString(),
-                      style: Theme.of(context).textTheme.subtitle2,
+                      style: Theme.of(context).textTheme.overline,
                     ),
                     Text(
                       'Sucursal: ' + _con.boleta.sucursal.toString(),
-                      style: Theme.of(context).textTheme.subtitle2,
+                      style: Theme.of(context).textTheme.overline,
                     ),
                     Text(
                       'Cargo: ' + _con.boleta.cargo.toString(),
-                      style: Theme.of(context).textTheme.subtitle2,
+                      style: Theme.of(context).textTheme.overline,
                     ),
                   ],
                 ),

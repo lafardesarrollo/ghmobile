@@ -2,17 +2,27 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:ghmobile/src/models/boleta_permiso.dart';
+import 'package:ghmobile/src/pages/detalle_permiso_page.dart';
 import 'package:ghmobile/src/pages/nuevo_permiso_page.dart';
 import 'package:ghmobile/src/repository/permiso_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 class PermisoController extends ControllerMVC {
+  TextEditingController dateInputSalida = TextEditingController();
+  TextEditingController dateInputRetorno = TextEditingController();
+
+  TextEditingController timeInputSalida = TextEditingController();
+  TextEditingController timeInputRetorno = TextEditingController();
+
+  int index = 0;
+
   List<BoletaPermiso> boletas = [];
   BoletaPermiso boleta = new BoletaPermiso();
 
   late OverlayEntry loader;
 
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> permisoFormKey = new GlobalKey<FormState>();
 
   PermisoController() {
     // loader = Helper.overlayLoader(context);
@@ -65,6 +75,19 @@ class PermisoController extends ControllerMVC {
         builder: (context) => NuevoPermisoPage(
             // seguimiento: _seguimiento,
             ),
+      ),
+    );
+    if (resultado) {
+    } else {}
+  }
+
+  Future<void> abrirDetallePermiso(BuildContext context) async {
+    final resultado = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DetallePermisoPage(
+          boletaPermiso: boleta,
+        ),
       ),
     );
     if (resultado) {

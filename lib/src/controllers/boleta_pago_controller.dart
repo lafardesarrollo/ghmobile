@@ -3,6 +3,7 @@ import 'package:ghmobile/src/models/boleta_pago.dart';
 import 'package:ghmobile/src/models/request_boleta_pago.dart';
 import 'package:ghmobile/src/repository/boleta_pago_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:date_format/date_format.dart';
 
 class BoletaPagoController extends ControllerMVC {
   RequestBoletaPago requestBoleta = new RequestBoletaPago();

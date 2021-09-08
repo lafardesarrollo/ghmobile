@@ -42,17 +42,18 @@ class _MyAppState extends State<MyApp> {
         dividerColor: Color(0xFFa2c037).withOpacity(0.5),
         focusColor: Color(0xFFa2c037).withOpacity(1),
         hintColor: Color(0xFF294a96), // config.Colors().secondColor(1),
+
         bottomSheetTheme: BottomSheetThemeData(
             backgroundColor: Colors.black.withOpacity(0.8)),
         dialogTheme: DialogTheme(
-          backgroundColor: Colors.black.withOpacity(0.8),
+          backgroundColor: Colors.white.withOpacity(1),
         ),
         primarySwatch: Colors.blue,
         brightness: Brightness.light,
         // scaffoldBackgroundColor: Colors.transparent.withOpacity(1),
         textTheme: TextTheme(
-          bodyText1: TextStyle(fontSize: 20.0, color: Color(0xFF009de0)),
-          bodyText2: TextStyle(fontSize: 20.0, color: Color(0xFF009de0)),
+          bodyText1: TextStyle(fontSize: 20.0, color: Color(0xFF294a96)),
+          bodyText2: TextStyle(fontSize: 20.0, color: Color(0xFF294a96)),
           button: TextStyle(fontSize: 14.0, color: Color(0xFF009de0)),
           subtitle1: TextStyle(fontSize: 16.0, color: Color(0xFF009de0)),
           subtitle2: TextStyle(fontSize: 16.0, color: Color(0xFF009de0)),
@@ -60,6 +61,8 @@ class _MyAppState extends State<MyApp> {
               fontSize: 12.0,
               fontWeight: FontWeight.w300,
               color: Color(0xFF009de0)),
+          overline: TextStyle(
+              fontSize: 12.0, fontWeight: FontWeight.w300, color: Colors.white),
         ),
       ),
     );

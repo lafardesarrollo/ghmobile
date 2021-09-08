@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:ghmobile/src/models/usuario.dart';
+
 class LBoletaPermiso {
   List<BoletaPermiso> items = [];
   LBoletaPermiso();
@@ -41,6 +43,7 @@ class BoletaPermiso {
     this.motivos,
     this.cuentaSalida,
     this.idSuperior,
+    this.autorizador,
     this.estadoPermiso,
     this.fechaAccionSuperior,
     this.horaAccionSuperior,
@@ -66,6 +69,7 @@ class BoletaPermiso {
   String? motivos;
   String? cuentaSalida;
   int? idSuperior;
+  String? autorizador;
   int? estadoPermiso;
   DateTime? fechaAccionSuperior;
   String? horaAccionSuperior;
@@ -91,6 +95,7 @@ class BoletaPermiso {
         motivos: json["motivos"],
         cuentaSalida: json["cuenta_salida"],
         idSuperior: json["id_superior"],
+        autorizador: json["autorizador"],
         estadoPermiso: json["estado_permiso"],
         fechaAccionSuperior: DateTime.parse(json["fecha_accion_superior"]),
         horaAccionSuperior: json["hora_accion_superior"],
@@ -117,6 +122,7 @@ class BoletaPermiso {
         "motivos": motivos,
         "cuenta_salida": cuentaSalida,
         "id_superior": idSuperior,
+        "autorizador": autorizador,
         "estado_permiso": estadoPermiso,
         "fecha_accion_superior": fechaAccionSuperior,
         "hora_accion_superior": horaAccionSuperior,
