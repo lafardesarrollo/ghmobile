@@ -1,7 +1,9 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ghmobile/src/controllers/permiso_controller.dart';
 import 'package:ghmobile/src/repository/user_repository.dart';
+import 'package:ghmobile/src/widgets/CircularLoadingWidget.dart';
 import 'package:ghmobile/src/widgets/DrawerWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -23,7 +25,8 @@ class PermisoPageState extends StateMVC<PermisoPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _con.listarBoletas(int.parse(currentUser.value.idSap!));
+    _con.loading = true;
+    _con.listarBoletas(context, int.parse(currentUser.value.idSap!));
     // _con.requestBoleta.empId = 638;
     // _con.requestBoleta.empId = currentUser.value.!
     // _con.requestBoleta.periodo = "202108";
@@ -98,18 +101,25 @@ class PermisoPageState extends StateMVC<PermisoPage> {
             },
             label: Text('Solicitar Permiso')),
         drawer: DrawerWidget(),
-        body: ListView.separated(
-            separatorBuilder: (context, index) => Divider(),
-            itemCount: _con.boletas.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                onTap: () {
-                  _con.boleta = _con.boletas.elementAt(index);
-                  _con.abrirDetallePermiso(context);
-                },
-                leading: CircleAvatar(
-                  backgroundColor:
-                      _con.boletas.elementAt(index).estadoPermiso.toString() ==
+        body: _con.loading
+            ? CircularLoadingWidget(
+                texto: 'Cargando Permisos...',
+                height: MediaQuery.of(context).size.height,
+              )
+            : ListView.separated(
+                separatorBuilder: (context, index) => Divider(),
+                itemCount: _con.boletas.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    onTap: () {
+                      _con.boleta = _con.boletas.elementAt(index);
+                      _con.abrirDetallePermiso(context);
+                    },
+                    leading: CircleAvatar(
+                      backgroundColor: _con.boletas
+                                  .elementAt(index)
+                                  .estadoPermiso
+                                  .toString() ==
                               '2'
                           ? Colors.red
                           : _con.boletas
@@ -119,8 +129,10 @@ class PermisoPageState extends StateMVC<PermisoPage> {
                                   '1'
                               ? Theme.of(context).accentColor
                               : Theme.of(context).hintColor,
-                  child: Text(
-                      _con.boletas.elementAt(index).estadoPermiso.toString() ==
+                      child: Text(_con.boletas
+                                  .elementAt(index)
+                                  .estadoPermiso
+                                  .toString() ==
                               '1'
                           ? 'A'
                           : _con.boletas
@@ -130,21 +142,25 @@ class PermisoPageState extends StateMVC<PermisoPage> {
                                   '2'
                               ? 'R'
                               : 'P'),
-                ),
-                title: Text(_con.boletas.elementAt(index).motivos!),
-                subtitle: Text(
-                    'Salida: ' +
-                        _con.boletas.elementAt(index).fechaSalida.toString(),
-                    style: TextStyle(
-                        fontSize: 16, color: Theme.of(context).hintColor)),
-                trailing: IconButton(
-                    onPressed: () {
-                      // _con.boleta = _con.boletas.elementAt(index);
-                      // _con.abrirDetallePermiso(context);
-                    },
-                    icon: Icon(Icons.remove_red_eye_outlined)),
-              );
-            }),
+                    ),
+                    title: Text(_con.boletas.elementAt(index).motivos!),
+                    subtitle: Text(
+                        'Salida: ' +
+                            formatDate(
+                                _con.boletas.elementAt(index).fechaSalida!,
+                                [dd, '-', mm, '-', yyyy]) +
+                            ' ' +
+                            _con.boletas.elementAt(index).horaSalida!,
+                        style: TextStyle(
+                            fontSize: 16, color: Theme.of(context).hintColor)),
+                    trailing: IconButton(
+                        onPressed: () {
+                          // _con.boleta = _con.boletas.elementAt(index);
+                          // _con.abrirDetallePermiso(context);
+                        },
+                        icon: Icon(Icons.remove_red_eye_outlined)),
+                  );
+                }),
       ),
     );
   }

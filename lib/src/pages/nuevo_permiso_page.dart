@@ -1,10 +1,7 @@
-import 'package:chips_choice/chips_choice.dart';
 import 'package:date_format/date_format.dart';
-import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:ghmobile/src/controllers/permiso_controller.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 
 class NuevoPermisoPage extends StatefulWidget {
   NuevoPermisoPage({Key? key}) {}
@@ -30,19 +27,19 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'Solicitud de Permiso',
-              style: TextStyle(color: Theme.of(context).hintColor),
+        appBar: AppBar(
+          title: Text(
+            'Solicitud de Permiso',
+            style: TextStyle(color: Theme.of(context).hintColor),
+          ),
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Theme.of(context).hintColor,
             ),
-            leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Theme.of(context).hintColor,
-              ),
-              onPressed: () => Navigator.pop(context, false),
-            ),
-            actions: [
+            onPressed: () => Navigator.pop(context, false),
+          ),
+          actions: [
 //             IconButton(
 //               icon: Icon(
 //                 Icons.save_outlined,
@@ -52,156 +49,16 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
 // //                 _con.checkMock();
 //               },
 //             )
-            ],
-            automaticallyImplyLeading: false,
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-          ),
-          body: Form(
-            key: _con.permisoFormKey,
-            child: ListView(
-              children: [
-                ChipsChoice.single(value: value, onChanged: onChanged, choiceItems: choiceItems)
-                SizedBox(),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 25,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: Theme.of(context).accentColor)),
-                  margin: EdgeInsets.all(10),
-                  child: Center(
-                    child: Text('Información de Salida',
-                        style: Theme.of(context).textTheme.subtitle2),
-                  ),
-                ),
-                SizedBox(),
-                TextField(
-                  controller: _con.dateInputSalida,
-                  decoration: InputDecoration(
-                      icon: Icon(Icons.calendar_today),
-                      labelText: "Ingrese la Fecha de Salida"),
-                  readOnly: true,
-                  onTap: () async {
-                    DateTime? salidaDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate:
-                          new DateTime.now().subtract(new Duration(days: 0)),
-                      lastDate: new DateTime.now().add(new Duration(days: 30)),
-                    );
-
-                    if (salidaDate != null) {
-                      print(salidaDate);
-                      String fechaSalida =
-                          formatDate(salidaDate, [yyyy, '-', mm, '-', dd]);
-                      setState(() {
-                        _con.dateInputSalida.text = fechaSalida;
-                      });
-                    } else {
-                      print("Fecha de Salida no fue seleccionado");
-                    }
-                  },
-                ),
-                TextFormField(
-                  controller: _con.timeInputSalida,
-                  decoration: InputDecoration(
-                      icon: Icon(Icons.timelapse),
-                      labelText: "Ingrese la Hora de Salida"),
-                  readOnly: true,
-                  onTap: () async {
-                    TimeOfDay time = TimeOfDay.now();
-                    FocusScope.of(context).requestFocus(new FocusNode());
-
-                    TimeOfDay? pickedTimeSalida = await showTimePicker(
-                        context: context, initialTime: time);
-                    if (pickedTimeSalida != null && pickedTimeSalida != time) {
-                      _con.timeInputSalida.text = pickedTimeSalida.toString();
-                      setState(() {
-                        time = pickedTimeSalida;
-                      });
-                    }
-                  },
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'El campo esta vacio';
-                    }
-                    return null;
-                  },
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 25,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: Theme.of(context).accentColor)),
-                  margin: EdgeInsets.all(10),
-                  child: Center(
-                    child: Text('Información de Retorno',
-                        style: Theme.of(context).textTheme.subtitle2),
-                  ),
-                ),
-                SizedBox(),
-                TextField(
-                  controller: _con.dateInputRetorno,
-                  decoration: InputDecoration(
-                      icon: Icon(Icons.calendar_today),
-                      labelText: "Ingrese la Fecha de Retorno"),
-                  readOnly: true,
-                  onTap: () async {
-                    DateTime? salidaDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate:
-                          new DateTime.now().subtract(new Duration(days: 0)),
-                      lastDate: new DateTime.now().add(new Duration(days: 30)),
-                    );
-
-                    if (salidaDate != null) {
-                      print(salidaDate);
-                      String fechaSalida =
-                          formatDate(salidaDate, [yyyy, '-', mm, '-', dd]);
-                      setState(() {
-                        _con.dateInputRetorno.text = fechaSalida;
-                      });
-                    } else {
-                      print("Fecha de Retorno no fue seleccionado");
-                    }
-                  },
-                ),
-                TextFormField(
-                  controller: _con.timeInputRetorno,
-                  decoration: InputDecoration(
-                      icon: Icon(Icons.timelapse),
-                      labelText: "Ingrese la Hora de Retorno"),
-                  readOnly: true,
-                  onTap: () async {
-                    TimeOfDay time = TimeOfDay.now();
-                    FocusScope.of(context).requestFocus(new FocusNode());
-
-                    TimeOfDay? pickedTimeSalida = await showTimePicker(
-                        context: context, initialTime: time);
-                    if (pickedTimeSalida != null && pickedTimeSalida != time) {
-                      _con.timeInputRetorno.text = pickedTimeSalida.toString();
-                      setState(() {
-                        time = pickedTimeSalida;
-                      });
-                    }
-                  },
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'El campo esta vacio';
-                    }
-                    return null;
-                  },
-                )
-              ],
-            ),
-          )
-          /*
-        body: Container(
+          ],
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+        body: Form(
+          key: _con.permisoFormKey,
           child: ListView(
-            children: <Widget>[
+            padding: EdgeInsets.all(10),
+            children: [
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 25,
@@ -210,57 +67,107 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
                     border: Border.all(color: Theme.of(context).accentColor)),
                 margin: EdgeInsets.all(10),
                 child: Center(
-                  child: Text('Fecha de Salida',
+                  child: Text('Información de Salida',
                       style: Theme.of(context).textTheme.subtitle2),
                 ),
               ),
               SizedBox(),
-              DatePicker(
-                DateTime.now(),
-                width: 60,
-                height: 90,
-                initialSelectedDate: DateTime.now(),
-                selectionColor: Theme.of(context).primaryColor,
-                selectedTextColor: Colors.white,
-                // dateTextStyle: TextStyle(fontSize: 20),
-                // monthTextStyle: TextStyle(fontSize: 10),
-                // dayTextStyle: TextStyle(fontSize: 10),
-                locale: 'es-ES',
-                onDateChange: (date) {
-                  // New date selected
-                  setState(() {
-                    // _selectedValue = date;
-                  });
+              Container(
+                padding: EdgeInsets.only(right: 20),
+                child: DropdownButton<String>(
+                  isExpanded: true,
+                  value: _con.valor_motivo,
+                  icon: Icon(Icons.arrow_downward),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _con.valor_motivo = newValue!;
+                    });
+                  },
+                  items: <String>[
+                    'Seleccione un Motivo de Permiso',
+                    'Sin goce de haberes',
+                    'Natalidad',
+                    'Muerte de familiar',
+                    'Baja médica',
+                    'Cita médica',
+                    'Comisión',
+                    'Compensación',
+                    'Matrimonio',
+                    'Otros'
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ),
+              SizedBox(),
+              TextField(
+                controller: _con.dateInputSalida,
+                decoration: InputDecoration(
+                    icon: Icon(Icons.calendar_today),
+                    labelText: "Ingrese la Fecha de Salida"),
+                readOnly: true,
+                onTap: () async {
+                  DateTime? salidaDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate:
+                        new DateTime.now().subtract(new Duration(days: 0)),
+                    lastDate: new DateTime.now().add(new Duration(days: 30)),
+                  );
+
+                  if (salidaDate != null) {
+                    print(salidaDate);
+                    String fechaSalida =
+                        formatDate(salidaDate, [yyyy, '-', mm, '-', dd]);
+                    setState(() {
+                      _con.dateInputSalida.text = fechaSalida;
+                    });
+                  } else {
+                    print("Fecha de Salida no fue seleccionado");
+                  }
                 },
               ),
-              SizedBox(),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 25,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Theme.of(context).accentColor)),
-                margin: EdgeInsets.all(10),
-                child: Center(
-                  child: Text('Hora de Salida',
-                      style: Theme.of(context).textTheme.subtitle2),
-                ),
-              ),
-              SizedBox(),
-              TimePickerSpinner(
-                is24HourMode: false,
-                normalTextStyle: TextStyle(fontSize: 20, color: Colors.black),
-                highlightedTextStyle:
-                    TextStyle(fontSize: 20, color: Colors.blue),
-                spacing: 50,
-                itemHeight: 30,
-                isForce2Digits: true,
-                onTimeChange: (time) {
-                  setState(() {
-                    // _dateTime = time;
-                  });
+              TextFormField(
+                controller: _con.timeInputSalida,
+                decoration: InputDecoration(
+                    icon: Icon(Icons.timelapse),
+                    labelText: "Ingrese la Hora de Salida"),
+                readOnly: true,
+                onTap: () async {
+                  TimeOfDay time = TimeOfDay.now();
+                  FocusScope.of(context).requestFocus(new FocusNode());
+
+                  TimeOfDay? pickedTimeSalida =
+                      await showTimePicker(context: context, initialTime: time);
+                  if (pickedTimeSalida != null && pickedTimeSalida != time) {
+                    _con.timeInputSalida.text = pickedTimeSalida.toString();
+                    setState(() {
+                      time = pickedTimeSalida;
+                    });
+                  }
+                },
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'El campo esta vacio';
+                  }
+                  return null;
                 },
               ),
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                keyboardType: TextInputType.multiline,
+                maxLines: 2,
+                maxLength: 500,
+                decoration: InputDecoration(
+                    icon: Icon(Icons.sd_card_alert_outlined),
+                    border: OutlineInputBorder(),
+                    hintText: 'Ingrese sus Observaciones'),
+              ),
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 25,
@@ -269,76 +176,73 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
                     border: Border.all(color: Theme.of(context).accentColor)),
                 margin: EdgeInsets.all(10),
                 child: Center(
-                  child: Text('Fecha de Retorno',
+                  child: Text('Información de Retorno',
                       style: Theme.of(context).textTheme.subtitle2),
                 ),
               ),
               SizedBox(),
-              DatePicker(
-                DateTime.now(),
-                width: 60,
-                height: 90,
-                initialSelectedDate: DateTime.now(),
-                selectionColor: Theme.of(context).primaryColor,
-                selectedTextColor: Colors.white,
-                // dateTextStyle: TextStyle(fontSize: 20),
-                // monthTextStyle: TextStyle(fontSize: 10),
-                // dayTextStyle: TextStyle(fontSize: 10),
-                locale: 'es-ES',
-                onDateChange: (date) {
-                  // New date selected
-                  setState(() {
-                    // _selectedValue = date;
-                  });
+              TextField(
+                controller: _con.dateInputRetorno,
+                decoration: InputDecoration(
+                    icon: Icon(Icons.calendar_today),
+                    labelText: "Ingrese la Fecha de Retorno"),
+                readOnly: true,
+                onTap: () async {
+                  DateTime? salidaDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate:
+                        new DateTime.now().subtract(new Duration(days: 0)),
+                    lastDate: new DateTime.now().add(new Duration(days: 30)),
+                  );
+
+                  if (salidaDate != null) {
+                    print(salidaDate);
+                    String fechaSalida =
+                        formatDate(salidaDate, [yyyy, '-', mm, '-', dd]);
+                    setState(() {
+                      _con.dateInputRetorno.text = fechaSalida;
+                    });
+                  } else {
+                    print("Fecha de Retorno no fue seleccionado");
+                  }
                 },
               ),
-              SizedBox(),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 25,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Theme.of(context).accentColor)),
-                margin: EdgeInsets.all(10),
-                child: Center(
-                  child: Text('Hora de Retorno',
-                      style: Theme.of(context).textTheme.subtitle2),
-                ),
-              ),
-              SizedBox(),
-              TimePickerSpinner(
-                is24HourMode: false,
-                normalTextStyle: TextStyle(fontSize: 20, color: Colors.black),
-                highlightedTextStyle:
-                    TextStyle(fontSize: 20, color: Colors.blue),
-                spacing: 50,
-                itemHeight: 30,
-                isForce2Digits: true,
-                onTimeChange: (time) {
-                  setState(() {
-                    // _dateTime = time;
-                  });
+              TextFormField(
+                controller: _con.timeInputRetorno,
+                decoration: InputDecoration(
+                    icon: Icon(Icons.timelapse),
+                    labelText: "Ingrese la Hora de Retorno"),
+                readOnly: true,
+                onTap: () async {
+                  TimeOfDay time = TimeOfDay.now();
+                  FocusScope.of(context).requestFocus(new FocusNode());
+
+                  TimeOfDay? pickedTimeSalida =
+                      await showTimePicker(context: context, initialTime: time);
+                  if (pickedTimeSalida != null && pickedTimeSalida != time) {
+                    _con.timeInputRetorno.text = pickedTimeSalida.toString();
+                    setState(() {
+                      time = pickedTimeSalida;
+                    });
+                  }
                 },
-              ),
-              SizedBox(),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 25,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Theme.of(context).accentColor)),
-                margin: EdgeInsets.all(10),
-                child: Center(
-                  child: Text('Motivo del Permiso',
-                      style: Theme.of(context).textTheme.subtitle2),
-                ),
-              ),
-              SizedBox(),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'El campo esta vacio';
+                  }
+                  return null;
+                },
+              )
             ],
           ),
         ),
-        */
-          ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {},
+          label: Text('Guardar Permiso'),
+        ),
+      ),
     );
   }
 }

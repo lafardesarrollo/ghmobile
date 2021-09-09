@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:ghmobile/src/models/boleta_permiso.dart';
 import 'package:ghmobile/src/pages/detalle_permiso_page.dart';
@@ -8,13 +6,13 @@ import 'package:ghmobile/src/repository/permiso_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 class PermisoController extends ControllerMVC {
+  bool loading = false;
+
   TextEditingController dateInputSalida = TextEditingController();
   TextEditingController dateInputRetorno = TextEditingController();
 
   TextEditingController timeInputSalida = TextEditingController();
   TextEditingController timeInputRetorno = TextEditingController();
-
-  List<String> motivos = ['Motivo 1', 'Motivo 2', 'Motivo '];
 
   int index = 0;
 
@@ -26,6 +24,7 @@ class PermisoController extends ControllerMVC {
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   GlobalKey<FormState> permisoFormKey = new GlobalKey<FormState>();
 
+  String valor_motivo = "Seleccione un Motivo de Permiso";
   PermisoController() {
     // loader = Helper.overlayLoader(context);
   }
@@ -54,7 +53,7 @@ class PermisoController extends ControllerMVC {
   //   });
   // }
 
-  void listarBoletas(int idEmpleado) async {
+  void listarBoletas(BuildContext context, int idEmpleado) async {
     final Stream<List<BoletaPermiso>> stream =
         await obtenerPermisosPorEmpleado(idEmpleado);
     stream.listen((List<BoletaPermiso> _lpermisos) {
@@ -67,7 +66,9 @@ class PermisoController extends ControllerMVC {
       scaffoldKey.currentState?.showSnackBar(SnackBar(
         content: Text('Ocurrio un error al obtener la información'),
       ));
-    }, onDone: () {});
+    }, onDone: () {
+      loading = false;
+    });
   }
 
   Future<void> abrirNuevoSolicitudPermiso(BuildContext context) async {
