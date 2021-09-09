@@ -37,6 +37,7 @@ dependencies:
   date_picker_timeline: ^1.2.3
   date_format: ^2.0.4
   flutter_time_picker_spinner: ^2.0.0
+  chips_choice: ^2.0.1
 
 dev_dependencies:
   flutter_test:

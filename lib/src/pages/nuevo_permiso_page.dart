@@ -1,3 +1,4 @@
+import 'package:chips_choice/chips_choice.dart';
 import 'package:date_format/date_format.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
@@ -60,6 +61,8 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
             key: _con.permisoFormKey,
             child: ListView(
               children: [
+                ChipsChoice.single(value: value, onChanged: onChanged, choiceItems: choiceItems)
+                SizedBox(),
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: 25,

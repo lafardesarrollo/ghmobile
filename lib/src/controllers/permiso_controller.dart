@@ -14,6 +14,8 @@ class PermisoController extends ControllerMVC {
   TextEditingController timeInputSalida = TextEditingController();
   TextEditingController timeInputRetorno = TextEditingController();
 
+  List<String> motivos = ['Motivo 1', 'Motivo 2', 'Motivo '];
+
   int index = 0;
 
   List<BoletaPermiso> boletas = [];
