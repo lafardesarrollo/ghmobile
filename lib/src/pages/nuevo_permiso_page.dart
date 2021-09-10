@@ -81,6 +81,7 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
                   onChanged: (String? newValue) {
                     setState(() {
                       _con.valor_motivo = newValue!;
+                      _con.boleta.cuentaSalida = newValue;
                     });
                   },
                   items: <String>[
@@ -146,6 +147,7 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
                     _con.timeInputSalida.text = pickedTimeSalida.toString();
                     setState(() {
                       time = pickedTimeSalida;
+                      _con.boleta.horaSalida = pickedTimeSalida.toString();
                     });
                   }
                 },
@@ -160,6 +162,7 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
                 height: 10,
               ),
               TextFormField(
+                controller: _con.txtObservaciones,
                 keyboardType: TextInputType.multiline,
                 maxLines: 2,
                 maxLength: 500,
@@ -197,7 +200,6 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
                   );
 
                   if (salidaDate != null) {
-                    print(salidaDate);
                     String fechaSalida =
                         formatDate(salidaDate, [yyyy, '-', mm, '-', dd]);
                     setState(() {
@@ -216,6 +218,7 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
                 readOnly: true,
                 onTap: () async {
                   TimeOfDay time = TimeOfDay.now();
+                  _con.boleta.horaRetorno = time.format(context);
                   FocusScope.of(context).requestFocus(new FocusNode());
 
                   TimeOfDay? pickedTimeSalida =
@@ -224,6 +227,7 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
                     _con.timeInputRetorno.text = pickedTimeSalida.toString();
                     setState(() {
                       time = pickedTimeSalida;
+                      _con.boleta.horaRetorno = pickedTimeSalida.toString();
                     });
                   }
                 },
@@ -239,7 +243,9 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {},
+          onPressed: () {
+            _con.guardarBoletaPermiso(context);
+          },
           label: Text('Guardar Permiso'),
         ),
       ),

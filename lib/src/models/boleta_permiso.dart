@@ -56,14 +56,14 @@ class BoletaPermiso {
   int? idBoleta;
   String? concepto;
   int? userid;
-  DateTime? fechaRegistro;
+  String? fechaRegistro;
   String? horaRegistro;
-  DateTime? fechaSalida;
+  String? fechaSalida;
   String? horaSalida;
   double? diaEntero;
-  DateTime? fechaRetorno;
+  String? fechaRetorno;
   String? horaRetorno;
-  DateTime? fechaEfectivaRetorno;
+  String? fechaEfectivaRetorno;
   String? horaEfectivaRetorno;
   double? mitadJornada;
   String? motivos;
@@ -71,25 +71,25 @@ class BoletaPermiso {
   int? idSuperior;
   String? autorizador;
   int? estadoPermiso;
-  DateTime? fechaAccionSuperior;
+  String? fechaAccionSuperior;
   String? horaAccionSuperior;
   String? motivoRechazo;
   String? detalleCompensacion;
-  DateTime? fechaEfectivaSalida;
+  String? fechaEfectivaSalida;
   String? horaEfectivaSalida;
 
   factory BoletaPermiso.fromJson(Map<String, dynamic> json) => BoletaPermiso(
         idBoleta: json["id_boleta"],
         concepto: json["concepto"],
         userid: json["userid"],
-        fechaRegistro: DateTime.parse(json["fecha_registro"]),
+        fechaRegistro: json["fecha_registro"],
         horaRegistro: json["hora_registro"],
-        fechaSalida: DateTime.parse(json["fecha_salida"]),
+        fechaSalida: json["fecha_salida"],
         horaSalida: json["hora_salida"],
         diaEntero: json["dia_entero"].toDouble(),
-        fechaRetorno: DateTime.parse(json["fecha_retorno"]),
+        fechaRetorno: json["fecha_retorno"],
         horaRetorno: json["hora_retorno"],
-        fechaEfectivaRetorno: DateTime.parse(json["fecha_efectiva_retorno"]),
+        fechaEfectivaRetorno: json["fecha_efectiva_retorno"],
         horaEfectivaRetorno: json["hora_efectiva_retorno"],
         mitadJornada: json["mitad_jornada"].toDouble(),
         motivos: json["motivos"],
@@ -97,11 +97,11 @@ class BoletaPermiso {
         idSuperior: json["id_superior"],
         autorizador: json["autorizador"],
         estadoPermiso: json["estado_permiso"],
-        fechaAccionSuperior: DateTime.parse(json["fecha_accion_superior"]),
+        fechaAccionSuperior: json["fecha_accion_superior"],
         horaAccionSuperior: json["hora_accion_superior"],
         motivoRechazo: json["motivo_rechazo"],
         detalleCompensacion: json["detalle_compensacion"],
-        fechaEfectivaSalida: DateTime.parse(json["fecha_efectiva_salida"]),
+        fechaEfectivaSalida: json["fecha_efectiva_salida"],
         horaEfectivaSalida: json["hora_efectiva_salida"],
       );
 

@@ -79,8 +79,7 @@ class DetallePermisoPageState extends StateMVC<DetallePermisoPage> {
                             _con.boleta.cuentaSalida.toString()),
                         Text(
                           'Creada el: ' +
-                              formatDate(_con.boleta.fechaRegistro!,
-                                  [dd, '-', mm, '-', yyyy]) +
+                              _con.boleta.fechaRegistro! +
                               ' ' +
                               _con.boleta.horaRegistro!,
                           style: Theme.of(context).textTheme.subtitle1,
@@ -117,8 +116,7 @@ class DetallePermisoPageState extends StateMVC<DetallePermisoPage> {
                             style: Theme.of(context).textTheme.subtitle2,
                           ),
                           Text(
-                            formatDate(_con.boleta.fechaSalida!,
-                                    [dd, '-', mm, '-', yyyy]) +
+                            _con.boleta.fechaSalida! +
                                 ' ' +
                                 _con.boleta.horaSalida!,
                             style: Theme.of(context).textTheme.subtitle1,
@@ -133,8 +131,7 @@ class DetallePermisoPageState extends StateMVC<DetallePermisoPage> {
                             style: Theme.of(context).textTheme.subtitle2,
                           ),
                           Text(
-                            formatDate(_con.boleta.fechaRetorno!,
-                                    [dd, '-', mm, '-', yyyy]) +
+                            _con.boleta.fechaRetorno! +
                                 ' ' +
                                 _con.boleta.horaRetorno!,
                             style: Theme.of(context).textTheme.subtitle1,
@@ -205,8 +202,7 @@ class DetallePermisoPageState extends StateMVC<DetallePermisoPage> {
                             style: Theme.of(context).textTheme.subtitle2,
                           ),
                           Text(
-                            formatDate(_con.boleta.fechaAccionSuperior!,
-                                    [dd, '-', mm, '-', yyyy]) +
+                            _con.boleta.fechaAccionSuperior! +
                                 ' ' +
                                 _con.boleta.horaAccionSuperior!,
                             style: Theme.of(context).textTheme.subtitle1,
@@ -217,16 +213,14 @@ class DetallePermisoPageState extends StateMVC<DetallePermisoPage> {
                       Text('Fecha y Hora Efectiva de Salida',
                           style: Theme.of(context).textTheme.subtitle2),
                       Text(
-                          formatDate(_con.boleta.fechaEfectivaSalida!,
-                                  [dd, '-', mm, '-', yyyy]) +
+                          _con.boleta.fechaEfectivaSalida! +
                               ' ' +
                               _con.boleta.horaEfectivaSalida!,
                           style: Theme.of(context).textTheme.subtitle1),
                       Text('Fecha y Hora Efectiva de Retorno',
                           style: Theme.of(context).textTheme.subtitle2),
                       Text(
-                          formatDate(_con.boleta.fechaEfectivaRetorno!,
-                                  [dd, '-', mm, '-', yyyy]) +
+                          _con.boleta.fechaEfectivaRetorno! +
                               ' ' +
                               _con.boleta.horaEfectivaRetorno!,
                           style: Theme.of(context).textTheme.subtitle1),
