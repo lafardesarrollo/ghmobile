@@ -146,10 +146,10 @@ class PermisoPageState extends StateMVC<PermisoPage> {
                     title: Text(_con.boletas.elementAt(index).motivos!),
                     subtitle: Text(
                         'Salida: ' +
-                            _con.boletas.elementAt(index).fechaSalida! +
-                            // formatDate(
-                            //     _con.boletas.elementAt(index).fechaSalida!,
-                            //     [dd, '-', mm, '-', yyyy]) +
+                            formatDate(
+                                DateTime.parse(
+                                    _con.boletas.elementAt(index).fechaSalida!),
+                                [dd, '-', mm, '-', yyyy]) +
                             ' ' +
                             _con.boletas.elementAt(index).horaSalida!,
                         style: TextStyle(

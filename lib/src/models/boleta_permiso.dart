@@ -51,6 +51,8 @@ class BoletaPermiso {
     this.detalleCompensacion,
     this.fechaEfectivaSalida,
     this.horaEfectivaSalida,
+    this.latLngSalida,
+    this.latLngRetorno,
   });
 
   int? idBoleta;
@@ -77,6 +79,8 @@ class BoletaPermiso {
   String? detalleCompensacion;
   String? fechaEfectivaSalida;
   String? horaEfectivaSalida;
+  String? latLngSalida;
+  String? latLngRetorno;
 
   factory BoletaPermiso.fromJson(Map<String, dynamic> json) => BoletaPermiso(
         idBoleta: json["id_boleta"],
@@ -103,6 +107,8 @@ class BoletaPermiso {
         detalleCompensacion: json["detalle_compensacion"],
         fechaEfectivaSalida: json["fecha_efectiva_salida"],
         horaEfectivaSalida: json["hora_efectiva_salida"],
+        latLngSalida: json["lat_lng_salida"],
+        latLngRetorno: json["lat_lng_retorno"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -130,5 +136,7 @@ class BoletaPermiso {
         "detalle_compensacion": detalleCompensacion,
         "fecha_efectiva_salida": fechaEfectivaSalida,
         "hora_efectiva_salida": horaEfectivaSalida,
+        "lat_lng_salida": latLngSalida,
+        "lat_lng_retorno": latLngRetorno,
       };
 }

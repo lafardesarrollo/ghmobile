@@ -2,6 +2,7 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:ghmobile/src/controllers/permiso_controller.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:select_form_field/select_form_field.dart';
 
 class NuevoPermisoPage extends StatefulWidget {
   NuevoPermisoPage({Key? key}) {}
@@ -72,38 +73,47 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
                 ),
               ),
               SizedBox(),
-              Container(
-                padding: EdgeInsets.only(right: 20),
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  value: _con.valor_motivo,
-                  icon: Icon(Icons.arrow_downward),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _con.valor_motivo = newValue!;
-                      _con.boleta.cuentaSalida = newValue;
-                    });
-                  },
-                  items: <String>[
-                    'Seleccione un Motivo de Permiso',
-                    'Sin goce de haberes',
-                    'Natalidad',
-                    'Muerte de familiar',
-                    'Baja médica',
-                    'Cita médica',
-                    'Comisión',
-                    'Compensación',
-                    'Matrimonio',
-                    'Otros'
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
+              SelectFormField(
+                type: SelectFormFieldType.dropdown, // or can be dialog
+                initialValue: 'circle',
+                icon: Icon(Icons.style_sharp),
+                labelText: 'Seleccione un motivo de Permiso',
+                items: _con.items_motivos,
+                onChanged: (val) => _con.boleta.cuentaSalida = val,
               ),
               SizedBox(),
+              // Container(
+              //   padding: EdgeInsets.only(right: 20),
+              //   child: DropdownButton<String>(
+              //     isExpanded: true,
+              //     value: _con.valor_motivo,
+              //     icon: Icon(Icons.arrow_downward),
+              //     onChanged: (String? newValue) {
+              //       setState(() {
+              //         _con.valor_motivo = newValue!;
+              //         _con.boleta.cuentaSalida = newValue;
+              //       });
+              //     },
+              //     items: <String>[
+              //       'Seleccione un Motivo de Permiso',
+              //       'Sin goce de haberes',
+              //       'Natalidad',
+              //       'Muerte de familiar',
+              //       'Baja médica',
+              //       'Cita médica',
+              //       'Comisión',
+              //       'Compensación',
+              //       'Matrimonio',
+              //       'Otros'
+              //     ].map<DropdownMenuItem<String>>((String value) {
+              //       return DropdownMenuItem<String>(
+              //         value: value,
+              //         child: Text(value),
+              //       );
+              //     }).toList(),
+              //   ),
+              // ),
+              // SizedBox(),
               TextField(
                 controller: _con.dateInputSalida,
                 decoration: InputDecoration(
@@ -144,10 +154,12 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
                   TimeOfDay? pickedTimeSalida =
                       await showTimePicker(context: context, initialTime: time);
                   if (pickedTimeSalida != null && pickedTimeSalida != time) {
-                    _con.timeInputSalida.text = pickedTimeSalida.toString();
+                    _con.timeInputSalida.text =
+                        _con.formatTimeOfDay(pickedTimeSalida);
                     setState(() {
                       time = pickedTimeSalida;
-                      _con.boleta.horaSalida = pickedTimeSalida.toString();
+                      _con.boleta.horaSalida =
+                          _con.formatTimeOfDay(pickedTimeSalida);
                     });
                   }
                 },
@@ -224,10 +236,12 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
                   TimeOfDay? pickedTimeSalida =
                       await showTimePicker(context: context, initialTime: time);
                   if (pickedTimeSalida != null && pickedTimeSalida != time) {
-                    _con.timeInputRetorno.text = pickedTimeSalida.toString();
+                    _con.timeInputRetorno.text =
+                        _con.formatTimeOfDay(pickedTimeSalida);
                     setState(() {
                       time = pickedTimeSalida;
-                      _con.boleta.horaRetorno = pickedTimeSalida.toString();
+                      _con.boleta.horaRetorno =
+                          _con.formatTimeOfDay(pickedTimeSalida);
                     });
                   }
                 },
