@@ -72,7 +72,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('/Boletas');
+              Navigator.of(context).pushNamed('/Asistencia');
             },
             leading: Icon(
               Icons.fingerprint,
@@ -83,32 +83,45 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
               style: TextStyle(color: Theme.of(context).hintColor),
             ),
           ),
-          ListTile(
-            onTap: () {
-              Navigator.of(context).pushNamed('/Permiso');
-            },
-            leading: Icon(
-              Icons.paste_rounded,
-              color: Theme.of(context).accentColor,
-            ),
+          ExpansionTile(
             title: Text(
-              'Permisos',
+              'GLV',
               style: TextStyle(color: Theme.of(context).hintColor),
             ),
-          ),
-          ListTile(
-            onTap: () {
-              Navigator.of(context).pushNamed('/Vacacion');
-            },
             leading: Icon(
-              Icons.text_rotate_vertical_sharp,
+              Icons.access_time_sharp,
               color: Theme.of(context).accentColor,
             ),
-            title: Text(
-              'Vacaciones',
-              style: TextStyle(color: Theme.of(context).hintColor),
-            ),
+            children: [
+              ListTile(
+                onTap: () {
+                  Navigator.of(context).pushNamed('/Permiso');
+                },
+                leading: Icon(
+                  Icons.paste_rounded,
+                  color: Theme.of(context).accentColor,
+                ),
+                title: Text(
+                  'Permisos',
+                  style: TextStyle(color: Theme.of(context).hintColor),
+                ),
+              ),
+              ListTile(
+                onTap: () {
+                  Navigator.of(context).pushNamed('/Vacacion');
+                },
+                leading: Icon(
+                  Icons.text_rotate_vertical_sharp,
+                  color: Theme.of(context).accentColor,
+                ),
+                title: Text(
+                  'Vacaciones',
+                  style: TextStyle(color: Theme.of(context).hintColor),
+                ),
+              ),
+            ],
           ),
+
           // ListTile(
           //   onTap: () {
           //     Navigator.of(context).pushNamed('/MisAtenciones');

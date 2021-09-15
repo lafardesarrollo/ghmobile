@@ -5,14 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:ghmobile/src/helpers/helper.dart';
 import 'package:ghmobile/src/models/boleta_permiso.dart';
 import 'package:ghmobile/src/pages/detalle_permiso_page.dart';
+import 'package:ghmobile/src/pages/detalle_vacacion_page.dart';
+import 'package:ghmobile/src/pages/nueva_vacacion_page.dart';
 import 'package:ghmobile/src/pages/nuevo_permiso_page.dart';
 import 'package:ghmobile/src/repository/permiso_repository.dart';
 import 'package:ghmobile/src/repository/settings_repository.dart';
 import 'package:ghmobile/src/repository/user_repository.dart';
+import 'package:ghmobile/src/repository/vacaciones_repository.dart';
 import 'package:location/location.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-class PermisoController extends ControllerMVC {
+class VacacionController extends ControllerMVC {
   bool loading = false;
 
   double? latitud;
@@ -49,37 +52,13 @@ class PermisoController extends ControllerMVC {
     {'value': 'matrimonio', 'label': 'Matrimonio'},
     {'value': 'otros', 'label': 'Otros'}
   ];
-  PermisoController() {
+  VacacionController() {
     // loader = Helper.overlayLoader(context);
   }
 
-  // void obtenerBoletaPago({String? message}) async {
-  //   this.boleta = new BoletaPago();
-  //   final Stream<BoletaPago> stream =
-  //       await obtenerBoletaPagoPorEmpleado(this.requestBoleta);
-  //   stream.listen((BoletaPago _boleta) {
-  //     setState(() {
-  //       boleta = _boleta;
-  //       print(boleta.toJson());
-  //     });
-  //   }, onError: (a) {
-  //     print(a);
-  //     scaffoldKey.currentState?.showSnackBar(SnackBar(
-  //       content: Text('Ocurrio un error al obtener la información'),
-  //     ));
-  //   }, onDone: () {
-  //     if (message != null) {
-  //       scaffoldKey.currentState!.showSnackBar(SnackBar(
-  //         content: Text(message),
-  //         backgroundColor: Colors.green,
-  //       ));
-  //     }
-  //   });
-  // }
-
   void listarBoletas(BuildContext context, int idEmpleado) async {
     final Stream<List<BoletaPermiso>> stream =
-        await obtenerPermisosPorEmpleado(idEmpleado);
+        await obtenerPermisosVacacionesPorEmpleado(idEmpleado);
     stream.listen((List<BoletaPermiso> _lpermisos) {
       setState(() {
         boletas = _lpermisos;
@@ -122,7 +101,7 @@ class PermisoController extends ControllerMVC {
     final resultado = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => NuevoPermisoPage(
+        builder: (context) => NuevaVacacionPage(
             // seguimiento: _seguimiento,
             ),
       ),
@@ -139,7 +118,7 @@ class PermisoController extends ControllerMVC {
     final resultado = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => DetallePermisoPage(
+        builder: (context) => DetalleVacacionPage(
           boletaPermiso: boleta,
         ),
       ),
@@ -148,7 +127,7 @@ class PermisoController extends ControllerMVC {
     } else {}
   }
 
-  void guardarBoletaPermiso(BuildContext context) async {
+  void guardarVacaciones(BuildContext context) async {
     loader = Helper.overlayLoader(context);
     FocusScope.of(context).unfocus();
     Overlay.of(context)!.insert(loader);
@@ -156,17 +135,18 @@ class PermisoController extends ControllerMVC {
     boleta.idBoleta = 0;
     boleta.concepto = '';
 
+    boleta.cuentaSalida = '';
     boleta.fechaSalida = dateInputSalida.text;
     boleta.fechaRetorno = dateInputRetorno.text;
-    boleta.horaSalida = timeInputSalida.text;
-    boleta.horaRetorno = timeInputRetorno.text;
+    boleta.horaSalida = '';
+    boleta.horaRetorno = '';
 
     boleta.motivos = txtObservaciones.text;
 
     boleta.userid = int.parse(currentUser.value.idSap!);
     boleta.fechaRegistro = '0001-01-01';
     boleta.horaRegistro = '';
-    boleta.diaEntero = 0.0;
+    // boleta.diaEntero = 0.0;
     boleta.fechaEfectivaRetorno = '0001-01-01';
     boleta.horaEfectivaRetorno = '';
     boleta.mitadJornada = 0.0;
@@ -184,7 +164,7 @@ class PermisoController extends ControllerMVC {
 
     // print(this.boleta.toJson());
 
-    final Stream<bool> stream = await saveBoletaPermiso(this.boleta);
+    final Stream<bool> stream = await saveBoletaVacacion(this.boleta);
     stream.listen((bool result) {
       if (result) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(

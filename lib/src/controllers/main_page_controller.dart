@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:ghmobile/src/models/cumpleaneros.dart';
 import 'package:ghmobile/src/models/response_saldo_vacaciones.dart';
+import 'package:ghmobile/src/pages/cumpleaneros_page.dart';
+import 'package:ghmobile/src/repository/home_repository.dart';
 import 'package:ghmobile/src/repository/settings_repository.dart';
-import 'package:ghmobile/src/repository/user_repository.dart';
 import 'package:ghmobile/src/repository/vacaciones_repository.dart';
-import 'package:global_configuration/global_configuration.dart';
 import 'package:location/location.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 class MainPageController extends ControllerMVC {
   late OverlayEntry loader;
+
+  List<Cumpleaneros> cumpleaneros = [];
 
   String dropdownValue = 'Hoy';
 
@@ -58,6 +61,33 @@ class MainPageController extends ControllerMVC {
     });
   }
 
+  void obtenerCumpleanerosMes(BuildContext context) async {
+    final Stream<List<Cumpleaneros>> stream = await obtieneCumpleanerosDelMes();
+    stream.listen((List<Cumpleaneros> _cumpleaneros) {
+      setState(() {
+        cumpleaneros = _cumpleaneros;
+        print(cumpleaneros);
+      });
+    }, onError: (a) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Ocurrio un error al obtener los cumpleañeros!'),
+          backgroundColor: Colors.blue,
+        ),
+      );
+    }, onDone: () {});
+  }
+
+  Future<void> abrirCumpleaneros(BuildContext context) async {
+    final resultado = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CumpleanerosPage(),
+      ),
+    );
+    if (resultado) {
+    } else {}
+  }
   // void listenSeguimientoUsuario({String message}) async {
   //   final Stream<List<Seguimiento>> stream = await getSeguimientoPorUsuario();
   //   stream.listen((List<Seguimiento> _lseguimiento) {
