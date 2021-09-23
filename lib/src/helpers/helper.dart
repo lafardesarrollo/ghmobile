@@ -23,29 +23,29 @@ class Helper {
   }
 
   static Uri getUri(String path) {
-    String _path = Uri.parse(GlobalConfiguration().getString('base_url')).path;
+    String _path = Uri.parse(GlobalConfiguration().getValue('base_url')).path;
     if (!_path.endsWith('/')) {
       _path += '/';
     }
     Uri uri = Uri(
-        scheme: Uri.parse(GlobalConfiguration().getString('base_url')).scheme,
-        host: Uri.parse(GlobalConfiguration().getString('base_url')).host,
-        port: Uri.parse(GlobalConfiguration().getString('base_url')).port,
+        scheme: Uri.parse(GlobalConfiguration().getValue('base_url')).scheme,
+        host: Uri.parse(GlobalConfiguration().getValue('base_url')).host,
+        port: Uri.parse(GlobalConfiguration().getValue('base_url')).port,
         path: _path + path);
     return uri;
   }
 
   static Uri getUriLfr(String path) {
     String _path =
-        Uri.parse(GlobalConfiguration().getString('base_url_lfr')).path;
+        Uri.parse(GlobalConfiguration().getValue('base_url_lfr')).path;
     if (!_path.endsWith('/')) {
       _path += '/';
     }
     Uri uri = Uri(
         scheme:
-            Uri.parse(GlobalConfiguration().getString('base_url_lfr')).scheme,
-        host: Uri.parse(GlobalConfiguration().getString('base_url_lfr')).host,
-        port: Uri.parse(GlobalConfiguration().getString('base_url_lfr')).port,
+            Uri.parse(GlobalConfiguration().getValue('base_url_lfr')).scheme,
+        host: Uri.parse(GlobalConfiguration().getValue('base_url_lfr')).host,
+        port: Uri.parse(GlobalConfiguration().getValue('base_url_lfr')).port,
         path: _path + path);
     return uri;
   }
@@ -53,17 +53,17 @@ class Helper {
   // Uri para API de CARWASH
   static Uri getUriWash(String path) {
     String _path =
-        Uri.parse(GlobalConfiguration().getString('api_base_url_wash')).path;
+        Uri.parse(GlobalConfiguration().getValue('api_base_url_wash')).path;
     if (!_path.endsWith('/')) {
       _path += '/';
     }
     Uri uri = Uri(
-        scheme: Uri.parse(GlobalConfiguration().getString('api_base_url_wash'))
+        scheme: Uri.parse(GlobalConfiguration().getValue('api_base_url_wash'))
             .scheme,
-        host: Uri.parse(GlobalConfiguration().getString('api_base_url_wash'))
-            .host,
-        port: Uri.parse(GlobalConfiguration().getString('api_base_url_wash'))
-            .port,
+        host:
+            Uri.parse(GlobalConfiguration().getValue('api_base_url_wash')).host,
+        port:
+            Uri.parse(GlobalConfiguration().getValue('api_base_url_wash')).port,
         path: _path + path);
     return uri;
   }

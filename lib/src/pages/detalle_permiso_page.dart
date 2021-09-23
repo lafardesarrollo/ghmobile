@@ -247,7 +247,7 @@ class DetallePermisoPageState extends StateMVC<DetallePermisoPage> {
                                   onPressed: () => _con.registrarSalidaEfectiva(
                                       context, widget.boletaPermiso!),
                                   icon: Icon(Icons.fingerprint),
-                                  label: Text('Registrar Salida'))
+                                  label: Text('Registrar Salida Efectiva'))
                               : Text(
                                   formatDate(
                                           DateTime.parse(
@@ -262,6 +262,7 @@ class DetallePermisoPageState extends StateMVC<DetallePermisoPage> {
                                   '0001-01-01T00:00:00'
                               ? ElevatedButton.icon(
                                   style: ElevatedButton.styleFrom(
+                                    primary: Theme.of(context).accentColor,
                                     fixedSize:
                                         Size(App(context).appWidth(100), 40),
                                   ),

@@ -56,7 +56,7 @@ Future<Stream<ResponseSaldoVacaciones>> obtenerSaldoVacacionesPorEmpleado(
   // Uri uri = Helper.getUriLfr('api/producto');
   // String idcli = currentUser.value.uid; /*cambiar por id del cliente*/
   final String url =
-      '${GlobalConfiguration().getString('api_base_url_apicore')}personavacacion/' +
+      '${GlobalConfiguration().getValue('api_base_url_apicore')}personavacacion/' +
           idEmpleado.toString();
 
   final client = new http.Client();
