@@ -1,8 +1,9 @@
-import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ghmobile/src/controllers/main_page_controller.dart';
 import 'package:ghmobile/src/repository/user_repository.dart';
+import 'package:ghmobile/src/widgets/CabeceraItemsCaruselWidget.dart';
+import 'package:ghmobile/src/widgets/CaruselCumpleanerosWidget.dart';
 import 'package:ghmobile/src/widgets/DrawerWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -28,6 +29,7 @@ class _MainPageState extends StateMVC<MainPage>
   @override
   void initState() {
     _con.getLocalization();
+    _con.obtenerPublicacionesIntranet(context);
     _con.obtenerCumpleanerosMes(context);
     _con.obtenerSaldoVacaciones(int.parse(currentUser.value.idSap!));
     animationController =
@@ -111,19 +113,6 @@ class _MainPageState extends StateMVC<MainPage>
               style: Theme.of(context).textTheme.bodyText1,
             )),
         drawer: DrawerWidget(),
-        // drawer: Theme(
-        //   data: Theme.of(context)
-        //       .copyWith(canvasColor: Colors.transparent.withOpacity(0.5)),
-        //   child: DrawerWidget(),
-        // ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {
-        //     // _con.abrirAgregarNuevo();
-        //   },
-        //   backgroundColor: Theme.of(context).primaryColor,
-        //   child: FaIcon(FontAwesomeIcons.calendarPlus),
-        // ),
-
         body: Container(
           child: ListView(
             children: [
@@ -223,6 +212,14 @@ class _MainPageState extends StateMVC<MainPage>
                   ),
                 ),
               ),
+              CabeceraItemsCaruselWidget(
+                icono: FaIcon(FontAwesomeIcons.birthdayCake,
+                    color: Theme.of(context).accentColor),
+                titulo: 'Cumpleañeros del Mes',
+              ),
+              CaruselCumpleanerosWidget(
+                cumpleaneros: _con.cumpleaneros,
+              )
             ],
           ),
         ),

@@ -22,6 +22,13 @@ class Helper {
     return data['data'] ?? new Map<String, dynamic>();
   }
 
+  static String getUrlImagenes(String path) {
+    String url =
+        GlobalConfiguration().getValue('base_url_imagenes_usuarios') + path;
+
+    return url;
+  }
+
   static Uri getUri(String path) {
     String _path = Uri.parse(GlobalConfiguration().getValue('base_url')).path;
     if (!_path.endsWith('/')) {

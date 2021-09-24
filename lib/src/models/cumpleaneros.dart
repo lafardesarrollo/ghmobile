@@ -27,6 +27,10 @@ class Cumpleaneros {
   Cumpleaneros({
     this.id,
     this.idSap,
+    this.primerNombre,
+    this.segundoNombre,
+    this.apellidoPaterno,
+    this.apellidoMaterno,
     this.nombreCompleto,
     this.fechaNacimiento,
     this.cargo,
@@ -37,6 +41,10 @@ class Cumpleaneros {
 
   int? id;
   int? idSap;
+  String? primerNombre;
+  String? segundoNombre;
+  String? apellidoPaterno;
+  String? apellidoMaterno;
   String? nombreCompleto;
   DateTime? fechaNacimiento;
   String? cargo;
@@ -47,6 +55,10 @@ class Cumpleaneros {
   factory Cumpleaneros.fromJson(Map<String, dynamic> json) => Cumpleaneros(
         id: json["id"],
         idSap: json["idSap"],
+        primerNombre: json["primerNombre"],
+        segundoNombre: json["segundoNombre"],
+        apellidoPaterno: json["apellidoPaterno"],
+        apellidoMaterno: json["apellidoMaterno"],
         nombreCompleto: json["nombreCompleto"],
         fechaNacimiento: DateTime.parse(json["fechaNacimiento"]),
         cargo: json["cargo"],
@@ -58,6 +70,10 @@ class Cumpleaneros {
   Map<String, dynamic> toJson() => {
         "id": id,
         "idSap": idSap,
+        "primerNombre": primerNombre,
+        "segundoNombre": segundoNombre,
+        "apellidoPaterno": apellidoPaterno,
+        "apellidoMaterno": apellidoMaterno,
         "nombreCompleto": nombreCompleto,
         "fechaNacimiento": fechaNacimiento, // .toIso8601String(),
         "cargo": cargo,

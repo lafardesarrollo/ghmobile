@@ -2,5 +2,6 @@
   "api_base_url_newapilafarnet":"http://190.104.26.90/newApiLafarnet/public/",
   "api_base_url_ghapi":"http://190.104.26.91/ghapi/api/",
   "api_base_url_apicore":"http://190.104.26.90:8082/lafarnetserviceu/api/",
-  "api_base_url_lfr":"http://190.104.26.90/newApiLafarnet/public/"
+  "api_base_url_lfr":"http://190.104.26.90/newApiLafarnet/public/",
+  "base_url_imagenes_usuarios":"http://intranet.lafar.net/newApiLafarnet/assets/imagenes_users/"
 }
