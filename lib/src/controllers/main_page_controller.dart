@@ -3,6 +3,7 @@ import 'package:ghmobile/src/models/cumpleaneros.dart';
 import 'package:ghmobile/src/models/publicacion.dart';
 import 'package:ghmobile/src/models/response_saldo_vacaciones.dart';
 import 'package:ghmobile/src/pages/cumpleaneros_page.dart';
+import 'package:ghmobile/src/pages/nueva_asistencia_page.dart';
 import 'package:ghmobile/src/repository/home_repository.dart';
 import 'package:ghmobile/src/repository/publicacion_repository.dart';
 import 'package:ghmobile/src/repository/settings_repository.dart';
@@ -11,6 +12,7 @@ import 'package:location/location.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 class MainPageController extends ControllerMVC {
+  double saldoDias = 0;
   late OverlayEntry loader;
 
   List<Cumpleaneros> cumpleaneros = [];
@@ -47,7 +49,8 @@ class MainPageController extends ControllerMVC {
     stream.listen((ResponseSaldoVacaciones _saldo) {
       setState(() {
         this.saldoVacaciones = _saldo;
-        print(saldoVacaciones.toJson());
+        this.saldoDias =
+            this.saldoVacaciones.numdias! - this.saldoVacaciones.diasUsados!;
       });
     }, onError: (a) {
       print(a);
@@ -107,6 +110,22 @@ class MainPageController extends ControllerMVC {
     if (resultado) {
     } else {}
   }
+
+  Future<void> abrirNuevoMarcaje(BuildContext context) async {
+    final resultado = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => NuevaAsistenciaPage(
+            // seguimiento: _seguimiento,
+            ),
+      ),
+    );
+    if (resultado) {
+    } else {
+      //listarBoletas(context, int.parse(currentUser.value.idSap!));
+    }
+  }
+
   // void listenSeguimientoUsuario({String message}) async {
   //   final Stream<List<Seguimiento>> stream = await getSeguimientoPorUsuario();
   //   stream.listen((List<Seguimiento> _lseguimiento) {

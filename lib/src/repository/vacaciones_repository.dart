@@ -61,12 +61,14 @@ Future<Stream<ResponseSaldoVacaciones>> obtenerSaldoVacacionesPorEmpleado(
 
   final client = new http.Client();
   final response = await client.get(
-    Uri.parse(url + idEmpleado.toString()),
+    Uri.parse(url),
   );
   try {
     if (response.statusCode == 200) {
-      final saldo = json.decode(response.body);
-      final resp_saldo = saldo['body'];
+      final saldo = ResponseSaldoVacaciones.fromJson(
+          json.decode(response.body)['body'][0]);
+
+      // final resp_saldo = saldo['body'];
       // final lreserva =  LReserva.fromJsonList(json.decode(response.body)['body']);
       return new Stream.value(saldo);
     } else {

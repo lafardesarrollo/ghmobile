@@ -11,49 +11,50 @@ String responseSaldoVacacionesToJson(ResponseSaldoVacaciones data) =>
     json.encode(data.toJson());
 
 class ResponseSaldoVacaciones {
-  ResponseSaldoVacaciones({
-    this.empid,
-    this.empleado,
-    this.cargo,
-    this.fechaIngreso,
-    this.fecha,
-    this.numdias,
-    this.ant,
-    this.saldo,
-    this.saldoTotal,
-    this.duodecima,
-    this.oficina,
-    this.area,
-  });
+  ResponseSaldoVacaciones(
+      {this.empid,
+      this.empleado,
+      this.cargo,
+      this.fechaIngreso,
+      this.fecha,
+      this.numdias,
+      this.ant,
+      this.saldo,
+      this.saldoTotal,
+      this.duodecima,
+      this.oficina,
+      this.area,
+      this.diasUsados});
 
   int? empid;
   String? empleado;
   String? cargo;
   String? fechaIngreso;
   String? fecha;
-  int? numdias;
-  int? ant;
-  int? saldo;
-  int? saldoTotal;
+  double? numdias;
+  double? ant;
+  double? saldo;
+  double? saldoTotal;
   double? duodecima;
   String? oficina;
   dynamic area;
+  double? diasUsados;
 
   factory ResponseSaldoVacaciones.fromJson(Map<String, dynamic> json) =>
       ResponseSaldoVacaciones(
-        empid: json["empid"],
-        empleado: json["empleado"],
-        cargo: json["cargo"],
-        fechaIngreso: json["fecha_ingreso"],
-        fecha: json["fecha"],
-        numdias: json["numdias"],
-        ant: json["ant"],
-        saldo: json["saldo"],
-        saldoTotal: json["saldo_total"],
-        duodecima: json["duodecima"].toDouble(),
-        oficina: json["oficina"],
-        area: json["area"],
-      );
+          empid: json["empid"],
+          empleado: json["empleado"],
+          cargo: json["cargo"],
+          fechaIngreso: json["fecha_ingreso"],
+          fecha: json["fecha"],
+          numdias: json["numdias"],
+          ant: json["ant"],
+          saldo: json["saldo"],
+          saldoTotal: json["saldo_total"],
+          duodecima: json["duodecima"].toDouble(),
+          oficina: json["oficina"],
+          area: json["area"],
+          diasUsados: json["dias_usados"]);
 
   Map<String, dynamic> toJson() => {
         "empid": empid,
@@ -68,5 +69,6 @@ class ResponseSaldoVacaciones {
         "duodecima": duodecima,
         "oficina": oficina,
         "area": area,
+        "dias_usados": diasUsados
       };
 }

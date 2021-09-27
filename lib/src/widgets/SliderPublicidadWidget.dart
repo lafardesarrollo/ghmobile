@@ -29,8 +29,11 @@ class _SliderPublicidadWidgetState extends State<SliderPublicidadWidget> {
             : CarouselSlider(
                 options: CarouselOptions(
                   autoPlay: true,
-                  autoPlayInterval: Duration(seconds: 5),
-                  height: 240,
+                  autoPlayInterval: Duration(seconds: 4),
+                  autoPlayAnimationDuration: Duration(milliseconds: 800),
+                  scrollDirection: Axis.horizontal,
+                  pageSnapping: false,
+                  height: 300, // 240
                   viewportFraction: 1.0,
                   /*onPageChanged: (index) {
                   setState(() {
@@ -55,27 +58,59 @@ class _SliderPublicidadWidgetState extends State<SliderPublicidadWidget> {
                                 );
                               }));
                             },
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 20, horizontal: 20),
-                              height: 200,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                    'http://intranet.lafar.net/newApiLafarnet/assets/publicaciones_images/${publicacion.nombreAdjunto}',
-                                  ), // NetworkImage(slide.image.url,),
-                                  fit: BoxFit.cover,
+                            child: Stack(
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 0, horizontal: 5),
+                                  height: 300,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        'http://intranet.lafar.net/newApiLafarnet/assets/publicaciones_images/${publicacion.nombreAdjunto}',
+                                      ), // NetworkImage(slide.image.url,),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Theme.of(context)
+                                              .hintColor
+                                              .withOpacity(0.2),
+                                          offset: Offset(0, 4),
+                                          blurRadius: 9)
+                                    ],
+                                  ),
                                 ),
-                                borderRadius: BorderRadius.circular(6),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Theme.of(context)
-                                          .hintColor
-                                          .withOpacity(0.2),
-                                      offset: Offset(0, 4),
-                                      blurRadius: 9)
-                                ],
-                              ),
+                                Positioned(
+                                  bottom: 0,
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(horizontal: 5),
+                                    width:
+                                        MediaQuery.of(context).size.width - 10,
+                                    color: Theme.of(context)
+                                        .accentColor
+                                        .withOpacity(
+                                            0.7), // Colors.blueGrey.withOpacity(0.9),
+                                    // color: Colors.black,
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          publicacion.titulo!,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        Text(
+                                          publicacion.fechaPublicacion!,
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w200),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                           Container(
@@ -109,7 +144,7 @@ class _SliderPublicidadWidgetState extends State<SliderPublicidadWidget> {
                 }).toList(),
               ),
         Positioned(
-          bottom: 25,
+          top: 25,
           right: 41,
           left: 41,
 //          width: config.App(context).appWidth(100),
@@ -150,14 +185,23 @@ class _DetailScreenWidgetState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_new),
+            onPressed: () => Navigator.pop(context, false),
+          ),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+        ),
         body: Center(
-      child: GestureDetector(
-        child: Hero(
-            tag: widget.heroTag!,
-            child: PhotoView(
-              imageProvider: CachedNetworkImageProvider(widget.image!),
-            )),
-      ),
-    ));
+          child: GestureDetector(
+            child: Hero(
+                tag: widget.heroTag!,
+                child: PhotoView(
+                  imageProvider: CachedNetworkImageProvider(widget.image!),
+                )),
+          ),
+        ));
   }
 }
