@@ -30,7 +30,8 @@ class ItemCaruselCumpleanerosWidget extends StatelessWidget {
                 child: ClipRect(
                   child: CachedNetworkImage(
                     fit: BoxFit.cover,
-                    imageUrl: Helper.getUrlImagenes(cumpleanero!.foto!),
+                    imageUrl: Helper.getUrlImagenesEmpleados(
+                        cumpleanero!.idSap.toString() + '.png'),
                     placeholder: (context, url) => Image.asset(
                       'assets/img/loading.gif',
                       fit: BoxFit.cover,

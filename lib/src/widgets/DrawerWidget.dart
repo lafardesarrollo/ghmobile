@@ -22,7 +22,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             },
             child: UserAccountsDrawerHeader(
               decoration: BoxDecoration(
-                color: Theme.of(context).accentColor.withOpacity(0.5),
+                color: Theme.of(context).hintColor.withOpacity(1),
               ),
               accountName: Text(
                 currentUser.value.username!,

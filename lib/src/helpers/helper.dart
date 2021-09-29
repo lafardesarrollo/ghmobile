@@ -29,6 +29,13 @@ class Helper {
     return url;
   }
 
+  static String getUrlImagenesEmpleados(String path) {
+    String url =
+        GlobalConfiguration().getValue('base_url_imagenes_empleados') + path;
+
+    return url;
+  }
+
   static Uri getUri(String path) {
     String _path = Uri.parse(GlobalConfiguration().getValue('base_url')).path;
     if (!_path.endsWith('/')) {

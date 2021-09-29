@@ -18,15 +18,16 @@ class BoletaPagoPageState extends StateMVC<BoletaPagoPage> {
   BoletaPagoPageState() : super(BoletaPagoController()) {
     _con = controller as BoletaPagoController;
   }
+  int idEmpleado = int.parse(currentUser.value.idSap!);
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _con.requestBoleta.empId = int.parse(currentUser.value.idSap!);
-    // _con.requestBoleta.empId = currentUser.value.!
     _con.requestBoleta.periodo = "202108";
-    _con.obtenerBoletaPago();
+    // _con.obtenerBoletaPago(context);
+    _con.listarPeriodos(context, idEmpleado);
   }
 
   @override
@@ -47,41 +48,10 @@ class BoletaPagoPageState extends StateMVC<BoletaPagoPage> {
             ),
           ),
           actions: [
-            Container(
-              padding: EdgeInsets.only(right: 20),
-              child: DropdownButton<String>(
-                value: _con.dropdownValue,
-                icon: Icon(Icons.arrow_downward),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _con.dropdownValue = newValue!;
-                    if (newValue == 'Agosto') {
-                      _con.requestBoleta.periodo = "202108";
-                    } else if (newValue == 'Julio') {
-                      _con.requestBoleta.periodo = "202107";
-                    } else {
-                      _con.requestBoleta.periodo = "202106";
-                    }
-                    _con.obtenerBoletaPago();
-                  });
-                },
-                items: <String>['Agosto', 'Julio', 'Junio']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
-            ),
-            IconButton(
-              icon: FaIcon(
-                FontAwesomeIcons.filePdf,
-                color: Theme.of(context).primaryColor,
-              ), // FaIcon(FontAwesomeIcons.syncAlt),
-              onPressed: () {
-                // _con.refreshHome();
-              },
+            TextButton.icon(
+              onPressed: () => _con.abrirPeriodos(context),
+              icon: Icon(Icons.filter_list_alt),
+              label: Text('Periodo'),
             )
           ],
           backgroundColor: Colors.transparent,
@@ -91,385 +61,443 @@ class BoletaPagoPageState extends StateMVC<BoletaPagoPage> {
             style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
+        floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {},
+          icon: FaIcon(FontAwesomeIcons.filePdf),
+          label: Text('Descargar Boleta de Pago'),
+        ),
         drawer: DrawerWidget(),
-        body: ListView(
-          children: [
-            Card(
-              color: Theme.of(context).hintColor,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+        body: _con.boleta.salarioBCalculado == null
+            ? Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Nombre: ' + _con.boleta.nombre.toString(),
-                      style: Theme.of(context).textTheme.overline,
+                      'Seleccione un Periodo',
+                      style: Theme.of(context).textTheme.subtitle1,
                     ),
                     Text(
-                      'Sucursal: ' + _con.boleta.sucursal.toString(),
-                      style: Theme.of(context).textTheme.overline,
+                      'para ver sus Boletas de Pago',
+                      style: Theme.of(context).textTheme.subtitle1,
                     ),
-                    Text(
-                      'Cargo: ' + _con.boleta.cargo.toString(),
-                      style: Theme.of(context).textTheme.overline,
+                    SizedBox(
+                      height: 10,
                     ),
+                    TextButton.icon(
+                        icon: FaIcon(FontAwesomeIcons.fileSignature),
+                        label: Text('Seleccionar Periodo'),
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Theme.of(context).hintColor),
+                          foregroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                          padding: MaterialStateProperty.all<EdgeInsets>(
+                            EdgeInsets.all(10),
+                          ),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              side: BorderSide(
+                                  color: Theme.of(context).hintColor),
+                            ),
+                          ),
+                        ),
+                        onPressed: () {
+                          _con.abrirPeriodos(context);
+                        }),
                   ],
                 ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              )
+            : ListView(
                 children: [
-                  Text(
-                    'Sueldo Bàsico:',
-                    style: Theme.of(context).textTheme.subtitle2,
+                  Card(
+                    color: Theme.of(context).hintColor,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Nombre: ' + _con.boleta.nombre.toString(),
+                            style: Theme.of(context).textTheme.overline,
+                          ),
+                          Text(
+                            'Sucursal: ' + _con.boleta.sucursal.toString(),
+                            style: Theme.of(context).textTheme.overline,
+                          ),
+                          Text(
+                            'Cargo: ' + _con.boleta.cargo.toString(),
+                            style: Theme.of(context).textTheme.overline,
+                          ),
+                          Text(
+                            'Fecha de Pago: ' +
+                                _con.boleta.fechapago.toString(),
+                            style: Theme.of(context).textTheme.overline,
+                          ),
+                          Text(
+                            'PERIODO: ' + _con.requestBoleta.periodo.toString(),
+                            style: Theme.of(context).textTheme.overline,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  Text(
-                    _con.boleta.salarioBCalculado.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Sueldo Bàsico:',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.salarioBCalculado.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
                   ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Bono Antiguedad:',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.bantiguedad.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Bono Frontera:',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.bfrontera.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Bono Dominical:',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.bdominical.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Bono de Producción:',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.bonoprod.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Horas Extras:',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.hextras.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Horas Extras Dominicales:',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.hextrasdom.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Recargo Nocturno:',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.rnocturno.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Comisiones:',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.comisiones.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Otros Ingresos:',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.otrosing.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'AFP PREVISION 12.71%:',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.afp.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'RC-I.V.A.',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.rciva.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Anticipo',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.bfrontera.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Prestamos',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.prestamos.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Aportes Sindicales',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.aporteSSindicales.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Sanciones y Multas',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.sancioneSMultas.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Compras Personales',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.compraSPer.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Rendición de Cuentas',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.rendiciones.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Refrigerio',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.refrigerio.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Retenciones Judiciales',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.retenciones.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Descuentos Varios',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.descvarios.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Otros Descuentos',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        Text(
+                          _con.boleta.descvarios.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Bono Antiguedad:',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.bantiguedad.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Bono Frontera:',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.bfrontera.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Bono Dominical:',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.bdominical.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Bono de Producción:',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.bonoprod.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Horas Extras:',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.hextras.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Horas Extras Dominicales:',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.hextrasdom.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Recargo Nocturno:',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.rnocturno.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Comisiones:',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.comisiones.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Otros Ingresos:',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.otrosing.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'AFP PREVISION 12.71%:',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.afp.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'RC-I.V.A.',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.rciva.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Anticipo',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.bfrontera.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Prestamos',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.prestamos.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Aportes Sindicales',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.aporteSSindicales.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Sanciones y Multas',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.sancioneSMultas.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Compras Personales',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.compraSPer.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Rendición de Cuentas',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.rendiciones.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Refrigerio',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.refrigerio.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Retenciones Judiciales',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.retenciones.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Descuentos Varios',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.descvarios.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Otros Descuentos',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  Text(
-                    _con.boleta.descvarios.toString(),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
       ),
     );
   }

@@ -6,6 +6,29 @@ import 'package:ghmobile/src/models/request_boleta_pago.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 
+Future<Stream<List<String>>> obtenerPeriodosBoletaPagoEmpleado(
+    int idEmpleado) async {
+  final String url =
+      '${GlobalConfiguration().getString('api_base_url_ghapi')}boletapago/${idEmpleado}';
+
+  final client = new http.Client();
+  final response = await client.get(Uri.parse(url));
+
+  try {
+    if (response.statusCode == 200) {
+      List<String> periodos =
+          (jsonDecode(response.body) as List<dynamic>).cast<String>();
+      // final periodos = (json.decode(response.body));
+      // final lreserva =  LReserva.fromJsonList(json.decode(response.body)['body']);
+      return new Stream.value(periodos);
+    } else {
+      return new Stream.value([]);
+    }
+  } catch (e) {
+    return new Stream.value([]);
+  }
+}
+
 Future<Stream<BoletaPago>> obtenerBoletaPagoPorEmpleado(
     RequestBoletaPago data) async {
   // BoletaPago boleta = new BoletaPago();

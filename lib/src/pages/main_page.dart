@@ -110,14 +110,14 @@ class _MainPageState extends StateMVC<MainPage>
         floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
         floatingActionButtonLocation:
             FloatingActionButtonLocation.miniCenterFloat,
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton.large(
           backgroundColor: Colors.blue.withOpacity(0.4),
           onPressed: () {
             _con.abrirNuevoMarcaje(context);
           },
           child: Icon(
             Icons.fingerprint,
-            size: 50,
+            size: 90,
           ),
         ),
         body: RefreshIndicator(
