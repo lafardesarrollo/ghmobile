@@ -1,9 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ghmobile/src/controllers/boleta_pago_controller.dart';
 import 'package:ghmobile/src/repository/user_repository.dart';
 import 'package:ghmobile/src/widgets/DrawerWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:open_file/open_file.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class BoletaPagoPage extends StatefulWidget {
   const BoletaPagoPage({Key? key}) : super(key: key);
@@ -14,6 +20,7 @@ class BoletaPagoPage extends StatefulWidget {
 
 class BoletaPagoPageState extends StateMVC<BoletaPagoPage> {
   late BoletaPagoController _con;
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
   BoletaPagoPageState() : super(BoletaPagoController()) {
     _con = controller as BoletaPagoController;
@@ -24,6 +31,15 @@ class BoletaPagoPageState extends StateMVC<BoletaPagoPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    final android = AndroidInitializationSettings('@mipmap/ic_launcher');
+    final iOS = IOSInitializationSettings();
+    final initSettings = InitializationSettings(android: android, iOS: iOS);
+    flutterLocalNotificationsPlugin.initialize(initSettings,
+        onSelectNotification: _onSelectNotification);
+    _requestPermission();
+
     _con.requestBoleta.empId = int.parse(currentUser.value.idSap!);
     _con.requestBoleta.periodo = "202108";
     // _con.obtenerBoletaPago(context);
@@ -64,7 +80,9 @@ class BoletaPagoPageState extends StateMVC<BoletaPagoPage> {
         floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {},
+          onPressed: () {
+            _con.descargarBoletaPago(flutterLocalNotificationsPlugin);
+          },
           icon: FaIcon(FontAwesomeIcons.filePdf),
           label: Text('Descargar Boleta de Pago'),
         ),
@@ -500,5 +518,34 @@ class BoletaPagoPageState extends StateMVC<BoletaPagoPage> {
               ),
       ),
     );
+  }
+
+  Future<void> _onSelectNotification(dynamic json) async {
+    final obj = jsonDecode(json);
+    if (obj['isSuccess']) {
+      OpenFile.open(obj['filePath']);
+    } else {
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: Text('error'),
+                content: Text('${obj['error']}'),
+              ));
+    }
+    // todo: handling clicked notification
+  }
+
+  _requestPermission() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+    ].request();
+
+    final info = statuses[Permission.storage].toString();
+    print(info);
+    _toastInfo(info);
+  }
+
+  _toastInfo(String info) {
+    Fluttertoast.showToast(msg: info, toastLength: Toast.LENGTH_LONG);
   }
 }

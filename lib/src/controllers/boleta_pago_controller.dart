@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:ghmobile/src/helpers/helper.dart';
 import 'package:ghmobile/src/models/boleta_pago.dart';
 import 'package:ghmobile/src/models/request_boleta_pago.dart';
@@ -8,6 +10,8 @@ import 'package:ghmobile/src/repository/boleta_pago_repository.dart';
 import 'package:ghmobile/src/repository/user_repository.dart';
 import 'package:ghmobile/src/widgets/SeleccionarPeriodoWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 
 class BoletaPagoController extends ControllerMVC {
   RequestBoletaPago requestBoleta = new RequestBoletaPago();
@@ -19,6 +23,8 @@ class BoletaPagoController extends ControllerMVC {
   late OverlayEntry loader;
 
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+  // Descargar boleta de pago
+  String progress = "-";
 
   BoletaPagoController() {
     // loader = Helper.overlayLoader(context);
@@ -93,6 +99,62 @@ class BoletaPagoController extends ControllerMVC {
       obtenerBoletaPago(context);
       //listarBoletas(context, int.parse(currentUser.value.idSap!));
     }
+  }
+
+  void _onReceiveProgress(int received, int total) {
+    if (total != -1) {
+      setState(() {
+        progress = (received / total * 100).toStringAsFixed(0) + "%";
+      });
+    }
+  }
+
+  Future<void> descargarBoletaPago(
+      FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
+    String fileUrl =
+        "http://190.104.26.90:8082/lafarnetservice/api/certificadopT/B-313%7C18-170201916239";
+
+    Map<String, dynamic> result = {
+      'isSuccess': false,
+      'filePath': null,
+      'error': null,
+    };
+    try {
+      var directorio = await getExternalStorageDirectory();
+      String directorioDescargas = directorio!.path + "/boleta_123.pdf";
+
+      Response response = await Dio().download(fileUrl, directorioDescargas,
+          onReceiveProgress: _onReceiveProgress);
+
+      result['isSuccess'] = response.statusCode == 200;
+      result['filePath'] = directorioDescargas;
+      OpenFile.open(directorioDescargas);
+    } catch (ex) {
+      result['error'] = ex.toString();
+    } finally {
+      await _showNotification(result, flutterLocalNotificationsPlugin);
+    }
+  }
+
+  Future<void> _showNotification(Map<String, dynamic> downloadStatus,
+      FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
+    const AndroidNotificationDetails android = AndroidNotificationDetails(
+        'channel id', 'channel name', 'channel description',
+        priority: Priority.high, importance: Importance.max);
+    const IOSNotificationDetails iOS = IOSNotificationDetails();
+    const NotificationDetails platform =
+        NotificationDetails(android: android, iOS: iOS); // ( android , iOS);
+    final json = jsonEncode(downloadStatus);
+    final isSuccess = downloadStatus['isSuccess'];
+
+    await flutterLocalNotificationsPlugin.show(
+        0, // notification id
+        isSuccess ? 'Success' : 'Failure',
+        isSuccess
+            ? 'El archivo fue descargado correctamente!'
+            : 'A ocurrido un error mientras se descargaba el archivo.',
+        platform,
+        payload: json);
   }
   // void listenSeguimientoUsuarioFecha(String fecha) async {
   //   final Stream<List<Seguimiento>> stream =
