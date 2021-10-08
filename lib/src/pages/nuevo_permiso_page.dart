@@ -1,6 +1,8 @@
 import 'package:date_format/date_format.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ghmobile/src/controllers/permiso_controller.dart';
+import 'package:ghmobile/src/helpers/app_config.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:select_form_field/select_form_field.dart';
 
@@ -21,6 +23,7 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
   @override
   void initState() {
     super.initState();
+    _con.listarMotivos(context);
   }
 
   @override
@@ -73,47 +76,48 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
                 ),
               ),
               SizedBox(),
-              SelectFormField(
-                type: SelectFormFieldType.dropdown, // or can be dialog
-                initialValue: 'circle',
-                icon: Icon(Icons.style_sharp),
-                labelText: 'Seleccione un motivo de Permiso',
-                items: _con.items_motivos,
-                onChanged: (val) => _con.boleta.cuentaSalida = val,
+              OutlinedButton.icon(
+                icon: Icon(Icons.published_with_changes_outlined),
+                style: OutlinedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  fixedSize: Size(App(context).appWidth(100), 50),
+                  primary: Theme.of(context).hintColor,
+                ),
+                onPressed: () => bottomSheetMotivos(),
+                label: _con.motivo.id != null
+                    ? Text('SELECCIONAR OTRO MOTIVO')
+                    : Text('SELECCIONE EL MOTIVO DEL PERMISO'),
               ),
-              SizedBox(),
-              // Container(
-              //   padding: EdgeInsets.only(right: 20),
-              //   child: DropdownButton<String>(
-              //     isExpanded: true,
-              //     value: _con.valor_motivo,
-              //     icon: Icon(Icons.arrow_downward),
-              //     onChanged: (String? newValue) {
-              //       setState(() {
-              //         _con.valor_motivo = newValue!;
-              //         _con.boleta.cuentaSalida = newValue;
-              //       });
-              //     },
-              //     items: <String>[
-              //       'Seleccione un Motivo de Permiso',
-              //       'Sin goce de haberes',
-              //       'Natalidad',
-              //       'Muerte de familiar',
-              //       'Baja médica',
-              //       'Cita médica',
-              //       'Comisión',
-              //       'Compensación',
-              //       'Matrimonio',
-              //       'Otros'
-              //     ].map<DropdownMenuItem<String>>((String value) {
-              //       return DropdownMenuItem<String>(
-              //         value: value,
-              //         child: Text(value),
-              //       );
-              //     }).toList(),
-              //   ),
+              _con.motivo.id == null
+                  ? Container()
+                  : Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Motivo: ',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15),
+                          ),
+                          Text(
+                            _con.motivo.motivo ?? '',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300, fontSize: 15),
+                          ),
+                        ],
+                      ),
+                    ),
+              // SelectFormField(
+              //   type: SelectFormFieldType.dropdown, // or can be dialog
+              //   initialValue: 'circle',
+              //   icon: Icon(Icons.style_sharp),
+              //   labelText: 'Seleccione un motivo de Permiso',
+              //   items: _con.items_motivos,
+              //   onChanged: (val) => _con.boleta.cuentaSalida = val,
               // ),
-              // SizedBox(),
+              SizedBox(),
+
               TextField(
                 controller: _con.dateInputSalida,
                 decoration: InputDecoration(
@@ -263,6 +267,32 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
           label: Text('Guardar Permiso'),
         ),
       ),
+    );
+  }
+
+  bottomSheetMotivos() {
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return ListView.separated(
+            itemCount: _con.motivos.length,
+            separatorBuilder: (BuildContext context, int index) =>
+                const Divider(),
+            itemBuilder: (BuildContext context, int index) {
+              return InkWell(
+                onTap: () {
+                  setState(() {
+                    _con.motivo = _con.motivos.elementAt(index);
+                    _con.boleta.cuentaSalida = _con.motivo.valor;
+                    Navigator.pop(context);
+                  });
+                },
+                child: ListTile(
+                  title: Text(_con.motivos.elementAt(index).motivo!),
+                ),
+              );
+            });
+      },
     );
   }
 }

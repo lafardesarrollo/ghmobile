@@ -284,21 +284,32 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
           //     style: Theme.of(context).textTheme.subhead,
           //   ),
           // ),
-          // ListTile(
-          //   onTap: () {
-          //     const url = 'http://lafar.net/';
-          //     launchURL(url);
-          //     // Navigator.of(context).pushNamed('/Languages');
-          //   },
-          //   leading: Icon(
-          //     Icons.info,
-          //     color: Theme.of(context).accentColor.withOpacity(1),
-          //   ),
-          //   title: Text(
-          //     S.of(context).acercade,
-          //     style: Theme.of(context).textTheme.subhead,
-          //   ),
-          // ),
+          ListTile(
+            onTap: () {
+              Navigator.of(context).pushNamed('/ManualFunciones');
+            },
+            leading: Icon(
+              Icons.menu_book,
+              color: Theme.of(context).accentColor.withOpacity(1),
+            ),
+            title: Text(
+              'Manual de Funciones',
+              style: TextStyle(color: Theme.of(context).hintColor),
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.of(context).pushNamed('/Reglamento');
+            },
+            leading: Icon(
+              Icons.receipt_long,
+              color: Theme.of(context).accentColor.withOpacity(1),
+            ),
+            title: Text(
+              'Reglamento Interno',
+              style: TextStyle(color: Theme.of(context).hintColor),
+            ),
+          ),
 
           // ListTile(
           //   onTap: () {

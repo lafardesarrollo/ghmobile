@@ -1,9 +1,13 @@
 // ignore_for_file: unnecessary_statements
 
+import 'dart:convert';
+
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:ghmobile/src/helpers/helper.dart';
 import 'package:ghmobile/src/models/boleta_permiso.dart';
+import 'package:ghmobile/src/models/motivo_mobile.dart';
+import 'package:ghmobile/src/models/motivo_permiso.dart';
 import 'package:ghmobile/src/pages/detalle_permiso_page.dart';
 import 'package:ghmobile/src/pages/nuevo_permiso_page.dart';
 import 'package:ghmobile/src/repository/permiso_repository.dart';
@@ -36,8 +40,9 @@ class PermisoController extends ControllerMVC {
   GlobalKey<FormState> permisoFormKey = new GlobalKey<FormState>();
 
   String valor_motivo = "Seleccione un Motivo de Permiso";
-
-  final List<Map<String, dynamic>> items_motivos = [
+  MotivoPermiso motivo = new MotivoPermiso();
+  List<MotivoPermiso> motivos = [];
+  List<Map<String, dynamic>> items_motivos = [
     {'value': 'descuento', 'label': 'Sin goce de haberes'},
     {'value': 'natalidad', 'label': 'Natalidad'},
     {'value': 'muerte_de_familiar', 'label': 'Muerte de Familiar'},
@@ -49,6 +54,7 @@ class PermisoController extends ControllerMVC {
     {'value': 'matrimonio', 'label': 'Matrimonio'},
     {'value': 'otros', 'label': 'Otros'}
   ];
+  late var nuevo_motivos;
   PermisoController() {
     // loader = Helper.overlayLoader(context);
   }
@@ -77,13 +83,31 @@ class PermisoController extends ControllerMVC {
   //   });
   // }
 
+  void listarMotivos(BuildContext context) async {
+    final Stream<List<MotivoPermiso>> stream = await obtenerMotivosPermiso();
+    stream.listen((List<MotivoPermiso> _lmotivos) {
+      setState(() {
+        motivos = _lmotivos;
+      });
+    }, onError: (a) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Ocurrio un error al obtener los motivos!'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }, onDone: () {
+      loading = false;
+    });
+  }
+
   void listarBoletas(BuildContext context, int idEmpleado) async {
     final Stream<List<BoletaPermiso>> stream =
         await obtenerPermisosPorEmpleado(idEmpleado);
     stream.listen((List<BoletaPermiso> _lpermisos) {
       setState(() {
         boletas = _lpermisos;
-        print(boletas);
+        // print(boletas);
       });
     }, onError: (a) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -104,7 +128,7 @@ class PermisoController extends ControllerMVC {
     stream.listen((BoletaPermiso _lpermisos) {
       setState(() {
         boleta = _lpermisos;
-        print(boleta);
+        // print(boleta);
       });
     }, onError: (a) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -182,36 +206,61 @@ class PermisoController extends ControllerMVC {
     boleta.latLngSalida = "0";
     boleta.latLngRetorno = "0";
 
-    // print(this.boleta.toJson());
-
-    final Stream<bool> stream = await saveBoletaPermiso(this.boleta);
-    stream.listen((bool result) {
-      if (result) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Se guardo la Liencia correctamente!'),
-          backgroundColor: Colors.blue,
-        ));
-        Navigator.pop(context, true);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('No se guardo la licencia, intente nuevamente.'),
-          backgroundColor: Colors.red,
-        ));
-      }
-    }, onError: (a) {
+    if (boleta.fechaSalida == '' ||
+        boleta.fechaSalida == null && boleta.horaSalida == '' ||
+        boleta.horaSalida == null && boleta.motivos == '' ||
+        boleta.motivos == null && boleta.cuentaSalida == '' ||
+        boleta.cuentaSalida == null && boleta.fechaRetorno == '' ||
+        boleta.fechaRetorno == null) {
       Helper.hideLoader(loader);
       loader.remove();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Ocurrio un error al guardar la Licencia de Permiso'),
+        content:
+            Text('Verifica que llenaste toda la información correctamente!'),
         backgroundColor: Colors.red,
       ));
-      // scaffoldKey.currentState?.showSnackBar(SnackBar(
-      //   content: Text('Ocurrio un error al obtener la información'),
-      // ));
-    }, onDone: () {
-      Helper.hideLoader(loader);
-      loading = false;
-    });
+    } else {
+      if (boleta.motivos!.toLowerCase().contains('vacaci')) {
+        Helper.hideLoader(loader);
+        loader.remove();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+              'No puedes guardar un permiso de vacación en este formulario de permisos, ingresa a GLV -> Vacaciones para solicitar vacaciones'),
+          backgroundColor: Colors.red,
+        ));
+      } else {
+        // print(this.boleta.toJson());
+
+        final Stream<bool> stream = await saveBoletaPermiso(this.boleta);
+        stream.listen((bool result) {
+          if (result) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('Se guardo la Liencia correctamente!'),
+              backgroundColor: Colors.blue,
+            ));
+            Navigator.pop(context, true);
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('No se guardo la licencia, intente nuevamente.'),
+              backgroundColor: Colors.red,
+            ));
+          }
+        }, onError: (a) {
+          Helper.hideLoader(loader);
+          loader.remove();
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Ocurrio un error al guardar la Licencia de Permiso'),
+            backgroundColor: Colors.red,
+          ));
+          // scaffoldKey.currentState?.showSnackBar(SnackBar(
+          //   content: Text('Ocurrio un error al obtener la información'),
+          // ));
+        }, onDone: () {
+          Helper.hideLoader(loader);
+          loading = false;
+        });
+      }
+    }
   }
 
   String formatTimeOfDay(TimeOfDay tod) {

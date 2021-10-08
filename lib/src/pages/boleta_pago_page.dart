@@ -542,7 +542,7 @@ class BoletaPagoPageState extends StateMVC<BoletaPagoPage> {
 
     final info = statuses[Permission.storage].toString();
     print(info);
-    _toastInfo(info);
+    // _toastInfo(info);
   }
 
   _toastInfo(String info) {

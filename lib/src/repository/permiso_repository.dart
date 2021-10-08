@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ghmobile/src/models/boleta_permiso.dart';
+import 'package:ghmobile/src/models/motivo_mobile.dart';
+import 'package:ghmobile/src/models/motivo_permiso.dart';
 import 'package:http/http.dart' as http;
 import 'package:global_configuration/global_configuration.dart';
 
@@ -117,5 +119,25 @@ Future<Stream<bool>> saveRegistroRetornoBoletaPermiso(
     }
   } catch (e) {
     return new Stream.value(false);
+  }
+}
+
+// Motivos de Permiso
+Future<Stream<List<MotivoPermiso>>> obtenerMotivosPermiso() async {
+  // Uri uri = Helper.getUriLfr('api/producto');
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url_ghapi')}MotivoPermiso';
+
+  final client = new http.Client();
+  final response = await client.get(Uri.parse(url));
+  try {
+    if (response.statusCode == 200) {
+      final lmotivos = LMotivoPermiso.fromJsonList(json.decode(response.body));
+      return new Stream.value(lmotivos.items);
+    } else {
+      return new Stream.value([]);
+    }
+  } catch (e) {
+    return new Stream.value([]);
   }
 }

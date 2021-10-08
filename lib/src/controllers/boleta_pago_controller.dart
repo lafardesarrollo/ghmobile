@@ -36,10 +36,10 @@ class BoletaPagoController extends ControllerMVC {
     stream.listen((List<String> _periodos) {
       setState(() {
         periodos = _periodos;
-        print(periodos);
+        // print(periodos);
       });
     }, onError: (a) {
-      print(a);
+      // print(a);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Ocurrio un error al obtener la información'),
@@ -60,7 +60,7 @@ class BoletaPagoController extends ControllerMVC {
     stream.listen((BoletaPago _boleta) {
       setState(() {
         boleta = _boleta;
-        print(boleta.toJson());
+        // print(boleta.toJson());
       });
     }, onError: (a) {
       Helper.hideLoader(loader);
@@ -112,7 +112,7 @@ class BoletaPagoController extends ControllerMVC {
   Future<void> descargarBoletaPago(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
     String fileUrl =
-        "http://190.104.26.90:8082/lafarnetservice/api/certificadopT/B-313%7C18-170201916239";
+        "http://190.104.26.90:8082/lafarnetservice/api/boletapago/${this.requestBoleta.empId}_${this.requestBoleta.periodo}";
 
     Map<String, dynamic> result = {
       'isSuccess': false,
@@ -121,7 +121,7 @@ class BoletaPagoController extends ControllerMVC {
     };
     try {
       var directorio = await getExternalStorageDirectory();
-      String directorioDescargas = directorio!.path + "/boleta_123.pdf";
+      String directorioDescargas = directorio!.path + "/boleta_pago.pdf";
 
       Response response = await Dio().download(fileUrl, directorioDescargas,
           onReceiveProgress: _onReceiveProgress);
@@ -149,9 +149,9 @@ class BoletaPagoController extends ControllerMVC {
 
     await flutterLocalNotificationsPlugin.show(
         0, // notification id
-        isSuccess ? 'Success' : 'Failure',
+        isSuccess ? 'Correcto!' : 'Error',
         isSuccess
-            ? 'El archivo fue descargado correctamente!'
+            ? 'Su boleta de pago fue descargado correctamente, puede ver directamente presionando aqui!'
             : 'A ocurrido un error mientras se descargaba el archivo.',
         platform,
         payload: json);
