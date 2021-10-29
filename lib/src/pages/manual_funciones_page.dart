@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
 
 class ManualFuncionesPage extends StatefulWidget {
   const ManualFuncionesPage({Key? key}) : super(key: key);
@@ -33,9 +34,31 @@ class _ManualFuncionesPageState extends State<ManualFuncionesPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    loadPdf();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('Manual de Funciones'),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).hintColor,
+        title: Text('Manual de Funciones'),
+      ),
+      body: Stack(
+        children: [
+          if (pdfFlePath != null)
+            Expanded(
+              child: Container(
+                child: PdfView(path: pdfFlePath!),
+              ),
+            )
+          else
+            Text('PDF no se cargo')
+        ],
+      ),
     );
   }
 }

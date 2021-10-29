@@ -193,8 +193,7 @@ class NuevaAsistenciaPageState extends StateMVC<NuevaAsistenciaPage> {
                           ),
                         ],
                       ),
-                      Text(
-                          'Latitud: ${_con.latitud}  Longitud: ${_con.longitud}')
+                      // Text('Latitud: ${_con.latitud}  Longitud: ${_con.longitud}')
                     ],
                   ),
                 ),

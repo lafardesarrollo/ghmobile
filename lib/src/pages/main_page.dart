@@ -8,6 +8,7 @@ import 'package:ghmobile/src/widgets/CabeceraItemsCaruselWidget.dart';
 import 'package:ghmobile/src/widgets/CaruselCumpleanerosWidget.dart';
 import 'package:ghmobile/src/widgets/ComunicacionRapidaWidget.dart';
 import 'package:ghmobile/src/widgets/DrawerWidget.dart';
+import 'package:ghmobile/src/widgets/FormularioAccidentesWidget.dart';
 import 'package:ghmobile/src/widgets/SliderPublicidadWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -85,17 +86,11 @@ class _MainPageState extends StateMVC<MainPage>
                       borderRadius: BorderRadius.circular(40),
                     ),
                     child: Image.asset(
-                      'assets/img/kill_bacter.png',
+                      'assets/img/lafar_cyan.png',
                     ),
                   ), // FaIcon(FontAwesomeIcons.syncAlt),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return VistaPreviaPage(
-                        heroTag: 'k01',
-                        image: 'assets/img/triptico_kill_bacter.jpg',
-                      );
-                    }));
-                    // _con.refreshHome();
+                    _con.abrirIntranet();
                   },
                 ),
               )
@@ -127,6 +122,23 @@ class _MainPageState extends StateMVC<MainPage>
           child: Container(
             child: ListView(
               children: [
+                CabeceraItemsCaruselWidget(
+                  icono: FaIcon(FontAwesomeIcons.newspaper,
+                      color: Theme.of(context).accentColor),
+                  titulo: 'Publicaciones de la Intranet',
+                ),
+                SliderPublicidadWidget(publicaciones: _con.publicaciones),
+                SizedBox(
+                  height: 5,
+                ),
+                CabeceraItemsCaruselWidget(
+                  icono: FaIcon(FontAwesomeIcons.birthdayCake,
+                      color: Theme.of(context).accentColor),
+                  titulo: 'Cumpleañeros del Mes',
+                ),
+                CaruselCumpleanerosWidget(
+                  cumpleaneros: _con.cumpleaneros,
+                ),
                 Card(
                   color: Theme.of(context).hintColor,
                   child: Center(
@@ -154,61 +166,6 @@ class _MainPageState extends StateMVC<MainPage>
                       ],
                     ),
                   ),
-                ),
-                CabeceraItemsCaruselWidget(
-                  icono: FaIcon(FontAwesomeIcons.newspaper,
-                      color: Theme.of(context).accentColor),
-                  titulo: 'Publicaciones de la Intranet',
-                ),
-                SliderPublicidadWidget(publicaciones: _con.publicaciones),
-                ComunicacionRapidaWidget(),
-                // Card(
-                //   color: Theme.of(context).accentColor,
-                //   child: Center(
-                //     child: Column(
-                //       crossAxisAlignment: CrossAxisAlignment.center,
-                //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //       children: [
-                //         Container(
-                //           padding: EdgeInsets.only(left: 15, right: 15, top: 8),
-                //           child: Text(
-                //             'CUMPLEAÑEROS DEL MES',
-                //             style: Theme.of(context).textTheme.overline,
-                //           ),
-                //         ),
-                //         Padding(
-                //           padding: const EdgeInsets.all(8.0),
-                //           child: Text(
-                //             _con.cumpleaneros.length.toString() + ' empleados',
-                //             style: TextStyle(
-                //                 fontSize: 35,
-                //                 fontWeight: FontWeight.bold,
-                //                 color: Theme.of(context).secondaryHeaderColor),
-                //           ),
-                //         ),
-                //         Padding(
-                //           padding: const EdgeInsets.only(bottom: 10),
-                //           child: ElevatedButton.icon(
-                //             style: ElevatedButton.styleFrom(
-                //                 primary: Theme.of(context).hintColor),
-                //             onPressed: () {
-                //               _con.abrirCumpleaneros(context);
-                //             },
-                //             icon: Icon(Icons.supervised_user_circle_sharp),
-                //             label: Text('Ver cumpleañeros'),
-                //           ),
-                //         )
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                CabeceraItemsCaruselWidget(
-                  icono: FaIcon(FontAwesomeIcons.birthdayCake,
-                      color: Theme.of(context).accentColor),
-                  titulo: 'Cumpleañeros del Mes',
-                ),
-                CaruselCumpleanerosWidget(
-                  cumpleaneros: _con.cumpleaneros,
                 ),
                 Card(
                   color: Colors.red,

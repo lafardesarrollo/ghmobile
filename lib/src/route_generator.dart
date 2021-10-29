@@ -4,7 +4,9 @@ import 'package:ghmobile/src/pages/boleta_pago_page.dart';
 import 'package:ghmobile/src/pages/login_page.dart';
 import 'package:ghmobile/src/pages/main_page.dart';
 import 'package:ghmobile/src/pages/manual_funciones_page.dart';
+import 'package:ghmobile/src/pages/mi_salud_page.dart';
 import 'package:ghmobile/src/pages/permiso_page.dart';
+import 'package:ghmobile/src/pages/reglamento_interno_page.dart';
 import 'package:ghmobile/src/pages/reglamento_page.dart';
 import 'package:ghmobile/src/pages/splash_page.dart';
 import 'package:ghmobile/src/pages/vacacion_page.dart';
@@ -20,6 +22,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => MainPage());
       case '/Boletas':
         return MaterialPageRoute(builder: (_) => BoletaPagoPage());
+      case '/MiSalud':
+        return MaterialPageRoute(builder: (_) => MiSaludPage());
       case '/Permiso':
         return MaterialPageRoute(builder: (_) => PermisoPage());
       case '/Vacacion':
@@ -30,6 +34,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => ManualFuncionesPage());
       case '/Reglamento':
         return MaterialPageRoute(builder: (_) => ReglamentoPage());
+      case '/ReglamentoInterno':
+        return MaterialPageRoute(builder: (_) => ReglamentoInternoPage());
       // case '/AtencionSinRes':
       //   return MaterialPageRoute(builder: (_) => AtencionsinresPage());
       // case '/MisAtenciones':

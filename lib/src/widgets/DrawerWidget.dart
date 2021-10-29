@@ -121,169 +121,35 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
               ),
             ],
           ),
-
-          // ListTile(
-          //   onTap: () {
-          //     Navigator.of(context).pushNamed('/MisAtenciones');
-          //   },
-          //   // leading: Icon(
-          //   //   UiIcons.home,
-          //   //   color: Theme.of(context).focusColor.withOpacity(1),
-          //   // ),
-          //   leading: new Image.asset(
-          //     'assets/img/mi_factura.png',
-          //     width: 40.0,
-          //   ),
-          //   title: Text(
-          //     'Mis Atenciones',
-          //     style: TextStyle(color: Theme.of(context).hintColor),
-          //   ),
-          // ),
-          // ListTile(
-          //   onTap: () {
-          //     Navigator.of(context).pushNamed('/MisAtenciones');
-          //   },
-          //   // leading: Icon(
-          //   //   UiIcons.home,
-          //   //   color: Theme.of(context).focusColor.withOpacity(1),
-          //   // ),
-          //   leading: new Image.asset(
-          //     'assets/img/mi_factura.png',
-          //     width: 40.0,
-          //   ),
-          //   title: Text(
-          //     'Mis Atenciones',
-          //     style: TextStyle(color: Theme.of(context).hintColor),
-          //   ),
-          // ),
-          // ListTile(
-          //   onTap: () {
-          //     Navigator.of(context).pushNamed('/MisAtenciones');
-          //   },
-          //   // leading: Icon(
-          //   //   UiIcons.home,
-          //   //   color: Theme.of(context).focusColor.withOpacity(1),
-          //   // ),
-          //   leading: new Image.asset(
-          //     'assets/img/mi_factura.png',
-          //     width: 40.0,
-          //   ),
-          //   title: Text(
-          //     'Mis Atenciones',
-          //     style: TextStyle(color: Theme.of(context).hintColor),
-          //   ),
-          // ),
-          // ListTile(
-          //   onTap: () {
-          //     Navigator.of(context).pushNamed('/Pages', arguments: 3);
-          //   },
-          //   leading: new Image.asset(
-          //     'assets/icon/carrito_verde.png',
-          //     width: 35.0,
-          //   ),
-          //   title: Text(
-          //     S.of(context).pedidos,
-          //     style: Theme.of(context).textTheme.subhead,
-          //   ),
-          // ),
-          // ListTile(
-          //   onTap: () {
-          //     Navigator.of(context).pushNamed('/Pages', arguments: 1);
-          //   },
-          //   leading: new Image.asset(
-          //     'assets/icon/cobranzas.png',
-          //     width: 35.0,
-          //   ),
-          //   title: Text(
-          //     S.of(context).cobranzas,
-          //     style: Theme.of(context).textTheme.subhead,
-          //   ),
-          // ),
-
-          // ListTile(
-          //   onTap: () {
-          //     Navigator.of(context).pushNamed('/Categories');
-          //   },
-          //   leading: new Image.asset(
-          //     'assets/icon/vademecum.png',
-          //     width: 35.0,
-          //   ),
-          //   title: Text(
-          //     S.of(context).vademecum,
-          //     style: Theme.of(context).textTheme.subhead,
-          //   ),
-          // ),
-          // ListTile(
-          //   onTap: () {
-          //     Navigator.of(context).pushNamed('/Pages', arguments: 0);
-          //   },
-          //   leading: new Image.asset(
-          //     'assets/icon/notificaciones.png',
-          //     width: 35.0,
-          //   ),
-          //   title: Text(
-          //     S.of(context).notifications,
-          //     style: Theme.of(context).textTheme.subhead,
-          //   ),
-          // ),
+          ListTile(
+            onTap: () {
+              Navigator.of(context).pushNamed('/MiSalud');
+            },
+            leading: Icon(
+              Icons.description_outlined,
+              color: Theme.of(context).accentColor,
+            ),
+            title: Text(
+              'Mi Salud',
+              style: TextStyle(color: Theme.of(context).hintColor),
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.of(context).pushNamed('/Organigrama');
+            },
+            leading: Icon(
+              Icons.account_tree_sharp,
+              color: Theme.of(context).focusColor.withOpacity(1),
+            ),
+            title: Text(
+              'Organigrama',
+              style: TextStyle(color: Theme.of(context).hintColor),
+            ),
+          ),
           Divider(
             color: Theme.of(context).primaryColor,
           ),
-          // Container(
-          //   padding: EdgeInsets.only(left: 5.0),
-          //   color: Theme.of(context).primaryColor,
-          //   child: ListTile(
-          //     dense: true,
-          //     leading:
-          //         Image.asset('assets/icon/preferencias_app.png', width: 25.0),
-          //     title: Text(S.of(context).application_preferences,
-          //         style:
-          //             TextStyle(color: Theme.of(context).secondaryHeaderColor)),
-          //     trailing: Icon(
-          //       Icons.remove,
-          //       color: Theme.of(context).focusColor.withOpacity(0.3),
-          //     ),
-          //   ),
-          // ),
-          // ListTile(
-          //   onTap: () {
-          //     Navigator.of(context).pushNamed('/Contactanos');
-          //   },
-          //   leading: new Image.asset(
-          //     'assets/icon/contactanos.png',
-          //     width: 35.0,
-          //   ),
-          //   title: Text(
-          //     S.of(context).contactanos,
-          //     style: Theme.of(context).textTheme.subhead,
-          //   ),
-          // ),
-          // ListTile(
-          //   onTap: () {
-          //     Navigator.of(context).pushNamed('/PoliticasPrivacidad');
-          //   },
-          //   leading: new Image.asset(
-          //     'assets/icon/politicas_privacidad.png',
-          //     width: 35.0,
-          //   ),
-          //   title: Text(
-          //     S.of(context).politicasprivacidad,
-          //     style: Theme.of(context).textTheme.subhead,
-          //   ),
-          // ),
-          // ListTile(
-          //   onTap: () {
-          //     Navigator.of(context).pushNamed('/TerminoUso');
-          //   },
-          //   leading: new Image.asset(
-          //     'assets/icon/terminos_uso.png',
-          //     width: 35.0,
-          //   ),
-          //   title: Text(
-          //     S.of(context).terminosuso,
-          //     style: Theme.of(context).textTheme.subhead,
-          //   ),
-          // ),
           ListTile(
             onTap: () {
               Navigator.of(context).pushNamed('/ManualFunciones');
@@ -293,13 +159,13 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
               color: Theme.of(context).accentColor.withOpacity(1),
             ),
             title: Text(
-              'Manual de Funciones',
+              'Mi Manual de Funciones',
               style: TextStyle(color: Theme.of(context).hintColor),
             ),
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('/Reglamento');
+              Navigator.of(context).pushNamed('/ReglamentoInterno');
             },
             leading: Icon(
               Icons.receipt_long,

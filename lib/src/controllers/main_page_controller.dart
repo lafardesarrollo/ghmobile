@@ -10,8 +10,11 @@ import 'package:ghmobile/src/repository/settings_repository.dart';
 import 'package:ghmobile/src/repository/vacaciones_repository.dart';
 import 'package:location/location.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainPageController extends ControllerMVC {
+  String _url_intranet = 'http://intranet.lafar.net';
+
   double saldoDias = 0;
   late OverlayEntry loader;
 
@@ -40,6 +43,10 @@ class MainPageController extends ControllerMVC {
       print("====ON DONE");
     });
   }
+
+  void abrirIntranet() async => await canLaunch(_url_intranet)
+      ? await launch(_url_intranet)
+      : throw 'Could not launch $_url_intranet';
 
   void obtenerSaldoVacaciones(int idEmpleado, {String? message}) async {
     this.saldoVacaciones = new ResponseSaldoVacaciones();

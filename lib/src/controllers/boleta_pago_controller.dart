@@ -93,11 +93,13 @@ class BoletaPagoController extends ControllerMVC {
         ),
       ),
     );
-    if (resultado.length > 0) {
-      this.requestBoleta.periodo = resultado;
-      this.requestBoleta.empId = int.parse(currentUser.value.idSap!);
-      obtenerBoletaPago(context);
-      //listarBoletas(context, int.parse(currentUser.value.idSap!));
+    if (resultado != null) {
+      if (resultado.length > 0) {
+        this.requestBoleta.periodo = resultado;
+        this.requestBoleta.empId = int.parse(currentUser.value.idSap!);
+        obtenerBoletaPago(context);
+        //listarBoletas(context, int.parse(currentUser.value.idSap!));
+      }
     }
   }
 
