@@ -1,13 +1,26 @@
 PODS:
+  - better_page_turn (0.0.1):
+    - Flutter
   - device_info (0.0.1):
     - Flutter
   - Flutter (1.0.0)
+  - flutter_local_notifications (0.0.1):
+    - Flutter
+  - fluttertoast (0.0.2):
+    - Flutter
+    - Toast
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
   - location (0.0.1):
     - Flutter
+  - open_file (0.0.1):
+    - Flutter
   - path_provider (0.0.1):
+    - Flutter
+  - pdf_viewer_plugin (0.0.1):
+    - Flutter
+  - "permission_handler (5.1.0+2)":
     - Flutter
   - platform_device_id (0.0.1):
     - Flutter
@@ -16,14 +29,21 @@ PODS:
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
+  - Toast (4.0.0)
   - url_launcher (0.0.1):
     - Flutter
 
 DEPENDENCIES:
+  - better_page_turn (from `.symlinks/plugins/better_page_turn/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - Flutter (from `Flutter`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - location (from `.symlinks/plugins/location/ios`)
+  - open_file (from `.symlinks/plugins/open_file/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - pdf_viewer_plugin (from `.symlinks/plugins/pdf_viewer_plugin/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - platform_device_id (from `.symlinks/plugins/platform_device_id/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
@@ -32,16 +52,29 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - FMDB
+    - Toast
 
 EXTERNAL SOURCES:
+  better_page_turn:
+    :path: ".symlinks/plugins/better_page_turn/ios"
   device_info:
     :path: ".symlinks/plugins/device_info/ios"
   Flutter:
     :path: Flutter
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
   location:
     :path: ".symlinks/plugins/location/ios"
+  open_file:
+    :path: ".symlinks/plugins/open_file/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
+  pdf_viewer_plugin:
+    :path: ".symlinks/plugins/pdf_viewer_plugin/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
   platform_device_id:
     :path: ".symlinks/plugins/platform_device_id/ios"
   shared_preferences:
@@ -52,16 +85,23 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher/ios"
 
 SPEC CHECKSUMS:
+  better_page_turn: 483901844614eecaad29211077cbfceaa2417129
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
+  fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
+  open_file: 02eb5cb6b21264bd3a696876f5afbfb7ca4f4b7d
   path_provider: d1e9807085df1f9cc9318206cd649dc0b76be3de
+  pdf_viewer_plugin: 45fc2233c590780ca0ca623a1f575e4bd0a72b3a
+  permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   platform_device_id: 81b3e2993881f87d0c82ef151dc274df4869aef5
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   url_launcher: b6e016d912f04be9f5bf6e8e82dc599b7ba59649
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
-COCOAPODS: 1.10.2
+COCOAPODS: 1.11.2
