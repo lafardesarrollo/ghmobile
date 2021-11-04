@@ -104,21 +104,50 @@ class PermisoController extends ControllerMVC {
   void listarBoletas(BuildContext context, int idEmpleado) async {
     final Stream<List<BoletaPermiso>> stream =
         await obtenerPermisosPorEmpleado(idEmpleado);
-    stream.listen((List<BoletaPermiso> _lpermisos) {
-      setState(() {
-        boletas = _lpermisos;
-        // print(boletas);
-      });
-    }, onError: (a) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Ocurrio un error al obtener la información!'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }, onDone: () {
-      loading = false;
-    });
+    stream.listen(
+      (List<BoletaPermiso> _lpermisos) {
+        setState(() {
+          boletas = _lpermisos;
+          // print(boletas);
+        });
+      },
+      onError: (a) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Ocurrio un error al obtener la información!'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      },
+      onDone: () {
+        loading = false;
+      },
+    );
+  }
+
+  // Obtener boletas por autorizador
+  void listarBoletasPorAutorizador(BuildContext context, int idEmpleado) async {
+    final Stream<List<BoletaPermiso>> stream =
+        await obtenerPermisosPorAutorizador(idEmpleado);
+    stream.listen(
+      (List<BoletaPermiso> _lpermisos) {
+        setState(() {
+          boletas = _lpermisos;
+          // print(boletas);
+        });
+      },
+      onError: (a) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Ocurrio un error al obtener la información!'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      },
+      onDone: () {
+        loading = false;
+      },
+    );
   }
 
   // Obtener boleeta de permiso por codigo
@@ -328,6 +357,86 @@ class PermisoController extends ControllerMVC {
           backgroundColor: Colors.blue,
         ));
         this.obtenerBoletaPermiso(context, boleta.idBoleta!);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('No se guardo el registro, intente nuevamente.'),
+          backgroundColor: Colors.red,
+        ));
+      }
+    }, onError: (a) {
+      Helper.hideLoader(loader);
+      loader.remove();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+            'Ocurrio un error al guardar el registro de la hora efectiva de la Retorno'),
+        backgroundColor: Colors.red,
+      ));
+    }, onDone: () {
+      Helper.hideLoader(loader);
+      loading = false;
+    });
+  }
+
+  // Fecha efectiva de retorno
+  void aprobarBoletaPermisoAutorizador(
+      BuildContext context, BoletaPermiso bol) async {
+    boleta = bol;
+
+    loader = Helper.overlayLoader(context);
+    FocusScope.of(context).unfocus();
+    Overlay.of(context)!.insert(loader);
+
+    final Stream<bool> stream = await aprobarBoletaPermiso(this.boleta);
+    stream.listen((bool result) {
+      if (result) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Se aprobo la boleta satisfactoriamente!'),
+          backgroundColor: Colors.blue,
+        ));
+        this.listarBoletasPorAutorizador(
+          context,
+          int.parse(currentUser.value.idSap!),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('No se guardo el registro, intente nuevamente.'),
+          backgroundColor: Colors.red,
+        ));
+      }
+    }, onError: (a) {
+      Helper.hideLoader(loader);
+      loader.remove();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+            'Ocurrio un error al guardar el registro de la hora efectiva de la Retorno'),
+        backgroundColor: Colors.red,
+      ));
+    }, onDone: () {
+      Helper.hideLoader(loader);
+      loading = false;
+    });
+  }
+
+  void rechazarBoletaPermisoAutorizador(
+      BuildContext context, BoletaPermiso bol) async {
+    boleta = bol;
+
+    loader = Helper.overlayLoader(context);
+    FocusScope.of(context).unfocus();
+    Overlay.of(context)!.insert(loader);
+
+    this.boleta.motivoRechazo = "Rechazo APP";
+    final Stream<bool> stream = await rechazarBoletaPermiso(this.boleta);
+    stream.listen((bool result) {
+      if (result) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Se rechazo la boleta satisfactoriamente!'),
+          backgroundColor: Colors.blue,
+        ));
+        this.listarBoletasPorAutorizador(
+          context,
+          int.parse(currentUser.value.idSap!),
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('No se guardo el registro, intente nuevamente.'),

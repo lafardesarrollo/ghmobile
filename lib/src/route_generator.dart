@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ghmobile/src/pages/asistencia_page.dart';
+import 'package:ghmobile/src/pages/autorizar_permiso_page.dart';
 import 'package:ghmobile/src/pages/boleta_pago_page.dart';
 import 'package:ghmobile/src/pages/login_page.dart';
 import 'package:ghmobile/src/pages/main_page.dart';
@@ -36,6 +37,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => ReglamentoPage());
       case '/ReglamentoInterno':
         return MaterialPageRoute(builder: (_) => ReglamentoInternoPage());
+      case '/AutorizarPermiso':
+        return MaterialPageRoute(builder: (_) => AutorizarPermisoPage());
       // case '/AtencionSinRes':
       //   return MaterialPageRoute(builder: (_) => AtencionsinresPage());
       // case '/MisAtenciones':

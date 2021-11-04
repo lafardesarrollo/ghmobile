@@ -119,6 +119,19 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                   style: TextStyle(color: Theme.of(context).hintColor),
                 ),
               ),
+              ListTile(
+                onTap: () {
+                  Navigator.of(context).pushNamed('/AutorizarPermiso');
+                },
+                leading: Icon(
+                  Icons.check,
+                  color: Theme.of(context).accentColor,
+                ),
+                title: Text(
+                  'Autorizar Solicitudes',
+                  style: TextStyle(color: Theme.of(context).hintColor),
+                ),
+              ),
             ],
           ),
           ListTile(

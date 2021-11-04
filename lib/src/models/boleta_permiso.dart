@@ -4,7 +4,9 @@
 
 import 'dart:convert';
 
+import 'package:ghmobile/src/models/user.dart';
 import 'package:ghmobile/src/models/usuario.dart';
+import 'package:ghmobile/src/models/usuario_lafarnet.dart';
 
 class LBoletaPermiso {
   List<BoletaPermiso> items = [];
@@ -26,38 +28,40 @@ BoletaPermiso boletaPermisoFromJson(String str) =>
 String boletaPermisoToJson(BoletaPermiso data) => json.encode(data.toJson());
 
 class BoletaPermiso {
-  BoletaPermiso({
-    this.idBoleta,
-    this.concepto,
-    this.userid,
-    this.fechaRegistro,
-    this.horaRegistro,
-    this.fechaSalida,
-    this.horaSalida,
-    this.diaEntero,
-    this.fechaRetorno,
-    this.horaRetorno,
-    this.fechaEfectivaRetorno,
-    this.horaEfectivaRetorno,
-    this.mitadJornada,
-    this.motivos,
-    this.cuentaSalida,
-    this.idSuperior,
-    this.autorizador,
-    this.estadoPermiso,
-    this.fechaAccionSuperior,
-    this.horaAccionSuperior,
-    this.motivoRechazo,
-    this.detalleCompensacion,
-    this.fechaEfectivaSalida,
-    this.horaEfectivaSalida,
-    this.latLngSalida,
-    this.latLngRetorno,
-  });
+  BoletaPermiso(
+      {this.idBoleta,
+      this.concepto,
+      this.userid,
+      this.usuario,
+      this.fechaRegistro,
+      this.horaRegistro,
+      this.fechaSalida,
+      this.horaSalida,
+      this.diaEntero,
+      this.fechaRetorno,
+      this.horaRetorno,
+      this.fechaEfectivaRetorno,
+      this.horaEfectivaRetorno,
+      this.mitadJornada,
+      this.motivos,
+      this.cuentaSalida,
+      this.idSuperior,
+      this.autorizador,
+      this.estadoPermiso,
+      this.fechaAccionSuperior,
+      this.horaAccionSuperior,
+      this.motivoRechazo,
+      this.detalleCompensacion,
+      this.fechaEfectivaSalida,
+      this.horaEfectivaSalida,
+      this.latLngSalida,
+      this.latLngRetorno,
+      this.aut});
 
   int? idBoleta;
   String? concepto;
   int? userid;
+  UsuarioLafarnet? usuario = new UsuarioLafarnet();
   String? fechaRegistro;
   String? horaRegistro;
   String? fechaSalida;
@@ -81,11 +85,15 @@ class BoletaPermiso {
   String? horaEfectivaSalida;
   String? latLngSalida;
   String? latLngRetorno;
+  User? aut = new User();
 
   factory BoletaPermiso.fromJson(Map<String, dynamic> json) => BoletaPermiso(
         idBoleta: json["id_boleta"],
         concepto: json["concepto"],
         userid: json["userid"],
+        usuario: json["usuario"] != null
+            ? UsuarioLafarnet.fromJson(json["usuario"])
+            : new UsuarioLafarnet(),
         fechaRegistro: json["fecha_registro"],
         horaRegistro: json["hora_registro"],
         fechaSalida: json["fecha_salida"],
@@ -109,12 +117,14 @@ class BoletaPermiso {
         horaEfectivaSalida: json["hora_efectiva_salida"],
         latLngSalida: json["lat_lng_salida"],
         latLngRetorno: json["lat_lng_retorno"],
+        aut: json["aut"] != null ? User.fromJson(json["aut"]) : new User(),
       );
 
   Map<String, dynamic> toJson() => {
         "id_boleta": idBoleta,
         "concepto": concepto,
         "userid": userid,
+        "usuario": usuario,
         "fecha_registro": fechaRegistro,
         "hora_registro": horaRegistro,
         "fecha_salida": fechaSalida,
@@ -137,6 +147,6 @@ class BoletaPermiso {
         "fecha_efectiva_salida": fechaEfectivaSalida,
         "hora_efectiva_salida": horaEfectivaSalida,
         "lat_lng_salida": latLngSalida,
-        "lat_lng_retorno": latLngRetorno,
+        "lat_lng_retorno": latLngRetorno
       };
 }
