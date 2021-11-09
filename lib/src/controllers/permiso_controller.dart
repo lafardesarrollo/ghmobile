@@ -377,7 +377,7 @@ class PermisoController extends ControllerMVC {
     });
   }
 
-  // Fecha efectiva de retorno
+  // aprobar boleta permiso
   void aprobarBoletaPermisoAutorizador(
       BuildContext context, BoletaPermiso bol) async {
     boleta = bol;
@@ -417,6 +417,45 @@ class PermisoController extends ControllerMVC {
     });
   }
 
+  // aprobar boleta permiso
+  void aprobarTodasBoletaPermisoAutorizador(BuildContext context) async {
+    loader = Helper.overlayLoader(context);
+    FocusScope.of(context).unfocus();
+    Overlay.of(context)!.insert(loader);
+
+    final Stream<bool> stream =
+        await aprobarTodasBoletaPermiso(int.parse(currentUser.value.idSap!));
+    stream.listen((bool result) {
+      if (result) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Se aprobaron las boletas satisfactoriamente!'),
+          backgroundColor: Colors.blue,
+        ));
+        this.listarBoletasPorAutorizador(
+          context,
+          int.parse(currentUser.value.idSap!),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('No se guardo el registro, intente nuevamente.'),
+          backgroundColor: Colors.red,
+        ));
+      }
+    }, onError: (a) {
+      Helper.hideLoader(loader);
+      loader.remove();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+            'Ocurrio un error al guardar el registro de la hora efectiva de la Retorno'),
+        backgroundColor: Colors.red,
+      ));
+    }, onDone: () {
+      Helper.hideLoader(loader);
+      loading = false;
+    });
+  }
+
   void rechazarBoletaPermisoAutorizador(
       BuildContext context, BoletaPermiso bol) async {
     boleta = bol;
@@ -425,10 +464,11 @@ class PermisoController extends ControllerMVC {
     FocusScope.of(context).unfocus();
     Overlay.of(context)!.insert(loader);
 
-    this.boleta.motivoRechazo = "Rechazo APP";
+    // this.boleta.motivoRechazo = motivo;
     final Stream<bool> stream = await rechazarBoletaPermiso(this.boleta);
     stream.listen((bool result) {
       if (result) {
+        Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Se rechazo la boleta satisfactoriamente!'),
           backgroundColor: Colors.blue,

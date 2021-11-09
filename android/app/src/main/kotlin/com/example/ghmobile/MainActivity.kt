@@ -1,4 +1,4 @@
-package com.example.ghmobile
+package net.lafar.ghmobile
 
 import io.flutter.embedding.android.FlutterActivity
 

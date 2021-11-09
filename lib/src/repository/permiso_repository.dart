@@ -72,6 +72,24 @@ Future<Stream<BoletaPermiso>> obtieneBoletaPermisoPorCodigo(
   }
 }
 
+Future<Stream<bool>> aprobarTodasBoletaPermiso(int userid) async {
+  // Uri uri = Helper.getUriLfr('api/producto');
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url_ghapi')}permiso/autorizarTodos/' +
+          userid.toString();
+  final client = new http.Client();
+  final response = await client.get(Uri.parse(url));
+  try {
+    if (response.statusCode == 200) {
+      return new Stream.value(true);
+    } else {
+      return new Stream.value(false);
+    }
+  } catch (e) {
+    return new Stream.value(false);
+  }
+}
+
 Future<Stream<bool>> aprobarBoletaPermiso(BoletaPermiso boleta) async {
   // Uri uri = Helper.getUriLfr('api/producto');
   final String url =

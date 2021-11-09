@@ -236,7 +236,7 @@ class NuevaAsistenciaPageState extends StateMVC<NuevaAsistenciaPage> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            // _con.guardarVacaciones(context);
+            _con.abrirVerMapa(context);
           },
           label: Text('Ver Ubicación'),
           icon: FaIcon(FontAwesomeIcons.map),

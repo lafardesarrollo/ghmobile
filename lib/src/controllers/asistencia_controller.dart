@@ -8,6 +8,7 @@ import 'package:ghmobile/src/helpers/helper.dart';
 import 'package:ghmobile/src/models/marcacion.dart';
 import 'package:ghmobile/src/models/regional.dart';
 import 'package:ghmobile/src/models/regional_select.dart';
+import 'package:ghmobile/src/pages/mapa_marcacion_page.dart';
 import 'package:ghmobile/src/pages/nueva_asistencia_page.dart';
 import 'package:ghmobile/src/repository/asistencia_repository.dart';
 import 'package:ghmobile/src/repository/regional_repository.dart';
@@ -126,6 +127,21 @@ class AsistenciaController extends ControllerMVC {
     }, onDone: () {
       loading = false;
     });
+  }
+
+  Future<void> abrirVerMapa(BuildContext context) async {
+    final resultado = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MapaMarcacionPage(
+          marcaje: this.marcacion,
+          regional: this.regional,
+          // seguimiento: _seguimiento,
+        ),
+      ),
+    );
+    if (resultado) {
+    } else {}
   }
 
   Future<void> abrirNuevoMarcaje(BuildContext context) async {
