@@ -212,7 +212,7 @@ class NuevaAsistenciaPageState extends StateMVC<NuevaAsistenciaPage> {
                   _con.guardarMarcacion(context, 'I');
                 },
                 icon: FaIcon(FontAwesomeIcons.fingerprint),
-                label: Text('MARCAR INGRESO'),
+                label: Text('MARCAR INGRESO MAÑANA'),
               ),
               SizedBox(
                 height: 10,
@@ -228,7 +228,39 @@ class NuevaAsistenciaPageState extends StateMVC<NuevaAsistenciaPage> {
                   _con.guardarMarcacion(context, 'S');
                 },
                 icon: FaIcon(FontAwesomeIcons.fingerprint),
-                label: Text('MARCAR SALIDA'),
+                label: Text('MARCAR SALIDA MAÑANA'),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  fixedSize: Size(App(context).appWidth(100), 70),
+                  primary: Theme.of(context).hintColor,
+                ),
+                onPressed: () {
+                  _con.guardarMarcacion(context, 'IT');
+                },
+                icon: FaIcon(FontAwesomeIcons.fingerprint),
+                label: Text('MARCAR INGRESO TARDE'),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  fixedSize: Size(App(context).appWidth(100), 70),
+                  primary: Theme.of(context).accentColor,
+                ),
+                onPressed: () {
+                  _con.guardarMarcacion(context, 'ST');
+                },
+                icon: FaIcon(FontAwesomeIcons.fingerprint),
+                label: Text('MARCAR SALIDA TARDE'),
               )
             ],
           ),

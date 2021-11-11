@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:ghmobile/src/models/asistencia_calculo_general.dart';
 import 'package:ghmobile/src/models/cumpleaneros.dart';
 import 'package:ghmobile/src/models/publicacion.dart';
+import 'package:ghmobile/src/models/request_asistencia_persona.dart';
 import 'package:ghmobile/src/models/response_saldo_vacaciones.dart';
 import 'package:ghmobile/src/pages/cumpleaneros_page.dart';
 import 'package:ghmobile/src/pages/nueva_asistencia_page.dart';
+import 'package:ghmobile/src/repository/asistencia_repository.dart';
 import 'package:ghmobile/src/repository/home_repository.dart';
 import 'package:ghmobile/src/repository/publicacion_repository.dart';
 import 'package:ghmobile/src/repository/settings_repository.dart';
@@ -25,6 +30,7 @@ class MainPageController extends ControllerMVC {
 
   // SALDO DE VACACIONES
   ResponseSaldoVacaciones saldoVacaciones = new ResponseSaldoVacaciones();
+  AsistenciaCalculoGeneral atrasos = new AsistenciaCalculoGeneral();
 
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -133,65 +139,33 @@ class MainPageController extends ControllerMVC {
     }
   }
 
-  // void listenSeguimientoUsuario({String message}) async {
-  //   final Stream<List<Seguimiento>> stream = await getSeguimientoPorUsuario();
-  //   stream.listen((List<Seguimiento> _lseguimiento) {
-  //     setState(() {
-  //       lseguimiento = _lseguimiento;
-  //     });
-  //   }, onError: (a) {
-  //     print(a);
-  //     scaffoldKey?.currentState?.showSnackBar(SnackBar(
-  //       content: Text('Ocurrio un error al obtener la información'),
-  //     ));
-  //   }, onDone: () {
-  //     if (message != null) {
-  //       scaffoldKey.currentState.showSnackBar(SnackBar(
-  //         content: Text(message),
-  //         backgroundColor: Colors.green,
-  //       ));
-  //     }
-  //   });
-  // }
+  // OBTENER ATRASOS ACUMULADOS DEL MES
+  void getAtrasosMesActual(String idEmpleado, {String? message}) async {
+    final request = new RequestAsistenciaPersona();
 
-  // void listenSeguimientoUsuarioFecha(String fecha) async {
-  //   final Stream<List<Seguimiento>> stream =
-  //       await getSeguimientoPorUsuarioFecha(fecha);
-  //   stream.listen((List<Seguimiento> _lseguimiento) {
-  //     setState(() {
-  //       lseguimiento = _lseguimiento;
-  //     });
-  //   }, onError: (a) {
-  //     print(a);
-  //     scaffoldKey?.currentState?.showSnackBar(SnackBar(
-  //       content: Text('Ocurrio un error al obtener la información'),
-  //     ));
-  //   }, onDone: () {});
-  // }
+    request.empleado = int.parse(idEmpleado);
+    request.fechaInicio = "2021-11-09";
+    request.fechaFin = "2021-11-11";
 
-  // Future<void> abrirDetalleSeguimiento(Seguimiento _seguimiento) async {
-  //   final resultado = await Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => DetalleSeguimientoPage(
-  //         seguimiento: _seguimiento,
-  //       ),
-  //     ),
-  //   );
-  //   if (resultado) {
-  //   } else {
-
-  //   }
-  // }
-
-  // Future<void> abrirAgregarNuevo() async {
-  //   final resultado = await Navigator.push(
-  //       context, MaterialPageRoute(builder: (context) => SeguimientoPage()));
-  //   if (resultado) {
-  //     // this.listenSeguimientoUsuario(message: 'Se creo el nuevo registro!');
-  //     this.listenSeguimientoUsuarioFecha("Hoy");
-  //   } else {
-  //     print('No se actualizo el sistema');
-  //   }
-  // }
+    final Stream<AsistenciaCalculoGeneral> stream =
+        await obtieneAtrasosPorMes(request); //(currentUser.value.username);
+    stream.listen((AsistenciaCalculoGeneral _saldo) {
+      setState(() {
+        this.atrasos = _saldo;
+        print(jsonEncode(atrasos));
+      });
+    }, onError: (a) {
+      print(a);
+      scaffoldKey.currentState?.showSnackBar(SnackBar(
+        content: Text('Ocurrio un error al obtener los retrasos'),
+      ));
+    }, onDone: () {
+      if (message != null) {
+        scaffoldKey.currentState!.showSnackBar(SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.green,
+        ));
+      }
+    });
+  }
 }

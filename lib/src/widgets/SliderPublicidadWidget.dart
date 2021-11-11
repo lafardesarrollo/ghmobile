@@ -85,24 +85,28 @@ class _SliderPublicidadWidgetState extends State<SliderPublicidadWidget> {
                                 Positioned(
                                   bottom: 0,
                                   child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 10),
                                     margin: EdgeInsets.symmetric(horizontal: 5),
                                     width:
                                         MediaQuery.of(context).size.width - 10,
-                                    color: Theme.of(context)
-                                        .accentColor
-                                        .withOpacity(
-                                            0.7), // Colors.blueGrey.withOpacity(0.9),
+                                    color: Theme.of(context).hintColor.withOpacity(
+                                        0.7), // Colors.blueGrey.withOpacity(0.9),
                                     // color: Colors.black,
                                     child: Column(
                                       children: [
                                         Text(
                                           publicacion.titulo!,
                                           style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .secondaryHeaderColor,
                                               fontWeight: FontWeight.w500),
                                         ),
                                         Text(
                                           publicacion.fechaPublicacion!,
                                           style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .secondaryHeaderColor,
                                               fontSize: 15,
                                               fontWeight: FontWeight.w200),
                                         ),

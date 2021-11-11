@@ -33,7 +33,7 @@ class _CabeceraItemsCaruselWidgetState
           widget.titulo!,
           style: TextStyle(
               color: Theme.of(context).primaryColor,
-              fontSize: 18.0,
+              fontSize: 16.0,
               fontWeight: FontWeight.bold),
         ),
       ),

@@ -37,7 +37,9 @@ class _MainPageState extends StateMVC<MainPage>
     _con.getLocalization();
     _con.obtenerPublicacionesIntranet(context);
     _con.obtenerCumpleanerosMes(context);
+
     _con.obtenerSaldoVacaciones(int.parse(currentUser.value.idSap!));
+    _con.getAtrasosMesActual(currentUser.value.idSap!);
     animationController =
         AnimationController(duration: Duration(milliseconds: 200), vsync: this);
     CurvedAnimation curve =
@@ -106,13 +108,14 @@ class _MainPageState extends StateMVC<MainPage>
         floatingActionButtonLocation:
             FloatingActionButtonLocation.miniCenterFloat,
         floatingActionButton: FloatingActionButton.large(
-          backgroundColor: Colors.blue.withOpacity(0.4),
+          backgroundColor: Colors.blue.withOpacity(0.2),
           onPressed: () {
             _con.abrirNuevoMarcaje(context);
           },
           child: Icon(
             Icons.fingerprint,
             size: 90,
+            color: Theme.of(context).primaryColor,
           ),
         ),
         body: RefreshIndicator(
@@ -168,7 +171,7 @@ class _MainPageState extends StateMVC<MainPage>
                   ),
                 ),
                 Card(
-                  color: Colors.red,
+                  color: Theme.of(context).dividerColor,
                   child: Center(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -184,7 +187,7 @@ class _MainPageState extends StateMVC<MainPage>
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            '13 MINUTOS',
+                            _con.atrasos.retrasoTotal.toString() + ' minutos',
                             style: TextStyle(
                                 fontSize: 35,
                                 fontWeight: FontWeight.bold,
