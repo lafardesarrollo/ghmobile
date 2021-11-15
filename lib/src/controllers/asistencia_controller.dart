@@ -246,9 +246,11 @@ class AsistenciaController extends ControllerMVC {
         }
       });
     }, onError: (a) {
-      print("====ON ERROR");
+      Helper.hideLoader(loader);
+      loader.remove();
     }, onDone: () {
-      print("====ON DONE");
+      Helper.hideLoader(loader);
+      loading = false;
     });
   }
 

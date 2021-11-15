@@ -69,7 +69,7 @@ class _SliderPublicidadWidgetState extends State<SliderPublicidadWidget> {
                                       image: NetworkImage(
                                         'http://intranet.lafar.net/newApiLafarnet/assets/publicaciones_images/${publicacion.nombreAdjunto}',
                                       ), // NetworkImage(slide.image.url,),
-                                      fit: BoxFit.cover,
+                                      fit: BoxFit.scaleDown,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
                                     boxShadow: [

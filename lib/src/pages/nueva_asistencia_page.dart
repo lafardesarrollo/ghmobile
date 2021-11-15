@@ -199,13 +199,13 @@ class NuevaAsistenciaPageState extends StateMVC<NuevaAsistenciaPage> {
                 ),
               ),
               SizedBox(
-                height: 10,
+                height: 5,
               ),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
-                  fixedSize: Size(App(context).appWidth(100), 70),
+                  fixedSize: Size(App(context).appWidth(100), 50),
                   primary: Theme.of(context).hintColor,
                 ),
                 onPressed: () {
@@ -215,13 +215,13 @@ class NuevaAsistenciaPageState extends StateMVC<NuevaAsistenciaPage> {
                 label: Text('MARCAR INGRESO MAÑANA'),
               ),
               SizedBox(
-                height: 10,
+                height: 5,
               ),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
-                  fixedSize: Size(App(context).appWidth(100), 70),
+                  fixedSize: Size(App(context).appWidth(100), 50),
                   primary: Theme.of(context).accentColor,
                 ),
                 onPressed: () {
@@ -231,13 +231,13 @@ class NuevaAsistenciaPageState extends StateMVC<NuevaAsistenciaPage> {
                 label: Text('MARCAR SALIDA MAÑANA'),
               ),
               SizedBox(
-                height: 10,
+                height: 5,
               ),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
-                  fixedSize: Size(App(context).appWidth(100), 70),
+                  fixedSize: Size(App(context).appWidth(100), 50),
                   primary: Theme.of(context).hintColor,
                 ),
                 onPressed: () {
@@ -247,13 +247,13 @@ class NuevaAsistenciaPageState extends StateMVC<NuevaAsistenciaPage> {
                 label: Text('MARCAR INGRESO TARDE'),
               ),
               SizedBox(
-                height: 10,
+                height: 5,
               ),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
-                  fixedSize: Size(App(context).appWidth(100), 70),
+                  fixedSize: Size(App(context).appWidth(100), 50),
                   primary: Theme.of(context).accentColor,
                 ),
                 onPressed: () {
