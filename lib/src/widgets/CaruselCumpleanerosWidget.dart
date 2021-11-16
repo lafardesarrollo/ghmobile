@@ -1,6 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:ghmobile/src/helpers/helper.dart';
 import 'package:ghmobile/src/models/cumpleaneros.dart';
 import 'package:ghmobile/src/widgets/ItemCaruselCumpleanerosWidget.dart';
 

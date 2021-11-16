@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ghmobile/src/models/boleta_pago.dart';
+import 'package:ghmobile/src/models/periodo_boleta.dart';
 import 'package:ghmobile/src/models/request_boleta_pago.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 
-Future<Stream<List<String>>> obtenerPeriodosBoletaPagoEmpleado(
+Future<Stream<List<PeriodoBoleta>>> obtenerPeriodosBoletaPagoEmpleado(
     int idEmpleado) async {
   final String url =
       '${GlobalConfiguration().getString('api_base_url_ghapi')}boletapago/${idEmpleado}';
@@ -16,11 +17,8 @@ Future<Stream<List<String>>> obtenerPeriodosBoletaPagoEmpleado(
 
   try {
     if (response.statusCode == 200) {
-      List<String> periodos =
-          (jsonDecode(response.body) as List<dynamic>).cast<String>();
-      // final periodos = (json.decode(response.body));
-      // final lreserva =  LReserva.fromJsonList(json.decode(response.body)['body']);
-      return new Stream.value(periodos);
+      final periodos = LPeriodos.fromJsonList(json.decode(response.body));
+      return new Stream.value(periodos.items);
     } else {
       return new Stream.value([]);
     }

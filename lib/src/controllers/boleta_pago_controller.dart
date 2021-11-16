@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:ghmobile/src/helpers/helper.dart';
 import 'package:ghmobile/src/models/boleta_pago.dart';
+import 'package:ghmobile/src/models/periodo_boleta.dart';
 import 'package:ghmobile/src/models/request_boleta_pago.dart';
 import 'package:ghmobile/src/repository/boleta_pago_repository.dart';
 import 'package:ghmobile/src/repository/user_repository.dart';
@@ -19,7 +20,8 @@ class BoletaPagoController extends ControllerMVC {
 
   String dropdownValue = 'Agosto';
 
-  List<String> periodos = [];
+  List<PeriodoBoleta> periodos = [];
+  List<String> gestiones = [];
   late OverlayEntry loader;
 
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -31,12 +33,12 @@ class BoletaPagoController extends ControllerMVC {
   }
 
   void listarPeriodos(BuildContext context, int idEmpleado) async {
-    final Stream<List<String>> stream =
+    final Stream<List<PeriodoBoleta>> stream =
         await obtenerPeriodosBoletaPagoEmpleado(idEmpleado);
-    stream.listen((List<String> _periodos) {
+    stream.listen((List<PeriodoBoleta> _periodos) {
       setState(() {
         periodos = _periodos;
-        // print(periodos);
+        generaGestiones(_periodos);
       });
     }, onError: (a) {
       // print(a);
@@ -47,6 +49,14 @@ class BoletaPagoController extends ControllerMVC {
         ),
       );
     }, onDone: () {});
+  }
+
+  void generaGestiones(List<PeriodoBoleta> _periodos) {
+    List<String> _anios = [];
+    _periodos.forEach((element) {
+      _anios.add(element.gestion!);
+    });
+    gestiones = _anios.toSet().toList();
   }
 
   void obtenerBoletaPago(BuildContext context, {String? message}) async {
@@ -90,6 +100,7 @@ class BoletaPagoController extends ControllerMVC {
       MaterialPageRoute(
         builder: (context) => SeleccionarPeriodoWidget(
           periodos: periodos,
+          gestiones: gestiones,
         ),
       ),
     );

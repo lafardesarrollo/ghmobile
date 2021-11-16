@@ -36,8 +36,9 @@ class ItemCaruselCumpleanerosWidget extends StatelessWidget {
                       'assets/img/loading.gif',
                       fit: BoxFit.cover,
                     ),
-                    errorWidget: (context, url, error) =>
-                        Image.asset('assets/img/profile_blue.png'),
+                    errorWidget: (context, url, error) => Image.asset(
+                      'assets/img/user.png',
+                    ),
                   ),
                 ),
               ),
