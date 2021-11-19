@@ -63,7 +63,7 @@ class MainPageController extends ControllerMVC {
       setState(() {
         this.saldoVacaciones = _saldo;
         this.saldoDias =
-            this.saldoVacaciones.numdias! - this.saldoVacaciones.diasUsados!;
+            this.saldoVacaciones.saldo! - this.saldoVacaciones.diasUsados!;
       });
     }, onError: (a) {
       print(a);
@@ -143,9 +143,14 @@ class MainPageController extends ControllerMVC {
   void getAtrasosMesActual(String idEmpleado, {String? message}) async {
     final request = new RequestAsistenciaPersona();
 
+    final int mesactual = DateTime.now().month;
+    final int mesanterior = DateTime.now().month - 1;
+    final String nuevo_mes = mesactual.toString().padLeft(2, '0');
+    final String nuevo_mes_anterior = mesanterior.toString().padLeft(2, '0');
+
     request.empleado = int.parse(idEmpleado);
-    request.fechaInicio = "2021-11-09";
-    request.fechaFin = "2021-11-11";
+    request.fechaInicio = "2021-${nuevo_mes_anterior}-26";
+    request.fechaFin = "2021-${nuevo_mes}-26";
 
     final Stream<AsistenciaCalculoGeneral> stream =
         await obtieneAtrasosPorMes(request); //(currentUser.value.username);

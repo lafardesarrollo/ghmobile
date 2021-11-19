@@ -59,6 +59,8 @@ Future<Stream<ResponseSaldoVacaciones>> obtenerSaldoVacacionesPorEmpleado(
       '${GlobalConfiguration().getValue('api_base_url_apicore')}personavacacion/' +
           idEmpleado.toString();
 
+  print(url);
+
   final client = new http.Client();
   final response = await client.get(
     Uri.parse(url),

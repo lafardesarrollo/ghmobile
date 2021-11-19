@@ -147,35 +147,35 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
               style: TextStyle(color: Theme.of(context).hintColor),
             ),
           ),
-          ListTile(
-            onTap: () {
-              Navigator.of(context).pushNamed('/Organigrama');
-            },
-            leading: Icon(
-              Icons.account_tree_sharp,
-              color: Theme.of(context).focusColor.withOpacity(1),
-            ),
-            title: Text(
-              'Organigrama',
-              style: TextStyle(color: Theme.of(context).hintColor),
-            ),
-          ),
+          // ListTile(
+          //   onTap: () {
+          //     Navigator.of(context).pushNamed('/Organigrama');
+          //   },
+          //   leading: Icon(
+          //     Icons.account_tree_sharp,
+          //     color: Theme.of(context).focusColor.withOpacity(1),
+          //   ),
+          //   title: Text(
+          //     'Organigrama',
+          //     style: TextStyle(color: Theme.of(context).hintColor),
+          //   ),
+          // ),
           Divider(
             color: Theme.of(context).primaryColor,
           ),
-          ListTile(
-            onTap: () {
-              Navigator.of(context).pushNamed('/ManualFunciones');
-            },
-            leading: Icon(
-              Icons.menu_book,
-              color: Theme.of(context).accentColor.withOpacity(1),
-            ),
-            title: Text(
-              'Mi Manual de Funciones',
-              style: TextStyle(color: Theme.of(context).hintColor),
-            ),
-          ),
+          // ListTile(
+          //   onTap: () {
+          //     Navigator.of(context).pushNamed('/ManualFunciones');
+          //   },
+          //   leading: Icon(
+          //     Icons.menu_book,
+          //     color: Theme.of(context).accentColor.withOpacity(1),
+          //   ),
+          //   title: Text(
+          //     'Mi Manual de Funciones',
+          //     style: TextStyle(color: Theme.of(context).hintColor),
+          //   ),
+          // ),
           ListTile(
             onTap: () {
               Navigator.of(context).pushNamed('/ReglamentoInterno');

@@ -1,16 +1,24 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:ghmobile/src/models/cumpleaneros.dart';
-import 'package:ghmobile/src/widgets/ItemCaruselCumpleanerosWidget.dart';
+
+import 'ItemCaruselCumpleanerosWidget.dart';
 
 // ignore: must_be_immutable
-class CaruselCumpleanerosWidget extends StatelessWidget {
+class CaruselCumpleanerosWidget extends StatefulWidget {
   List<Cumpleaneros>? cumpleaneros;
 
   CaruselCumpleanerosWidget({Key? key, this.cumpleaneros}) : super(key: key);
 
   @override
+  State<CaruselCumpleanerosWidget> createState() =>
+      _CaruselCumpleanerosWidgetState();
+}
+
+class _CaruselCumpleanerosWidgetState extends State<CaruselCumpleanerosWidget> {
+  @override
   Widget build(BuildContext context) {
-    return cumpleaneros!.isEmpty
+    return widget.cumpleaneros!.isEmpty
         ? Container(
             height: 300,
             color: Theme.of(context).primaryColor,
@@ -31,22 +39,41 @@ class CaruselCumpleanerosWidget extends StatelessWidget {
               },
               scrollDirection: Axis.horizontal,
             ))
-        : Container(
-            height: 300,
-            margin: EdgeInsets.only(top: 10),
-            child: ListView.builder(
-              itemCount: cumpleaneros!.length,
-              itemBuilder: (context, index) {
-                double _marginLeft = 0;
-                (index == 0) ? _marginLeft = 20 : _marginLeft = 0;
-                return ItemCaruselCumpleanerosWidget(
-                  heroTag: 'cumpleanero' + UniqueKey().toString(),
-                  marginLeft: _marginLeft,
-                  cumpleanero: cumpleaneros!.elementAt(index),
-                );
-              },
-              scrollDirection: Axis.horizontal,
+        : CarouselSlider.builder(
+            itemCount: widget.cumpleaneros!.length,
+            itemBuilder:
+                (BuildContext context, int itemIndex, int pageViewIndex) {
+              double _marginLeft = 0;
+              (itemIndex == 0) ? _marginLeft = 20 : _marginLeft = 0;
+              return ItemCaruselCumpleanerosWidget(
+                heroTag: 'cumpleanero' + UniqueKey().toString(),
+                marginLeft: _marginLeft,
+                cumpleanero: widget.cumpleaneros!.elementAt(itemIndex),
+              );
+            },
+            options: CarouselOptions(
+              disableCenter: true,
+              autoPlay: true,
+              aspectRatio: 2.0,
+              enlargeCenterPage: true,
             ),
           );
+    // : Container(
+    //     height: 300,
+    //     margin: EdgeInsets.only(top: 10),
+    //     child: ScrollablePositionedList.builder(
+    //       itemCount: widget.cumpleaneros!.length,
+    //       itemBuilder: (context, index) {
+    //         double _marginLeft = 0;
+    //         (index == 0) ? _marginLeft = 20 : _marginLeft = 0;
+    //         return ItemCaruselCumpleanerosWidget(
+    //           heroTag: 'cumpleanero' + UniqueKey().toString(),
+    //           marginLeft: _marginLeft,
+    //           cumpleanero: widget.cumpleaneros!.elementAt(index),
+    //         );
+    //       },
+    //       scrollDirection: Axis.horizontal,
+    //     ),
+    //   );
   }
 }

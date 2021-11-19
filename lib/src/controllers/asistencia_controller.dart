@@ -164,8 +164,6 @@ class AsistenciaController extends ControllerMVC {
 
   void guardarMarcacion(BuildContext context, String tipoMarcacion) async {
     loader = Helper.overlayLoader(context);
-    FocusScope.of(context).unfocus();
-    Overlay.of(context)!.insert(loader);
 
     marcacion.id = 0;
     marcacion.idGeneral = 0;
@@ -191,6 +189,8 @@ class AsistenciaController extends ControllerMVC {
 
     final Stream<LocationData> stream = await obtenerLocalizacionActual();
     stream.listen((LocationData _locationData) {
+      FocusScope.of(context).unfocus();
+      Overlay.of(context)!.insert(loader);
       setState(() async {
         this.latitud = _locationData.latitude;
         this.longitud = _locationData.longitude;
@@ -227,30 +227,33 @@ class AsistenciaController extends ControllerMVC {
                 backgroundColor: Colors.red,
               ));
             }
-          }, onError: (a) {
-            Helper.hideLoader(loader);
             loader.remove();
+          }, onError: (a) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('Ocurrio un error al guardar la Marcación'),
               backgroundColor: Colors.red,
             ));
+            loader.remove();
           }, onDone: () {
-            Helper.hideLoader(loader);
-            loading = false;
+            // Helper.hideLoader(loader);
           });
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('No se encuentra en el lugar establecido!'),
             backgroundColor: Colors.red,
           ));
+          loader.remove();
         }
       });
     }, onError: (a) {
-      Helper.hideLoader(loader);
-      loader.remove();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Ocurrio un error!'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }, onDone: () {
       Helper.hideLoader(loader);
-      loading = false;
     });
   }
 

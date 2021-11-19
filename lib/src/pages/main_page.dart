@@ -171,7 +171,7 @@ class _MainPageState extends StateMVC<MainPage>
                   ),
                 ),
                 Card(
-                  color: Theme.of(context).dividerColor,
+                  color: Theme.of(context).accentColor,
                   child: Center(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,

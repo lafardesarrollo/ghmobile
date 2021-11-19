@@ -65,7 +65,7 @@ class NuevaAsistenciaPageState extends StateMVC<NuevaAsistenciaPage> {
         ),
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Column(
+          child: ListView(
             children: [
               Card(
                 child: Container(
@@ -267,6 +267,7 @@ class NuevaAsistenciaPageState extends StateMVC<NuevaAsistenciaPage> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: Theme.of(context).primaryColor,
           onPressed: () {
             _con.abrirVerMapa(context);
           },
