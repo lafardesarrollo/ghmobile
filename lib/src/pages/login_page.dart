@@ -62,6 +62,13 @@ class _LoginPageState extends StateMVC<LoginPage> {
                         TextFormField(
                           keyboardType: TextInputType.text,
                           initialValue: '',
+                          validator: (username) {
+                            if (username!.length == 0) {
+                              return 'Este campo no puede estar vacio';
+                            } else {
+                              return null;
+                            }
+                          },
                           onSaved: (input) => _con.usuario.userid = input,
                           decoration: InputDecoration(
                             labelText: 'Nombre de Usuario',
@@ -99,6 +106,13 @@ class _LoginPageState extends StateMVC<LoginPage> {
                           height: 40,
                         ),
                         TextFormField(
+                          validator: (pass) {
+                            if (pass!.length == 0) {
+                              return 'Este campo no puede estar vacio';
+                            } else {
+                              return null;
+                            }
+                          },
                           keyboardType: TextInputType.text,
                           initialValue: '',
                           onSaved: (input) => _con.usuario.password = input,
@@ -157,7 +171,8 @@ class _LoginPageState extends StateMVC<LoginPage> {
                             padding: EdgeInsets.symmetric(
                                 vertical: 12, horizontal: 80),
                             onPressed: () {
-                              _con.login(context);
+                              // _con.login(context);
+                              _con.iniciarSesion(context);
                             },
                             child: Text(
                               'Iniciar Sesión',

@@ -52,6 +52,49 @@ Future<Usuario> login(Usuario usuario) async {
   return currentUser.value;
 }
 
+Future<Stream<Usuario>> login2(Usuario usuario) async {
+  usuario.firstName = '';
+  usuario.lastName = '';
+  usuario.emailAddress = '';
+  usuario.username = '';
+  usuario.idCargo = '';
+  usuario.cargo = '';
+  usuario.idRegional = '';
+  usuario.regional = '';
+  usuario.idGrupo = '';
+  usuario.idArea = '';
+  usuario.area = '';
+  usuario.foto = '';
+  usuario.estado = '';
+  usuario.nombreEstado = '';
+  usuario.idSuperior = '';
+  usuario.ubicacion = '';
+  // print(json.encode(usuario.toMap()));
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url_newapilafarnet')}usuario/login';
+  final client = new http.Client();
+  // print(json.encode(usuario.toJson()));
+  final response = await client.post(
+    Uri.parse(url),
+    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    body: json.encode(usuario.toJson()),
+  );
+  if (response.statusCode == 200) {
+    Map<String, dynamic> responseJson = json.decode(response.body);
+    print(responseJson['status']);
+    if (responseJson['status'] == 404) {
+      return new Stream.value(new Usuario());
+    } else {
+      setCurrentUser((response.body));
+      currentUser.value =
+          Usuario.fromJson(json.decode(response.body)['body'][0]);
+    }
+  } else {
+    return Stream.value(new Usuario());
+  }
+  return Stream.value(currentUser.value);
+}
+
 // Future<Usuario> register(Usuario user) async {
 //   final String url =
 //       '${GlobalConfiguration().getString('api_base_url')}register';

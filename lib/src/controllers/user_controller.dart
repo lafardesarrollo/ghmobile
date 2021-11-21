@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ghmobile/src/helpers/helper.dart';
 import 'package:ghmobile/src/models/usuario.dart';
+import 'package:ghmobile/src/repository/user_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../repository/user_repository.dart' as repository;
@@ -10,11 +12,11 @@ class UserController extends ControllerMVC {
   String email = '';
 
   bool? hidePassword = true;
-  bool? loading = false;
+  bool loading = false;
   GlobalKey<FormState>? loginFormKey;
   GlobalKey<ScaffoldState>? scaffoldKey;
 
-  OverlayEntry? loader;
+  late OverlayEntry loader;
 
   UserController() {
     // loader = Helper.overlayLoader(context);
@@ -22,21 +24,64 @@ class UserController extends ControllerMVC {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
   }
 
-  void login(BuildContext context) async {
-    FocusScope.of(context).unfocus();
+  void iniciarSesion(BuildContext context) async {
     if (loginFormKey!.currentState!.validate()) {
+      loader = Helper.overlayLoader(context);
+      FocusScope.of(context).unfocus();
+      Overlay.of(context)!.insert(loader);
       loginFormKey!.currentState!.save();
-      // Overlay.of(context).insert(loader);
+      final Stream<Usuario> stream = await login2(usuario);
+      stream.listen((Usuario _usuario) {
+        setState(() {
+          if (_usuario.username == null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Usuario o Contraseña incorrectos'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Acceso aceptado!'),
+                backgroundColor: Colors.blue,
+              ),
+            );
+            Navigator.of(scaffoldKey!.currentContext!)
+                .pushReplacementNamed('/Main');
+          }
+        });
+      }, onError: (a) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Ocurrio un error al Iniciar Sesión!'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }, onDone: () {
+        loading = false;
+        Helper.hideLoader(loader);
+      });
+    }
+  }
+
+  void login(BuildContext context) async {
+    if (loginFormKey!.currentState!.validate()) {
+      loader = Helper.overlayLoader(context);
+      FocusScope.of(context).unfocus();
+      Overlay.of(context)!.insert(loader);
+      loginFormKey!.currentState!.save();
+
       repository.login(usuario).then((value) {
-        // loader.remove();
-        if (value != null) {
-          Navigator.of(scaffoldKey!.currentContext!)
-              .pushReplacementNamed('/Main');
-        } else {
+        if (value.username == null) {
           scaffoldKey?.currentState?.showSnackBar(SnackBar(
             content: Text('Usuario o Contraseña Incorrecto!'),
           ));
+        } else {
+          Navigator.of(scaffoldKey!.currentContext!)
+              .pushReplacementNamed('/Main');
         }
+        // loader.remove();
       }).catchError((e) {
         // loader.remove();
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
