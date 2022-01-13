@@ -9,8 +9,9 @@ import 'package:date_format/date_format.dart';
 // ignore: must_be_immutable
 class DetallePermisoPage extends StatefulWidget {
   BoletaPermiso? boletaPermiso;
+  bool? esAutorizador;
 
-  DetallePermisoPage({Key? key, this.boletaPermiso});
+  DetallePermisoPage({Key? key, this.boletaPermiso, this.esAutorizador});
 
   @override
   DetallePermisoPageState createState() => DetallePermisoPageState();
@@ -239,15 +240,23 @@ class DetallePermisoPageState extends StateMVC<DetallePermisoPage> {
                               style: Theme.of(context).textTheme.subtitle2),
                           _con.boleta.fechaEfectivaSalida ==
                                   '0001-01-01T00:00:00'
-                              ? ElevatedButton.icon(
-                                  style: ElevatedButton.styleFrom(
-                                    fixedSize:
-                                        Size(App(context).appWidth(100), 40),
-                                  ),
-                                  onPressed: () => _con.registrarSalidaEfectiva(
-                                      context, widget.boletaPermiso!),
-                                  icon: Icon(Icons.fingerprint),
-                                  label: Text('Registrar Salida Efectiva'))
+                              ? widget.esAutorizador == true
+                                  ? Text(
+                                      'No registrado',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Theme.of(context).accentColor),
+                                    )
+                                  : ElevatedButton.icon(
+                                      style: ElevatedButton.styleFrom(
+                                        fixedSize: Size(
+                                            App(context).appWidth(100), 40),
+                                      ),
+                                      onPressed: () =>
+                                          _con.registrarSalidaEfectiva(
+                                              context, widget.boletaPermiso!),
+                                      icon: Icon(Icons.fingerprint),
+                                      label: Text('Registrar Salida Efectiva'))
                               : Text(
                                   formatDate(
                                           DateTime.parse(
@@ -260,17 +269,24 @@ class DetallePermisoPageState extends StateMVC<DetallePermisoPage> {
                               style: Theme.of(context).textTheme.subtitle2),
                           _con.boleta.fechaEfectivaRetorno ==
                                   '0001-01-01T00:00:00'
-                              ? ElevatedButton.icon(
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Theme.of(context).accentColor,
-                                    fixedSize:
-                                        Size(App(context).appWidth(100), 40),
-                                  ),
-                                  onPressed: () =>
-                                      _con.registrarRetornoEfectiva(
-                                          context, widget.boletaPermiso!),
-                                  icon: Icon(Icons.fingerprint),
-                                  label: Text('Registrar Retorno'))
+                              ? widget.esAutorizador == true
+                                  ? Text(
+                                      'No registrado',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Theme.of(context).accentColor),
+                                    )
+                                  : ElevatedButton.icon(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Theme.of(context).accentColor,
+                                        fixedSize: Size(
+                                            App(context).appWidth(100), 40),
+                                      ),
+                                      onPressed: () =>
+                                          _con.registrarRetornoEfectiva(
+                                              context, widget.boletaPermiso!),
+                                      icon: Icon(Icons.fingerprint),
+                                      label: Text('Registrar Retorno'))
                               : Text(
                                   formatDate(
                                           DateTime.parse(_con

@@ -56,6 +56,7 @@ class AsistenciaController extends ControllerMVC {
   }
 
   void listarMarcaciones(BuildContext context, String username) async {
+    loading = true;
     final Stream<List<Marcacion>> stream =
         await obtieneMarcacionesPorUsername(username);
     stream.listen((List<Marcacion> _marcaciones) {

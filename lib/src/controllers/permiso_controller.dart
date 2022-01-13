@@ -194,6 +194,7 @@ class PermisoController extends ControllerMVC {
       MaterialPageRoute(
         builder: (context) => DetallePermisoPage(
           boletaPermiso: boleta,
+          esAutorizador: true,
         ),
       ),
     );

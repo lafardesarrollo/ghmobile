@@ -35,7 +35,7 @@ Future<Stream<List<BoletaPermiso>>> obtenerPermisosPorAutorizador(
   final String url =
       '${GlobalConfiguration().getValue('api_base_url_ghapi')}permiso/autorizar/' +
           idSap.toString();
-
+  print(url);
   final client = new http.Client();
   final response = await client.get(Uri.parse(url));
   try {

@@ -5,6 +5,7 @@ import 'package:ghmobile/src/controllers/asistencia_controller.dart';
 import 'package:ghmobile/src/repository/user_repository.dart';
 import 'package:ghmobile/src/widgets/CircularLoadingWidget.dart';
 import 'package:ghmobile/src/widgets/DrawerWidget.dart';
+import 'package:ghmobile/src/widgets/InformacionMensajeWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 class AsistenciaPage extends StatefulWidget {
@@ -46,44 +47,7 @@ class AsistenciaPageState extends StateMVC<AsistenciaPage> {
               onPressed: () => Scaffold.of(context).openDrawer(),
             ),
           ),
-          actions: [
-            // Container(
-            //   padding: EdgeInsets.only(right: 20),
-            //   child: DropdownButton<String>(
-            //     value: _con.dropdownValue,
-            //     icon: Icon(Icons.arrow_downward),
-            //     onChanged: (String? newValue) {
-            //       setState(() {
-            //         _con.dropdownValue = newValue!;
-            //         if (newValue == 'Agosto') {
-            //           _con.requestBoleta.periodo = "202108";
-            //         } else if (newValue == 'Julio') {
-            //           _con.requestBoleta.periodo = "202107";
-            //         } else {
-            //           _con.requestBoleta.periodo = "202106";
-            //         }
-            //         _con.obtenerBoletaPago();
-            //       });
-            //     },
-            //     items: <String>['Agosto', 'Julio', 'Junio']
-            //         .map<DropdownMenuItem<String>>((String value) {
-            //       return DropdownMenuItem<String>(
-            //         value: value,
-            //         child: Text(value),
-            //       );
-            //     }).toList(),
-            //   ),
-            // ),
-            // IconButton(
-            //   icon: FaIcon(
-            //     FontAwesomeIcons.filePdf,
-            //     color: Theme.of(context).primaryColor,
-            //   ), // FaIcon(FontAwesomeIcons.syncAlt),
-            //   onPressed: () {
-            //     // _con.refreshHome();
-            //   },
-            // )
-          ],
+          actions: [],
           backgroundColor: Colors.transparent,
           elevation: 0,
           title: Text(
@@ -97,7 +61,7 @@ class AsistenciaPageState extends StateMVC<AsistenciaPage> {
             },
             label: Text('Marcar Asistencia')),
         drawer: DrawerWidget(),
-        body: _con.marcaciones.length == 0
+        body: _con.loading
             ? CircularLoadingWidget(
                 texto: 'Cargando mis Marcaciones...',
                 height: MediaQuery.of(context).size.height,
@@ -106,62 +70,67 @@ class AsistenciaPageState extends StateMVC<AsistenciaPage> {
                 onRefresh: () async {
                   _con.listarMarcaciones(context, currentUser.value.username!);
                 },
-                child: ListView.separated(
-                    separatorBuilder: (context, index) => Divider(),
-                    itemCount: _con.marcaciones.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        onTap: () {
-                          // _con.boleta = _con.boletas.elementAt(index);
-                          // _con.abrirDetallePermiso(context);
-                        },
-                        leading: CircleAvatar(
-                          backgroundColor: _con.marcaciones
-                                      .elementAt(index)
-                                      .tipoMarcacion
-                                      .toString() ==
-                                  'Salida'
-                              ? Theme.of(context).accentColor
-                              : Theme.of(context).hintColor,
-                          child: Text(_con.marcaciones
-                                      .elementAt(index)
-                                      .tipoMarcacion
-                                      .toString() ==
-                                  'Salida'
-                              ? 'S'
-                              : 'I'),
-                        ),
-                        title: Text(formatDate(
-                            DateTime.parse(_con.marcaciones
-                                .elementAt(index)
-                                .fechaMarcacion!),
-                            [
-                              dd,
-                              '-',
-                              M,
-                              '-',
-                              yyyy,
-                              ' ',
-                              HH,
-                              ':',
-                              nn,
-                              ':',
-                              ss
-                            ])),
-                        subtitle: Text(
-                            'Lugar Marcaje: ' +
-                                _con.marcaciones.elementAt(index).regional!,
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Theme.of(context).hintColor)),
-                        trailing: IconButton(
-                            onPressed: () {
+                child: _con.marcaciones.length == 0
+                    ? InformacionMensajeWidget(
+                        mensaje: 'No se encontraron marcaciones',
+                      )
+                    : ListView.separated(
+                        separatorBuilder: (context, index) => Divider(),
+                        itemCount: _con.marcaciones.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            onTap: () {
                               // _con.boleta = _con.boletas.elementAt(index);
                               // _con.abrirDetallePermiso(context);
                             },
-                            icon: Icon(Icons.remove_red_eye_outlined)),
-                      );
-                    }),
+                            leading: CircleAvatar(
+                              backgroundColor: _con.marcaciones
+                                          .elementAt(index)
+                                          .tipoMarcacion
+                                          .toString() ==
+                                      'Salida'
+                                  ? Theme.of(context).accentColor
+                                  : Theme.of(context).hintColor,
+                              child: Text(_con.marcaciones
+                                          .elementAt(index)
+                                          .tipoMarcacion
+                                          .toString() ==
+                                      'Salida'
+                                  ? 'S'
+                                  : 'I'),
+                            ),
+                            title: Text(formatDate(
+                                DateTime.parse(_con.marcaciones
+                                    .elementAt(index)
+                                    .fechaMarcacion!),
+                                [
+                                  dd,
+                                  '-',
+                                  M,
+                                  '-',
+                                  yyyy,
+                                  ' ',
+                                  HH,
+                                  ':',
+                                  nn,
+                                  ':',
+                                  ss
+                                ])),
+                            subtitle: Text(
+                                'Lugar Marcaje: ' +
+                                    _con.marcaciones.elementAt(index).regional!,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).hintColor)),
+                            // trailing: IconButton(
+                            //   onPressed: () {
+                            //     // _con.boleta = _con.boletas.elementAt(index);
+                            //     // _con.abrirDetallePermiso(context);
+                            //   },
+                            //   icon: Icon(Icons.remove_red_eye_outlined),
+                            // ),
+                          );
+                        }),
               ),
       ),
     );

@@ -65,44 +65,7 @@ class AutorizarPermisoPageState extends StateMVC<AutorizarPermisoPage> {
               onPressed: () => Scaffold.of(context).openDrawer(),
             ),
           ),
-          actions: [
-            // Container(
-            //   padding: EdgeInsets.only(right: 20),
-            //   child: DropdownButton<String>(
-            //     value: _con.dropdownValue,
-            //     icon: Icon(Icons.arrow_downward),
-            //     onChanged: (String? newValue) {
-            //       setState(() {
-            //         _con.dropdownValue = newValue!;
-            //         if (newValue == 'Agosto') {
-            //           _con.requestBoleta.periodo = "202108";
-            //         } else if (newValue == 'Julio') {
-            //           _con.requestBoleta.periodo = "202107";
-            //         } else {
-            //           _con.requestBoleta.periodo = "202106";
-            //         }
-            //         _con.obtenerBoletaPago();
-            //       });
-            //     },
-            //     items: <String>['Agosto', 'Julio', 'Junio']
-            //         .map<DropdownMenuItem<String>>((String value) {
-            //       return DropdownMenuItem<String>(
-            //         value: value,
-            //         child: Text(value),
-            //       );
-            //     }).toList(),
-            //   ),
-            // ),
-            // IconButton(
-            //   icon: FaIcon(
-            //     FontAwesomeIcons.filePdf,
-            //     color: Theme.of(context).primaryColor,
-            //   ), // FaIcon(FontAwesomeIcons.syncAlt),
-            //   onPressed: () {
-            //     // _con.refreshHome();
-            //   },
-            // )
-          ],
+          actions: [],
           backgroundColor: Colors.transparent,
           elevation: 0,
           title: Text(
@@ -286,8 +249,8 @@ class AutorizarPermisoPageState extends StateMVC<AutorizarPermisoPage> {
                           ),
                           trailing: IconButton(
                               onPressed: () {
-                                // _con.boleta = _con.boletas.elementAt(index);
-                                // _con.abrirDetallePermiso(context);
+                                _con.boleta = _con.boletas.elementAt(index);
+                                _con.abrirDetallePermiso(context);
                               },
                               icon: Icon(Icons.remove_red_eye_outlined)),
                         ),

@@ -134,14 +134,18 @@ class _MainPageState extends StateMVC<MainPage>
                 SizedBox(
                   height: 5,
                 ),
-                CabeceraItemsCaruselWidget(
-                  icono: FaIcon(FontAwesomeIcons.birthdayCake,
-                      color: Theme.of(context).accentColor),
-                  titulo: 'Cumpleañeros del Mes',
-                ),
-                CaruselCumpleanerosWidget(
-                  cumpleaneros: _con.cumpleaneros,
-                ),
+                _con.cumpleaneros.length > 0
+                    ? CabeceraItemsCaruselWidget(
+                        icono: FaIcon(FontAwesomeIcons.birthdayCake,
+                            color: Theme.of(context).accentColor),
+                        titulo: 'Cumpleañeros del Mes',
+                      )
+                    : Container(),
+                _con.cumpleaneros.length > 0
+                    ? CaruselCumpleanerosWidget(
+                        cumpleaneros: _con.cumpleaneros,
+                      )
+                    : Container(),
                 Card(
                   color: Theme.of(context).hintColor,
                   child: Center(

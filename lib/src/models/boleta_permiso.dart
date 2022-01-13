@@ -85,7 +85,7 @@ class BoletaPermiso {
   String? horaEfectivaSalida;
   String? latLngSalida;
   String? latLngRetorno;
-  User? aut = new User();
+  UsuarioLafarnet? aut = new UsuarioLafarnet();
 
   factory BoletaPermiso.fromJson(Map<String, dynamic> json) => BoletaPermiso(
         idBoleta: json["id_boleta"],
@@ -117,7 +117,9 @@ class BoletaPermiso {
         horaEfectivaSalida: json["hora_efectiva_salida"],
         latLngSalida: json["lat_lng_salida"],
         latLngRetorno: json["lat_lng_retorno"],
-        aut: json["aut"] != null ? User.fromJson(json["aut"]) : new User(),
+        aut: json["aut"] != null
+            ? UsuarioLafarnet.fromJson(json["aut"])
+            : new UsuarioLafarnet(),
       );
 
   Map<String, dynamic> toJson() => {
