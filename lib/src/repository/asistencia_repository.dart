@@ -73,7 +73,7 @@ Future<Stream<String>> getDateTime() async {
 Future<Stream<AsistenciaCalculoGeneral>> obtieneAtrasosPorMes(
     RequestAsistenciaPersona data) async {
   final String url =
-      '${GlobalConfiguration().getValue('api_base_url_ghapi')}Asistencia/CalculoGeneralApp';
+      '${GlobalConfiguration().getValue('api_base_url_ghapi')}NuevaAsistencia/CalculoGeneralApp';
 
   final client = new http.Client();
   final response = await client.post(
@@ -85,6 +85,7 @@ Future<Stream<AsistenciaCalculoGeneral>> obtieneAtrasosPorMes(
     if (response.statusCode == 200) {
       final atraso =
           AsistenciaCalculoGeneral.fromJson(jsonDecode(response.body));
+      // print(jsonEncode(atraso));
       return new Stream.value(atraso);
     } else {
       return new Stream.value(new AsistenciaCalculoGeneral());

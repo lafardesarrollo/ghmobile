@@ -184,7 +184,7 @@ class _MainPageState extends StateMVC<MainPage>
                         Container(
                           padding: EdgeInsets.only(left: 15, right: 15, top: 8),
                           child: Text(
-                            'TIEMPO ACUMULADO DE RETRASOS',
+                            'Tiempo acumulado de Atrasos',
                             style: Theme.of(context).textTheme.overline,
                           ),
                         ),

@@ -144,13 +144,17 @@ class MainPageController extends ControllerMVC {
     final request = new RequestAsistenciaPersona();
 
     final int mesactual = DateTime.now().month;
-    final int mesanterior = DateTime.now().month - 1;
+    final int mesanterior = mesactual == 1 ? 12 : DateTime.now().month - 1;
     final String nuevo_mes = mesactual.toString().padLeft(2, '0');
     final String nuevo_mes_anterior = mesanterior.toString().padLeft(2, '0');
 
+    final int anioactual = DateTime.now().year;
+    final int anioanterior = mesactual == 1 ? anioactual - 1 : anioactual;
+
     request.empleado = int.parse(idEmpleado);
-    request.fechaInicio = "2021-${nuevo_mes_anterior}-26";
-    request.fechaFin = "2021-${nuevo_mes}-26";
+    request.fechaInicio = "${anioanterior}-${nuevo_mes_anterior}-26";
+
+    request.fechaFin = "${anioactual}-${nuevo_mes}-26";
 
     final Stream<AsistenciaCalculoGeneral> stream =
         await obtieneAtrasosPorMes(request); //(currentUser.value.username);

@@ -21,14 +21,14 @@ class AsistenciaCalculoGeneral {
   int? idSap;
   String? ci;
   String? nombreCompleto;
-  int? retrasoTotal;
+  double? retrasoTotal;
 
   factory AsistenciaCalculoGeneral.fromJson(Map<String, dynamic> json) =>
       AsistenciaCalculoGeneral(
         idSap: json["idSap"],
         ci: json["ci"],
         nombreCompleto: json["nombreCompleto"],
-        retrasoTotal: json["retrasoTotal"],
+        retrasoTotal: json["retrasoTotal"].toDouble(),
       );
 
   Map<String, dynamic> toJson() => {
