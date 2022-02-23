@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_statements
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
@@ -37,6 +38,7 @@ class AsistenciaController extends ControllerMVC {
   var regionalS = "";
 
   late OverlayEntry loader;
+  late OverlayEntry loader2;
 
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   GlobalKey<FormState> permisoFormKey = new GlobalKey<FormState>();
@@ -166,6 +168,9 @@ class AsistenciaController extends ControllerMVC {
   void guardarMarcacion(BuildContext context, String tipoMarcacion) async {
     loader = Helper.overlayLoader(context);
 
+    FocusScope.of(context).unfocus();
+    Overlay.of(context)!.insert(loader);
+
     marcacion.id = 0;
     marcacion.idGeneral = 0;
     marcacion.username = currentUser.value.username;
@@ -188,6 +193,21 @@ class AsistenciaController extends ControllerMVC {
     marcacion.regional = regional.nombre;
     marcacion.macDevice = await PlatformDeviceId.getDeviceId;
 
+    final Stream<LocationData> stream = await obtenerLocalizacionActual();
+    stream.listen((LocationData _locationData) {
+      setState(() {});
+      guardarMarcacionValidado(_locationData, context);
+    }, onError: (a) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Ocurrio un error al obtener la ubicación!'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }, onDone: () {
+      Helper.hideLoader(loader);
+    });
+    /*
     final Stream<LocationData> stream = await obtenerLocalizacionActual();
     stream.listen((LocationData _locationData) {
       FocusScope.of(context).unfocus();
@@ -243,7 +263,7 @@ class AsistenciaController extends ControllerMVC {
             content: Text('No se encuentra en el lugar establecido!'),
             backgroundColor: Colors.red,
           ));
-          loader.remove();
+          //loader.remove();
         }
       });
     }, onError: (a) {
@@ -254,6 +274,75 @@ class AsistenciaController extends ControllerMVC {
         ),
       );
     }, onDone: () {
+      Helper.hideLoader(loader);
+    });
+    */
+  }
+
+  Future<void> guardarMarcacionValidado(
+      LocationData _locationData, BuildContext context) async {
+    /*loader = Helper.overlayLoader(context);
+    FocusScope.of(context).unfocus();
+    Overlay.of(context)!.insert(loader);*/
+    this.latitud = _locationData.latitude;
+    this.longitud = _locationData.longitude;
+    this.marcacion.latitud = _locationData.latitude;
+    this.marcacion.longitud = _locationData.longitude;
+
+    var ubicacion_regional = regional.ubicacion!.split(',');
+    LatLng _latlngregional = new LatLng(
+      double.parse(ubicacion_regional[0]),
+      double.parse(ubicacion_regional[1]),
+    );
+
+    double x1 = latitud!;
+    double y1 = longitud!;
+
+    double x2 = _latlngregional.latitude;
+    double y2 = _latlngregional.longitude;
+
+    double distancia = sqrt((pow((x2 - x1), 2) + pow((y2 - y1), 2))) * 10000.0;
+
+    if (distancia < 2.7) {
+      gMarcacion(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('No se encuentra en el lugar establecido!'),
+        backgroundColor: Colors.red,
+      ));
+      loader.remove();
+      Helper.hideLoader(loader);
+    }
+  }
+
+  void gMarcacion(BuildContext context) async {
+    // loader = Helper.overlayLoader(context);
+    // FocusScope.of(context).unfocus();
+    // Overlay.of(context)!.insert(loader);
+
+    final Stream<bool> stream = await saveMarcacion(this.marcacion);
+    stream.listen((bool result) {
+      if (result) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Se registro la marcación correctamente!'),
+          backgroundColor: Colors.blue,
+        ));
+        Navigator.pop(context, true);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('No se registro la marcación, intente nuevamente.'),
+          backgroundColor: Colors.red,
+        ));
+      }
+      // loader.remove();
+    }, onError: (a) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Ocurrio un error al guardar la Marcación'),
+        backgroundColor: Colors.red,
+      ));
+      loader.remove();
+    }, onDone: () {
+      loader.remove();
       Helper.hideLoader(loader);
     });
   }

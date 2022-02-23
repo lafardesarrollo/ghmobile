@@ -39,7 +39,9 @@ class _MainPageState extends StateMVC<MainPage>
     _con.obtenerCumpleanerosMes(context);
 
     _con.obtenerSaldoVacaciones(int.parse(currentUser.value.idSap!));
-    _con.getAtrasosMesActual(currentUser.value.idSap!);
+
+    _con.getPeriodoActual();
+    // _con.getAtrasosMesActual(currentUser.value.idSap!);
     animationController =
         AnimationController(duration: Duration(milliseconds: 200), vsync: this);
     CurvedAnimation curve =
@@ -190,13 +192,17 @@ class _MainPageState extends StateMVC<MainPage>
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            _con.atrasos.retrasoTotal.toString() + ' minutos',
-                            style: TextStyle(
-                                fontSize: 35,
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).secondaryHeaderColor),
-                          ),
+                          child: _con.atrasos.retrasoTotal == null
+                              ? CircularProgressIndicator()
+                              : Text(
+                                  _con.atrasos.retrasoTotal.toString() +
+                                      ' minutos',
+                                  style: TextStyle(
+                                      fontSize: 35,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context)
+                                          .secondaryHeaderColor),
+                                ),
                         )
                       ],
                     ),

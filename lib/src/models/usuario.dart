@@ -30,6 +30,7 @@ class Usuario {
     this.ubicacion,
     this.idSap,
     this.auth,
+    this.useridlafarnet,
   });
 
   String? userid;
@@ -52,29 +53,30 @@ class Usuario {
   String? ubicacion;
   String? idSap;
   bool? auth;
+  String? useridlafarnet;
 
   factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(
-        userid: json["userid"],
-        firstName: json["first_name"],
-        lastName: json["last_name"],
-        emailAddress: json["email_address"],
-        username: json["username"],
-        password: json["password"],
-        idCargo: json["id_cargo"],
-        cargo: json["cargo"],
-        idRegional: json["id_regional"],
-        regional: json["regional"],
-        idGrupo: json["id_grupo"],
-        idArea: json["id_area"],
-        area: json["area"],
-        foto: json["foto"],
-        estado: json["estado"],
-        nombreEstado: json["nombre_estado"],
-        idSuperior: json["id_superior"],
-        ubicacion: json["ubicacion"],
-        idSap: json["idSap"],
-        auth: json["auth"],
-      );
+      userid: json["userid"],
+      firstName: json["first_name"],
+      lastName: json["last_name"],
+      emailAddress: json["email_address"],
+      username: json["username"],
+      password: json["password"],
+      idCargo: json["id_cargo"],
+      cargo: json["cargo"],
+      idRegional: json["id_regional"],
+      regional: json["regional"],
+      idGrupo: json["id_grupo"],
+      idArea: json["id_area"],
+      area: json["area"],
+      foto: json["foto"],
+      estado: json["estado"],
+      nombreEstado: json["nombre_estado"],
+      idSuperior: json["id_superior"],
+      ubicacion: json["ubicacion"],
+      idSap: json["idSap"],
+      auth: json["auth"],
+      useridlafarnet: json["useridlafarnet"]);
 
   Map<String, dynamic> toJson() => {
         "userid": userid,
@@ -97,5 +99,6 @@ class Usuario {
         "ubicacion": ubicacion,
         "idSap": idSap,
         "auth": auth,
+        "useridlafarnet": useridlafarnet
       };
 }

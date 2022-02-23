@@ -1,6 +1,7 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ghmobile/src/controllers/permiso_controller.dart';
 import 'package:ghmobile/src/helpers/app_config.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -152,19 +153,58 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
                     labelText: "Ingrese la Hora de Salida"),
                 readOnly: true,
                 onTap: () async {
-                  TimeOfDay time = TimeOfDay.now();
-                  FocusScope.of(context).requestFocus(new FocusNode());
+                  if (_con.dateInputSalida.text.length <= 1) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Seleccione primero la Fecha de Salida'),
+                      backgroundColor: Colors.red,
+                    ));
+                  } else {
+                    TimeOfDay time = TimeOfDay.now();
+                    FocusScope.of(context).requestFocus(new FocusNode());
 
-                  TimeOfDay? pickedTimeSalida =
-                      await showTimePicker(context: context, initialTime: time);
-                  if (pickedTimeSalida != null && pickedTimeSalida != time) {
-                    _con.timeInputSalida.text =
-                        _con.formatTimeOfDay(pickedTimeSalida);
-                    setState(() {
-                      time = pickedTimeSalida;
-                      _con.boleta.horaSalida =
+                    TimeOfDay? pickedTimeSalida = await showTimePicker(
+                        context: context, initialTime: time);
+                    if (pickedTimeSalida != null && pickedTimeSalida != time) {
+                      _con.timeInputSalida.text =
                           _con.formatTimeOfDay(pickedTimeSalida);
-                    });
+                      setState(() {
+                        time = pickedTimeSalida;
+                        final TimeOfDay horaActual = TimeOfDay.now();
+                        final TimeOfDay horaSeleccionada = time;
+
+                        double _doubleHoraSeleccionada =
+                            horaSeleccionada.hour.toDouble() +
+                                (horaSeleccionada.minute.toDouble() / 60);
+
+                        double _doubleHoraActual = horaActual.hour.toDouble() +
+                            (horaActual.minute.toDouble() / 60);
+
+                        final fechaSeleccionada =
+                            DateTime.parse(_con.dateInputSalida.text);
+                        final fechaActual =
+                            formatDate(DateTime.now(), [yyyy, '', mm, '', dd]);
+
+                        int resultFecha = fechaSeleccionada
+                            .compareTo(DateTime.parse(fechaActual));
+                        if (resultFecha == 0) {
+                          if (_doubleHoraSeleccionada >= _doubleHoraActual) {
+                            _con.boleta.horaSalida =
+                                _con.formatTimeOfDay(pickedTimeSalida);
+                          } else {
+                            _con.timeInputSalida.text = '';
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  'No puedes registrar la hora de salida antes de la hora actual!'),
+                              backgroundColor: Colors.red,
+                              duration: Duration(seconds: 5),
+                            ));
+                          }
+                        } else {
+                          _con.boleta.horaSalida =
+                              _con.formatTimeOfDay(pickedTimeSalida);
+                        }
+                      });
+                    }
                   }
                 },
                 validator: (value) {

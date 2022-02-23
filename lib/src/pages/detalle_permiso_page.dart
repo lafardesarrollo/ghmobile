@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ghmobile/src/controllers/permiso_controller.dart';
 import 'package:ghmobile/src/helpers/app_config.dart';
 import 'package:ghmobile/src/models/boleta_permiso.dart';
+import 'package:ghmobile/src/repository/user_repository.dart';
 import 'package:ghmobile/src/widgets/CircularLoadingWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:date_format/date_format.dart';
@@ -39,7 +40,7 @@ class DetallePermisoPageState extends StateMVC<DetallePermisoPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Detalle Permiso',
+            'Detalle Permiso ',
             style: TextStyle(color: Theme.of(context).hintColor),
           ),
           leading: IconButton(
@@ -240,14 +241,9 @@ class DetallePermisoPageState extends StateMVC<DetallePermisoPage> {
                               style: Theme.of(context).textTheme.subtitle2),
                           _con.boleta.fechaEfectivaSalida ==
                                   '0001-01-01T00:00:00'
-                              ? widget.esAutorizador == true
-                                  ? Text(
-                                      'No registrado',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: Theme.of(context).accentColor),
-                                    )
-                                  : ElevatedButton.icon(
+                              ? _con.boleta.userid.toString() ==
+                                      currentUser.value.useridlafarnet!
+                                  ? ElevatedButton.icon(
                                       style: ElevatedButton.styleFrom(
                                         fixedSize: Size(
                                             App(context).appWidth(100), 40),
@@ -257,6 +253,12 @@ class DetallePermisoPageState extends StateMVC<DetallePermisoPage> {
                                               context, widget.boletaPermiso!),
                                       icon: Icon(Icons.fingerprint),
                                       label: Text('Registrar Salida Efectiva'))
+                                  : Text(
+                                      'No registrado',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Theme.of(context).accentColor),
+                                    )
                               : Text(
                                   formatDate(
                                           DateTime.parse(
@@ -269,7 +271,8 @@ class DetallePermisoPageState extends StateMVC<DetallePermisoPage> {
                               style: Theme.of(context).textTheme.subtitle2),
                           _con.boleta.fechaEfectivaRetorno ==
                                   '0001-01-01T00:00:00'
-                              ? widget.esAutorizador == true
+                              ? _con.boleta.userid.toString() !=
+                                      currentUser.value.useridlafarnet!
                                   ? Text(
                                       'No registrado',
                                       style: TextStyle(
