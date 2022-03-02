@@ -79,7 +79,7 @@ class NuevoPermisoPageState extends StateMVC<NuevoPermisoPage> {
               SizedBox(),
               OutlinedButton.icon(
                 icon: Icon(Icons.published_with_changes_outlined),
-                style: OutlinedButton.styleFrom(
+                style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
                   fixedSize: Size(App(context).appWidth(100), 50),

@@ -156,8 +156,8 @@ class PermisoPageState extends StateMVC<PermisoPage> {
                             fontSize: 16, color: Theme.of(context).hintColor)),
                     trailing: IconButton(
                         onPressed: () {
-                          // _con.boleta = _con.boletas.elementAt(index);
-                          // _con.abrirDetallePermiso(context);
+                          _con.boleta = _con.boletas.elementAt(index);
+                          _con.abrirDetallePermiso(context);
                         },
                         icon: Icon(Icons.remove_red_eye_outlined)),
                   );

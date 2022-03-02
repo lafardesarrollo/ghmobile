@@ -236,19 +236,17 @@ class PermisoController extends ControllerMVC {
     boleta.latLngSalida = "0";
     boleta.latLngRetorno = "0";
 
-    if (boleta.fechaSalida == '' ||
-        boleta.fechaSalida == null && boleta.horaSalida == '' ||
-        boleta.horaSalida == null && boleta.motivos == '' ||
-        boleta.motivos == null && boleta.cuentaSalida == '' ||
-        boleta.cuentaSalida == null && boleta.fechaRetorno == '' ||
-        boleta.fechaRetorno == null) {
-      Helper.hideLoader(loader);
-      loader.remove();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content:
-            Text('Verifica que llenaste toda la información correctamente!'),
-        backgroundColor: Colors.red,
-      ));
+    if (boleta.cuentaSalida == null) {
+      mostrarMensajeValidacion(context, 'Seleccione el motivo del permiso');
+    } else if (boleta.fechaSalida?.length == 0) {
+      mostrarMensajeValidacion(context, 'La fecha de salida es requerida');
+    } else if (boleta.horaSalida?.length == 0) {
+      mostrarMensajeValidacion(context, 'La hora de salida es requerida');
+    } else if (boleta.motivos?.length == 0) {
+      mostrarMensajeValidacion(
+          context, 'Ingrese las observaciones de la solicitud de permiso');
+    } else if (boleta.fechaRetorno?.length == 0) {
+      mostrarMensajeValidacion(context, 'La fecha de retorno es requerida');
     } else {
       if (boleta.motivos!.toLowerCase().contains('vacaci')) {
         Helper.hideLoader(loader);
@@ -291,6 +289,37 @@ class PermisoController extends ControllerMVC {
         });
       }
     }
+
+/*
+    if (boleta.fechaSalida == '' ||
+        boleta.fechaSalida == null && boleta.horaSalida == '' ||
+        boleta.horaSalida == null && boleta.motivos == '' ||
+        boleta.motivos == null && boleta.cuentaSalida == '' ||
+        boleta.cuentaSalida == null && boleta.fechaRetorno == '' ||
+        boleta.fechaRetorno == null) {
+      Helper.hideLoader(loader);
+      loader.remove();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content:
+            Text('Verifica que llenaste toda la información correctamente!'),
+        backgroundColor: Colors.red,
+      ));
+    } else {
+      
+    }
+    */
+  }
+
+  void mostrarMensajeValidacion(BuildContext context, String mensaje) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(mensaje),
+      action: SnackBarAction(
+        label: 'X',
+        onPressed: () {},
+        textColor: Theme.of(context).cardColor,
+      ),
+      backgroundColor: Colors.red,
+    ));
   }
 
   String formatTimeOfDay(TimeOfDay tod) {

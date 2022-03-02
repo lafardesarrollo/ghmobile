@@ -126,10 +126,6 @@ class VacacionController extends ControllerMVC {
   }
 
   void guardarVacaciones(BuildContext context) async {
-    loader = Helper.overlayLoader(context);
-    FocusScope.of(context).unfocus();
-    Overlay.of(context)!.insert(loader);
-
     boleta.idBoleta = 0;
     boleta.concepto = '';
 
@@ -160,36 +156,60 @@ class VacacionController extends ControllerMVC {
     boleta.latLngSalida = "0";
     boleta.latLngRetorno = "0";
 
-    // print(this.boleta.toJson());
-
-    final Stream<bool> stream = await saveBoletaVacacion(this.boleta);
-    stream.listen((bool result) {
-      if (result) {
+    if (this.boleta.fechaSalida?.length == 0) {
+      mostrarMensajeValidacion(context, 'La fecha de salida es requerida');
+    } else if (this.boleta.motivos?.length == 0) {
+      mostrarMensajeValidacion(context, 'Ingrese motivo de su Vacación');
+    } else if (this.boleta.fechaRetorno?.length == 0) {
+      mostrarMensajeValidacion(context, 'La fecha de retorno es requerida');
+    } else if (this.boleta.diaEntero == 0 || this.boleta.diaEntero == null) {
+      mostrarMensajeValidacion(
+          context, 'La cantidad de dias tiene que ser mínimo 0.5 días');
+    } else {
+      loader = Helper.overlayLoader(context);
+      FocusScope.of(context).unfocus();
+      Overlay.of(context)!.insert(loader);
+      final Stream<bool> stream = await saveBoletaVacacion(this.boleta);
+      stream.listen((bool result) {
+        if (result) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Se guardo la Liencia correctamente!'),
+            backgroundColor: Colors.blue,
+          ));
+          Navigator.pop(context, true);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('No se guardo la licencia, intente nuevamente.'),
+            backgroundColor: Colors.red,
+          ));
+        }
+      }, onError: (a) {
+        Helper.hideLoader(loader);
+        loader.remove();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Se guardo la Liencia correctamente!'),
-          backgroundColor: Colors.blue,
-        ));
-        Navigator.pop(context, true);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('No se guardo la licencia, intente nuevamente.'),
+          content: Text('Ocurrio un error al guardar la Licencia de Permiso'),
           backgroundColor: Colors.red,
         ));
-      }
-    }, onError: (a) {
-      Helper.hideLoader(loader);
-      loader.remove();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Ocurrio un error al guardar la Licencia de Permiso'),
-        backgroundColor: Colors.red,
-      ));
-      // scaffoldKey.currentState?.showSnackBar(SnackBar(
-      //   content: Text('Ocurrio un error al obtener la información'),
-      // ));
-    }, onDone: () {
-      Helper.hideLoader(loader);
-      loading = false;
-    });
+        // scaffoldKey.currentState?.showSnackBar(SnackBar(
+        //   content: Text('Ocurrio un error al obtener la información'),
+        // ));
+      }, onDone: () {
+        Helper.hideLoader(loader);
+        loading = false;
+      });
+    }
+  }
+
+  void mostrarMensajeValidacion(BuildContext context, String mensaje) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(mensaje),
+      action: SnackBarAction(
+        label: 'DE ACUERDO',
+        onPressed: () {},
+        textColor: Theme.of(context).cardColor,
+      ),
+      backgroundColor: Colors.red,
+    ));
   }
 
   String formatTimeOfDay(TimeOfDay tod) {
