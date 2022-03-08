@@ -199,14 +199,12 @@ class PermisoController extends ControllerMVC {
       ),
     );
     if (resultado) {
+      this.listarBoletasPorAutorizador(
+          context, int.parse(currentUser.value.idSap!));
     } else {}
   }
 
   void guardarBoletaPermiso(BuildContext context) async {
-    loader = Helper.overlayLoader(context);
-    FocusScope.of(context).unfocus();
-    Overlay.of(context)!.insert(loader);
-
     boleta.idBoleta = 0;
     boleta.concepto = '';
 
@@ -259,6 +257,9 @@ class PermisoController extends ControllerMVC {
       } else {
         // print(this.boleta.toJson());
 
+        loader = Helper.overlayLoader(context);
+        FocusScope.of(context).unfocus();
+        Overlay.of(context)!.insert(loader);
         final Stream<bool> stream = await saveBoletaPermiso(this.boleta);
         stream.listen((bool result) {
           if (result) {
@@ -408,8 +409,8 @@ class PermisoController extends ControllerMVC {
   }
 
   // aprobar boleta permiso
-  void aprobarBoletaPermisoAutorizador(
-      BuildContext context, BoletaPermiso bol) async {
+  void aprobarBoletaPermisoAutorizador(BuildContext context, BoletaPermiso bol,
+      {int seCierra = 0}) async {
     boleta = bol;
 
     loader = Helper.overlayLoader(context);
@@ -427,6 +428,9 @@ class PermisoController extends ControllerMVC {
           context,
           int.parse(currentUser.value.idSap!),
         );
+        if (seCierra == 1) {
+          Navigator.pop(context, true);
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('No se guardo el registro, intente nuevamente.'),
@@ -486,8 +490,8 @@ class PermisoController extends ControllerMVC {
     });
   }
 
-  void rechazarBoletaPermisoAutorizador(
-      BuildContext context, BoletaPermiso bol) async {
+  void rechazarBoletaPermisoAutorizador(BuildContext context, BoletaPermiso bol,
+      {int seCierra = 0}) async {
     boleta = bol;
 
     loader = Helper.overlayLoader(context);
@@ -507,6 +511,10 @@ class PermisoController extends ControllerMVC {
           context,
           int.parse(currentUser.value.idSap!),
         );
+
+        if (seCierra == 1) {
+          Navigator.pop(context, true);
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('No se guardo el registro, intente nuevamente.'),

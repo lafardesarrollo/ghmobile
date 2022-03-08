@@ -104,28 +104,29 @@ class BoletaPagoPageState extends StateMVC<BoletaPagoPage> {
                       height: 10,
                     ),
                     TextButton.icon(
-                        icon: FaIcon(FontAwesomeIcons.fileSignature),
-                        label: Text('Seleccionar Periodo'),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Theme.of(context).hintColor),
-                          foregroundColor:
-                              MaterialStateProperty.all<Color>(Colors.white),
-                          padding: MaterialStateProperty.all<EdgeInsets>(
-                            EdgeInsets.all(10),
-                          ),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              side: BorderSide(
-                                  color: Theme.of(context).hintColor),
-                            ),
+                      icon: FaIcon(FontAwesomeIcons.fileSignature),
+                      label: Text('Seleccionar Periodo'),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Theme.of(context).hintColor),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                        padding: MaterialStateProperty.all<EdgeInsets>(
+                          EdgeInsets.all(10),
+                        ),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side:
+                                BorderSide(color: Theme.of(context).hintColor),
                           ),
                         ),
-                        onPressed: () {
-                          _con.abrirPeriodos(context);
-                        }),
+                      ),
+                      onPressed: () {
+                        _con.abrirPeriodos(context);
+                      },
+                    ),
                   ],
                 ),
               )

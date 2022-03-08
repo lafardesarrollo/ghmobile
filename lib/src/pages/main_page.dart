@@ -123,6 +123,7 @@ class _MainPageState extends StateMVC<MainPage>
         body: RefreshIndicator(
           onRefresh: () async {
             _con.obtenerSaldoVacaciones(int.parse(currentUser.value.idSap!));
+            _con.getPeriodoActual();
           },
           child: Container(
             child: ListView(
