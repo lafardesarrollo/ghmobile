@@ -162,9 +162,9 @@ class BoletaPagoController extends ControllerMVC {
 
     await flutterLocalNotificationsPlugin.show(
         0, // notification id
-        isSuccess ? 'Correcto!' : 'Error',
+        isSuccess ? 'Perfecto!' : 'Error',
         isSuccess
-            ? 'Su boleta de pago fue descargado correctamente, puede ver directamente presionando aqui!'
+            ? 'Su boleta de pago se descargo correctamente, presione para abrir el documento!'
             : 'A ocurrido un error mientras se descargaba el archivo.',
         platform,
         payload: json);

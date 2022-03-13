@@ -45,7 +45,7 @@ class _ReglamentoPageState extends State<ReglamentoPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).hintColor,
-        title: Text('Reglamento Interno LAFAR'),
+        title: Text('Reglamento Interno LAFAR NO USAR ESTE'),
       ),
       body: Stack(
         children: [

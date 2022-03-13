@@ -4,7 +4,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:ghmobile/src/models/libro.dart';
+import 'package:ghmobile/src/models/libro_detalle.dart';
 import 'package:ghmobile/src/models/titulo.dart';
+import 'package:ghmobile/src/pages/libro_detalle_page.dart';
 import 'package:ghmobile/src/pages/titulo_page.dart';
 import 'package:ghmobile/src/repository/reglamento_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -12,6 +14,8 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 class ReglamentoController extends ControllerMVC {
   bool loading = false;
   Libro libro = new Libro();
+  List<LibroDetalle> detalleLibro = [];
+  List<LibroDetalle> titulosLibro = [];
 
   late OverlayEntry loader;
 
@@ -55,15 +59,29 @@ class ReglamentoController extends ControllerMVC {
     if (resultado) {
     } else {}
   }
-/*
-  void listarBoletas(BuildContext context, int idEmpleado) async {
-    final Stream<List<BoletaPermiso>> stream =
-        await obtenerPermisosPorEmpleado(idEmpleado);
+
+  Future<void> abrirLibroDetalle(
+      BuildContext context, LibroDetalle libroDetalle) async {
+    final resultado = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LibroDetallePage(
+          titulo: libroDetalle,
+        ),
+      ),
+    );
+    if (resultado) {
+    } else {}
+  }
+
+  // obtiene titulos de libro
+  void listaTitulosLibro(BuildContext context, int idLibro) async {
+    final Stream<List<LibroDetalle>> stream = await obtieneTitulos(idLibro);
     stream.listen(
-      (List<BoletaPermiso> _lpermisos) {
+      (List<LibroDetalle> _ldetalle) {
         setState(() {
-          boletas = _lpermisos;
-          // print(boletas);
+          titulosLibro = _ldetalle;
+          print(titulosLibro);
         });
       },
       onError: (a) {
@@ -80,9 +98,31 @@ class ReglamentoController extends ControllerMVC {
     );
   }
 
-  
-  
+  void listaDetalleLibroPorTitulo(BuildContext context, int idTitulo) async {
+    final Stream<List<LibroDetalle>> stream =
+        await obtieneLibroDetallePorTitulo(idTitulo);
+    stream.listen(
+      (List<LibroDetalle> _ldetalle) {
+        setState(() {
+          detalleLibro = _ldetalle;
+          print(detalleLibro);
+        });
+      },
+      onError: (a) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Ocurrio un error al obtener la información!'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      },
+      onDone: () {
+        loading = false;
+      },
+    );
+  }
 
+/*
   void guardarBoletaPermiso(BuildContext context) async {
     loader = Helper.overlayLoader(context);
     FocusScope.of(context).unfocus();

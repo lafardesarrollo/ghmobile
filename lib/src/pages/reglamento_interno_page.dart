@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ghmobile/src/controllers/reglamento_controller.dart';
+import 'package:ghmobile/src/models/libro_detalle.dart';
 import 'package:ghmobile/src/widgets/CircularLoadingWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -21,7 +22,8 @@ class ReglamentoInternoPageState extends StateMVC<ReglamentoInternoPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _con.obtenerLibro(context, 1);
+    // _con.obtenerLibro(context, 1);
+    _con.listaTitulosLibro(context, 1);
   }
 
   @override
@@ -37,19 +39,27 @@ class ReglamentoInternoPageState extends StateMVC<ReglamentoInternoPage> {
               height: MediaQuery.of(context).size.height,
             )
           : ListView.separated(
-              itemCount: _con.libro.titulos!.length,
+              itemCount: _con.titulosLibro.length,
               itemBuilder: (context, index) {
                 return ListTile(
                   onTap: () {
-                    _con.abrirTitulo(
-                        context, _con.libro.titulos!.elementAt(index));
+                    LibroDetalle idTitulo = _con.titulosLibro.elementAt(index);
+                    _con.abrirLibroDetalle(context, idTitulo);
                   },
-                  title: Text(_con.libro.titulos!.elementAt(index).titulo!),
+                  title: textoLibro(_con.titulosLibro.elementAt(index)),
                 );
                 // return
               },
               separatorBuilder: (context, index) => Divider(),
             ),
+    );
+  }
+
+  Widget textoLibro(LibroDetalle texto) {
+    TextStyle style = TextStyle();
+    return Text(
+      texto.texto!,
+      style: style,
     );
   }
 }
